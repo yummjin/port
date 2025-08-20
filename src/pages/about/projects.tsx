@@ -3,6 +3,7 @@ import { PROJECTS } from "@/shared/data/project";
 import React, { useState } from "react";
 import Timeline from "@/widgets/menu/TimeLine";
 import Image from "next/image";
+import Card from "@/shared/components/Card";
 
 type ProjectLink = {
   github?: string;
@@ -38,7 +39,7 @@ const ProjectLinks = ({ links }: { links: ProjectLink }) => {
             href={href}
             target="_blank"
             rel="noopener noreferrer"
-            className="font-mono underline hover:text-main"
+            className="font-mono text-black underline hover:text-main"
           >
             {label}
           </a>
@@ -49,15 +50,16 @@ const ProjectLinks = ({ links }: { links: ProjectLink }) => {
 };
 
 const InfoItem = ({ label, value }: { label: string; value: string }) => (
-  <div className="flex items-center gap-3">
-    <p className="text-sm text-nowrap text-main font-medium">{label}</p>
-    <p className="text-gray-800 font-semibold">{value}</p>
+  <div className="flex items-center gap-3 text-sm">
+    <p className="text-nowrap underline text-main font-medium">{label}</p>
+    <p className="font-mono">{value}</p>
   </div>
 );
 
-// 기술 스택 태그 컴포넌트
 const TechTag = ({ tech }: { tech: string }) => (
-  <span className="px-1 py-0.5 bg-gray-200 text-gray-600 text-xs">{tech}</span>
+  <span className="px-1 py-0.5 bg-gray-100 text-gray-600 font-mono text-xs">
+    {tech}
+  </span>
 );
 
 const AchievementItem = ({ achievement }: { achievement: string }) => (
@@ -68,43 +70,47 @@ const AchievementItem = ({ achievement }: { achievement: string }) => (
 );
 
 const ProjectHeader = ({ project }: { project: Project }) => (
-  <header className="space-y-1">
-    <h2 className="text-3xl font-bold text-gray-900 leading-tight">
-      {project.title}
+  <header className="space-y-0.5">
+    <h2 className="font-mono text-3xl text-main font-bold leading-tight">
+      {project.title.split(":")[0]}
     </h2>
-    <div className="flex items-center gap-2">
-      <p className="font-semibold text-lg">{project.period}</p>
-    </div>
-    <p className="text-gray-700 text-lg leading-relaxed">
-      {project.description}
-    </p>
-    <ProjectLinks links={project.links} />
+    <p className="leading-relaxed">{project.description}</p>
   </header>
 );
 
-const ProjectInfo = ({ project }: { project: Project }) => (
-  <div className="flex flex-col gap-2">
-    <div className="flex gap-5">
-      <InfoItem label="역할" value={project.role} />
-      <InfoItem label="팀 구성" value={project.teamSize} />
-    </div>
-    <div className="flex items-center gap-3">
-      <p className="text-sm text-nowrap text-main font-medium">기술 스택</p>
+const ProjectDetails = ({ project }: { project: Project }) => (
+  <Card className="w-full">
+    <InfoItem label="기간" value={project.period} />
+    <InfoItem label="역할" value={project.role} />
+    <div className="flex items-start gap-3">
+      <p className="text-sm text-nowrap underline text-main font-medium">
+        기술 스택
+      </p>
       <p className="flex flex-wrap gap-2">
         {project.techStack.map((tech: string) => (
           <TechTag key={tech} tech={tech} />
         ))}
       </p>
     </div>
-  </div>
+    <InfoItem label="팀 구성" value={project.teamSize} />
+    <ProjectLinks links={project.links} />
+  </Card>
 );
 
 const AchievementsList = ({ achievements }: { achievements: string[] }) => (
-  <ul className="space-y-1">
-    {achievements.map((achievement, index) => (
-      <AchievementItem key={index} achievement={achievement} />
-    ))}
-  </ul>
+  <Card className="size-full">
+    <ul className="space-y-1">
+      {achievements.map((achievement, index) => (
+        <AchievementItem key={index} achievement={achievement} />
+      ))}
+    </ul>
+  </Card>
+);
+
+const ProjectImage = ({ src, alt }: { src: string; alt: string }) => (
+  <div className="relative w-full h-[200px] overflow-hidden">
+    <Image src={src} alt={alt} fill className="object-cover" />
+  </div>
 );
 
 export default function Projects() {
@@ -117,17 +123,18 @@ export default function Projects() {
         setSelectedProject={setSelectedProject}
         selectedProject={selectedProject}
       />
-      <ProjectHeader project={project} />
-      <ProjectInfo project={project} />
-      <div className="relative w-[400px] h-[200px]">
-        <Image
-          src={project.image}
-          alt={project.title}
-          fill
-          className="object-cover"
-        />
+      <div className="md:w-5/6 w-full flex flex-col gap-4">
+        <ProjectHeader project={project} />
+        <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-4">
+          <ProjectDetails project={project} />
+          <AchievementsList achievements={project.achievements} />
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 w-full">
+          {project.image.map((imgSrc, index) => (
+            <ProjectImage key={index} src={imgSrc} alt={project.title} />
+          ))}
+        </div>
       </div>
-      <AchievementsList achievements={project.achievements} />
     </AboutLayout>
   );
 }

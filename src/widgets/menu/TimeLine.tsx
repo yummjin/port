@@ -21,12 +21,12 @@ export default function Timeline({
   selectedProject,
 }: TimelineItem) {
   return (
-    <div className="relative flex-wrap  w-full gap-4 flex mb-2.5">
+    <div className="relative flex-wrap md:mt-0 mt-4 w-full gap-4 flex mb-2.5">
       {timeline.map((item, index) => (
         <motion.button
           key={index}
           className={cn(
-            "flex flex-col gap-0.5 font-mono items-center cursor-pointer border outline-none border-gray-200 p-2",
+            "flex flex-col gap-0.5 font-mono items-center cursor-pointer outline-none",
             selectedProject === index && "border-main text-main"
           )}
           initial={{ opacity: 0, y: 20 }}
@@ -34,8 +34,8 @@ export default function Timeline({
           transition={{ delay: index * 0.3, duration: 0.8 }}
           onClick={() => setSelectedProject(index)}
         >
-          <div className="text-sm">{item.event}</div>
-          <div className="text-xs font-light">{item.year}</div>
+          <div className="text-sm underline">{item.event}</div>
+          {/* <div className="text-xs font-light">{item.year}</div> */}
         </motion.button>
       ))}
     </div>
