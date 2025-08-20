@@ -5,10 +5,12 @@ import type { ReactNode } from "react";
 export default function AboutLayout({ children }: { children: ReactNode }) {
   return (
     <div
-      className={`${geistSans.variable} ${geistMono.variable} ${gothicA1.variable} min-w-screen min-h-screen p-10`}
+      className={`${geistSans.variable} ${geistMono.variable} ${gothicA1.variable} min-w-screen min-h-screen p-5 md:p-10`}
     >
       <AboutHeader />
-      <div className="pt-10">{children}</div>
+      <div className="pt-5 md:pt-10 font-sans flex flex-col gap-2.5 md:gap-5">
+        {children}
+      </div>
     </div>
   );
 }

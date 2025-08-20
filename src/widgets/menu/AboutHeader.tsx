@@ -10,6 +10,7 @@ import { useRouter } from "next/router";
 import { cn } from "@/shared/utils";
 
 const buttons = [
+  { label: "홈", value: PATH.HOME },
   { label: "한유진", value: PATH.USER },
   { label: "기술", value: PATH.SKILLS },
   { label: "프로젝트", value: PATH.PROJECTS },
@@ -91,16 +92,18 @@ const Navigation = ({ isOpen }: { isOpen: boolean }) => (
 );
 
 const MenuItem = ({ label, value }: { label: string; value: string }) => {
+  const router = useRouter();
+
   return (
-    <motion.a
+    <motion.button
       className="m-0 mb-5 flex font-sans cursor-pointer list-none items-center justify-start p-0"
       variants={itemVariants}
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.95 }}
-      href={`/detail${value}`}
+      onClick={() => router.push(value)}
     >
       {label}
-    </motion.a>
+    </motion.button>
   );
 };
 
