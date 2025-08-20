@@ -10,7 +10,7 @@ export default function AboutLayout({ children }: { children: ReactNode }) {
         <title>한유진</title>
       </Head>
       <div
-        className={`${geistSans.variable} ${geistMono.variable} ${gothicA1.variable} min-w-screen min-h-screen p-5 md:p-10`}
+        className={`${geistSans.variable} ${geistMono.variable} ${gothicA1.variable} min-w-screen min-h-screen p-5 md:p-10 md:pt-5`}
       >
         <AboutHeader />
         <div className="pt-5 md:pt-10 font-sans flex flex-col gap-4">

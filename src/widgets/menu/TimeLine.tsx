@@ -21,7 +21,7 @@ export default function Timeline({
   selectedProject,
 }: TimelineItem) {
   return (
-    <div className="relative flex-wrap md:mt-0 mt-4 w-full gap-4 flex mb-2.5">
+    <div className="relative flex-wrap -z-10 md:mt-0 mt-4 w-full gap-4 flex mb-2.5">
       {timeline.map((item, index) => (
         <motion.button
           key={index}

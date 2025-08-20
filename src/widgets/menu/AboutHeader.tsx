@@ -10,11 +10,11 @@ import { useRouter } from "next/router";
 import { cn } from "@/shared/utils";
 
 const buttons = [
-  { label: "홈", value: PATH.HOME },
-  { label: "한유진", value: PATH.USER },
-  { label: "기술", value: PATH.SKILLS },
-  { label: "프로젝트", value: PATH.PROJECTS },
-  { label: "해커톤", value: PATH.HACKATHONS },
+  { label: "home", value: PATH.HOME },
+  { label: "about yujin", value: PATH.USER },
+  { label: "skills", value: PATH.SKILLS },
+  { label: "projects", value: PATH.PROJECTS },
+  { label: "hackathons", value: PATH.HACKATHONS },
 ];
 
 export default function AboutHeader() {
@@ -23,15 +23,15 @@ export default function AboutHeader() {
 
   return (
     <>
-      <div className="box-border hidden w-full border-b-[1px] border-gray-200 md:block">
+      <div className="box-border hidden w-full border-gray-200 md:block">
         <div className="hidden justify-between md:flex md:w-full lg:w-fit lg:gap-12">
           {buttons.map((button) => (
             <button
               key={button.value}
               onClick={() => router.push(button.value)}
               className={cn(
-                "cursor-pointer font-sans py-4 font-normal outline-none",
-                button.value === current && "border-b-[1px] border-black"
+                "cursor-pointer font-mono py-4 font-normal outline-none",
+                button.value === current && "underline text-main"
               )}
             >
               {button.label}
@@ -69,7 +69,7 @@ function Variants() {
       initial={false}
       animate={isOpen ? "open" : "closed"}
       ref={containerRef}
-      className="sticky top-[44px] left-4 flex w-full bg-white py-3 md:hidden"
+      className="sticky top-[44px] left-4 flex w-full py-3 md:hidden"
     >
       <motion.div variants={sidebarVariants} />
       <Navigation isOpen={isOpen} />
@@ -80,7 +80,7 @@ function Variants() {
 
 const Navigation = ({ isOpen }: { isOpen: boolean }) => (
   <motion.ul
-    className="absolute top-[44px] w-screen list-none bg-white pt-[25px]"
+    className="absolute top-[44px] z-[999] w-screen list-none bg-white pt-[25px]"
     variants={navVariants}
     initial="closed"
     animate={isOpen ? "open" : "closed"}
@@ -96,7 +96,7 @@ const MenuItem = ({ label, value }: { label: string; value: string }) => {
 
   return (
     <motion.button
-      className="m-0 mb-5 flex font-sans cursor-pointer list-none items-center justify-start p-0"
+      className="m-0 mb-5 flex font-mono cursor-pointer list-none items-center justify-start p-0"
       variants={itemVariants}
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.95 }}
