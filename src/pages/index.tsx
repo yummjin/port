@@ -20,7 +20,7 @@ export default function Home() {
               src="/profile.jpeg"
               alt="profile"
               width={180}
-              height={180}
+              height={135}
               className="grayscale mb-2"
             />
             <h1 className="text-3xl font-sans font-bold ">한유진</h1>
