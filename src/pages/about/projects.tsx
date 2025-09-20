@@ -26,7 +26,9 @@ export default function Projects() {
             onClick={() => router.push(`/about/projects/${item.id}`)}
             key={index}
             className="cursor-pointer text-black hover:border-main active:border-main"
-          ><Image alt={item.id} src={item.thumb} width={500} height={100} />
+          >
+            <div className="relative w-full h-[240px] overflow-hidden">
+              <Image alt={item.id} src={item.thumb} fill className="object-cover" /></div>
             <Card.Header>
               <h2 className="font-mono font-semibold">{item.event}</h2>
             </Card.Header>

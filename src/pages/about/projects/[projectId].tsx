@@ -28,7 +28,7 @@ export const getStaticPaths = async () => {
 type ProjectLink = {
   github?: string;
   demo?: string;
-  playstore?: string;
+  appStore?: string;
 };
 
 type Project = {
@@ -67,16 +67,17 @@ export default function ProjectDetail({
         >
           go back
         </button>
-        <div className="md:w-5/6 w-full flex flex-col gap-4 pt-5 md:pt-10">
+        <div className="md:w-5/6 w-full flex flex-col gap-16 pt-5 md:pt-10">
           <ProjectHeader project={project} />
-
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4 w-full">
             {project.image.map((imgSrc, index) => (
               <ProjectImage key={index} src={imgSrc} alt={project.title} />
             ))}
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-4">
+
+
+          <div>
             <ProjectDetails project={project} />
             <AchievementsList achievements={project.achievements} />
           </div>
@@ -134,7 +135,7 @@ const ProjectLinks = ({ links }: { links: ProjectLink }) => {
   const linkConfig = [
     { key: "github", label: "gitHub", href: links.github },
     { key: "demo", label: "demo", href: links.demo },
-    { key: "playstore", label: "playStore", href: links.playstore },
+    { key: "appstore", label: "appStore", href: links.appStore },
   ];
 
   return (
