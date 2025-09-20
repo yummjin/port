@@ -1,8 +1,13 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #171717;
+  --foreground: #f4f4f4;
+}
+
+::selection {
+  color: #2137d8;
+  background-color: white;
 }
 
 @theme inline {
@@ -12,6 +17,25 @@
   --font-mono: var(--font-geist-mono);
   --color-main: #2137d8;
 }
+
+@layer {
+  .font-point-bold {
+    font-family: 'OffbitBold';
+  }
+
+  .font-point-dot {
+    font-family: "OffbitDot";
+  }
+
+  .font-wagon-bold {
+    font-family: "WagonBold";
+  }
+
+  .font-wagon-italic {
+    font-family: "WagonItalic";
+  }
+}
+
 
 /* @media (prefers-color-scheme: dark) {
   :root {
@@ -23,4 +47,24 @@
 body {
   background: var(--background);
   color: var(--foreground);
+}
+
+@font-face {
+  font-family: "OffbitBold";
+  src: url("/font/OffBitTrial-Bold.ttf");
+}
+
+@font-face {
+  font-family: "OffbitDot";
+  src: url("/font/OffBitTrial-Dot.ttf");
+}
+
+@font-face {
+  font-family: "WagonBold";
+  src: url("/font/Wagon-Bold.otf");
+}
+
+@font-face {
+  font-family: "WagonItalic";
+  src: url("/font/Wagon-ExtraLightItalic.otf");
 }
