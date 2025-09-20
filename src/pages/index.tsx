@@ -3,6 +3,11 @@ import { geistMono, geistSans, gothicA1 } from "@/styles/font";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
+import { ReactNode } from "react";
+import { AiFillProject } from "react-icons/ai";
+import { BsGithub } from "react-icons/bs";
+import { HiSquare3Stack3D } from "react-icons/hi2";
+import { IoIosMail } from "react-icons/io";
 
 export default function Home() {
   return (
@@ -14,42 +19,41 @@ export default function Home() {
       <div
         className={`${geistSans.variable} ${geistMono.variable} ${gothicA1.variable} min-w-screen min-h-screen`}
       >
-        <main>
-          <div className="font-mono p-10 flex flex-col gap-4 text-main">
-            <Image
+        <main className="h-screen w-screen grid place-items-center">
+          <div>
+            <p className="font-point-bold text-6xl tracking-wider">PortFolio</p>
+            <p className="font-point-dot text-4xl">of..<span className="text-sm">★</span> <span className="font-wagon-italic">Yujin</span></p>
+            {/* <Image
               src="/profile.jpeg"
               alt="profile"
               width={180}
               height={135}
-              className="grayscale mb-2"
-            />
-            <h1 className="text-3xl font-sans font-bold ">한유진</h1>
-            <h4 className="text-2xl">Frontend Developer</h4>
-            <p className="font-normal text-xl ">
-              Always learning, <br />
-              always building.
-            </p>
-            <div className="flex gap-4 text-black">
+              className="grayscale mt-4"
+            /> */}
+            <div className="gap-4 flex mt-4">
               <a
                 href="https://github.com/yummjin"
-                className="underline hover:text-main"
+                className="hover:text-main text-xl font-point-dot flex gap-1 items-center"
                 target="_blank"
               >
-                github
+                github<BsGithub size={16} />
+
               </a>
-              <Link href={PATH.USER} className="underline hover:text-main">
-                contact
-              </Link>
-              <Link href={PATH.SKILLS} className="underline hover:text-main">
-                skills
-              </Link>
-              <Link href={PATH.PROJECTS} className="underline hover:text-main">
-                projects
-              </Link>
+              <HomeLink title="contact" href={PATH.USER} icon={<IoIosMail />} />
+              <HomeLink title="skills" href={PATH.SKILLS} icon={<HiSquare3Stack3D size={18} />
+              } />
+              <HomeLink title="projects" href={PATH.PROJECTS} icon={<AiFillProject />} />
             </div>
+
           </div>
         </main>
       </div>
     </>
-  );
+  )
+}
+
+function HomeLink({ title, href, icon }: { title: string, href: string, icon: ReactNode }) {
+  return <Link href={href} className="hover:text-main text-xl font-point-dot flex gap-1 items-center">
+    {title} {icon}
+  </Link>
 }
