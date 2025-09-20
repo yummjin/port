@@ -2,7 +2,7 @@ export const SKILLS = [
   {
     name: "TypeScript",
     description:
-      "다양한 타입을 정의하고, 인터페이스와 제네릭을 활용하여 코드의 가독성과 유지보수성을 높일 수 있습니다.",
+      `다양한 타입을 정의하고, 인터페이스와 제네릭을 활용하여 코드의 가독성과 유지보수성을 높일 수 있습니다.`,
     image: "/skills-typescript.png",
     proficiency: 4,
     projectNumber: 1,

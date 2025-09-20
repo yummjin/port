@@ -7,7 +7,7 @@ import React from "react";
 export default function skills() {
   return (
     <AboutLayout>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 text-black md:grid-cols-2 lg:grid-cols-3 gap-4">
         {SKILLS.map((skill) => (
           <Card key={skill.name}>
             <Card.Header>

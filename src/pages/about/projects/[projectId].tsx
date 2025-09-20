@@ -69,15 +69,18 @@ export default function ProjectDetail({
         </button>
         <div className="md:w-5/6 w-full flex flex-col gap-4 pt-5 md:pt-10">
           <ProjectHeader project={project} />
-          <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-4">
-            <ProjectDetails project={project} />
-            <AchievementsList achievements={project.achievements} />
-          </div>
+
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4 w-full">
             {project.image.map((imgSrc, index) => (
               <ProjectImage key={index} src={imgSrc} alt={project.title} />
             ))}
           </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-4">
+            <ProjectDetails project={project} />
+            <AchievementsList achievements={project.achievements} />
+          </div>
+
         </div>
       </div>
     </>
@@ -85,21 +88,22 @@ export default function ProjectDetail({
 }
 
 const ProjectHeader = ({ project }: { project: Project }) => (
-  <header className="space-y-0.5">
-    <h2 className="font-mono text-3xl text-main font-bold leading-tight">
+  <header className="flex justify-between">
+    <div className="space-y-1"><h2 className="tracking-tight font-mono text-4xl font-bold leading-tight">
       {project.title.split(":")[0]}
     </h2>
-    <p className="leading-relaxed">{project.description}</p>
+      <p className="leading-relaxed">{project.description}</p></div>
     <ProjectLinks links={project.links} />
+
   </header>
 );
 
 const ProjectDetails = ({ project }: { project: Project }) => (
-  <Card className="w-full">
+  <Card className="w-full text-black">
     <InfoItem label="기간" value={project.period} />
     <InfoItem label="역할" value={project.role} />
     <div className="flex items-start gap-3">
-      <p className="text-nowrap underline text-main font-medium">기술 스택</p>
+      <p className="text-nowrap text-main font-medium">기술 스택</p>
       <p className="flex flex-wrap gap-2">
         {project.techStack.map((tech: string) => (
           <TechTag key={tech} tech={tech} />
@@ -142,9 +146,9 @@ const ProjectLinks = ({ links }: { links: ProjectLink }) => {
             href={href}
             target="_blank"
             rel="noopener noreferrer"
-            className="font-mono text-black underline hover:text-main"
+            className="font-point-dot text-xl hover:text-main"
           >
-            {label}
+            {label} {`->`}
           </a>
         ) : null
       )}
@@ -154,7 +158,7 @@ const ProjectLinks = ({ links }: { links: ProjectLink }) => {
 
 const InfoItem = ({ label, value }: { label: string; value: string }) => (
   <div className="flex items-center gap-3">
-    <p className="text-nowrap underline text-main font-medium">{label}</p>
+    <p className="text-nowrap text-main font-medium">{label}</p>
     <p>{value}</p>
   </div>
 );

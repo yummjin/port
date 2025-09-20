@@ -25,6 +25,7 @@ export const PROJECTS = [
       demo: "https://lets-eat-kiryong.vercel.app/",
     },
     status: "completed",
+    thumb: "/kiryong-thumbnail.png"
   },
   {
     id: "2",
@@ -46,6 +47,8 @@ export const PROJECTS = [
       demo: "https://teampu.vercel.app",
     },
     status: "completed",
+    thumb: "/kiryong-thumbnail.png"
+
   },
   {
     id: "3",
@@ -67,6 +70,8 @@ export const PROJECTS = [
       demo: "https://soup-platform.vercel.app",
     },
     status: "completed",
+    thumb: "/kiryong-thumbnail.png"
+
   },
   {
     id: "4",
@@ -87,6 +92,8 @@ export const PROJECTS = [
       github: "https://github.com/yummjin/festamate",
     },
     status: "completed",
+    thumb: "/kiryong-thumbnail.png"
+
   },
   {
     id: "5",
@@ -107,6 +114,8 @@ export const PROJECTS = [
       github: "https://github.com/yummjin/took",
     },
     status: "completed",
+    thumb: "/kiryong-thumbnail.png"
+
   },
   {
     id: "6",
@@ -127,6 +136,8 @@ export const PROJECTS = [
       github: "https://github.com/yummjin/emotional-core",
     },
     status: "in_progress",
+    thumb: "/kiryong-thumbnail.png"
+
   },
   {
     id: "7",
@@ -146,5 +157,7 @@ export const PROJECTS = [
       github: "https://github.com/yummjin/clab-time",
     },
     status: "in_progress",
+    thumb: "/kiryong-thumbnail.png"
+
   },
 ];
