@@ -16,6 +16,10 @@
   --font-sans: var(--font-gothic-a1);
   --font-mono: var(--font-geist-mono);
   --color-main: #2137d8;
+  --color-subLight: #59B9C6;
+  --color-subDark: #2B313F;
+  --color-subWhite: #D5E3D2;
+  --color-black: #222;
 }
 
 @layer {

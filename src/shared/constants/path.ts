@@ -1,7 +1,7 @@
 export const PATH = {
   HOME: "/",
   USER: "/about",
-  SKILLS: "/about/skills",
-  PROJECTS: "/about/projects",
+  SKILLS: "/",
+  PROJECTS: "/projects",
   HACKATHONS: "/about/hackathons",
 };

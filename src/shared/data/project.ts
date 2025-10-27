@@ -1,7 +1,7 @@
 export const PROJECTS = [
   {
     id: "1",
-    title: "기룡아 밥먹자 : 식단 안내 사이트",
+    title: "기룡아 밥먹자",
     description: "대학 식당 식단 정보를 제공하는 웹사이트",
     period: "2024.10.20 ~ 2024.11.20",
     image: [
@@ -25,11 +25,11 @@ export const PROJECTS = [
       demo: "https://kiryong.kr/",
     },
     status: "completed",
-    thumb: "/kiryong-thumbnail.png"
+    thumb: "/kiryong-thumbnail.png",
   },
   {
     id: "2",
-    title: "TeamPu : 팀프실 예약 서비스",
+    title: "TeamPu",
     description: "컴퓨터공학부 팀프로젝트실 예약 및 관리 시스템",
     period: "2024. 11. 21 ~ 2024. 12. 15",
     image: ["/images/teampu-thumb.png"],
@@ -37,20 +37,17 @@ export const PROJECTS = [
     role: "Full Stack Developer",
     teamSize: "5명",
     myContribution: "프론트엔드 개발 및 UI/UX 디자인",
-    achievements: [
-      "React Calendar 커스텀을 통한 날짜 별 예약 인원 표시"
-    ],
+    achievements: ["React Calendar 커스텀을 통한 날짜 별 예약 인원 표시"],
     links: {
       github: "https://github.com/Gobongbab/Teampu-Web",
       demo: "https://team-pu.vercel.app",
     },
     status: "completed",
-    thumb: "/images/teampu-thumb.png"
-
+    thumb: "/images/teampu-thumb.png",
   },
   {
     id: "3",
-    title: "Soup : 대학생 프로젝트 관리 플랫폼",
+    title: "Soup",
     description: "대학생 팀 프로젝트를 위한 협업 및 관리 도구",
     period: "2025. 03. 20 ~ 2025. 08. 20",
     image: ["/images/soup-thumb.png"],
@@ -68,12 +65,11 @@ export const PROJECTS = [
       demo: "http://student-p.p-e.kr/",
     },
     status: "completed",
-    thumb: "/images/soup-thumb.png"
-
+    thumb: "/images/soup-thumb.png",
   },
   {
     id: "4",
-    title: "FestaMate : 축제 친구 매칭 웹앱",
+    title: "FestaMate",
     description: "대학 축제에서 함께할 친구를 찾는 매칭 서비스",
     period: "2025. 03. 09 ~ 2025. 05. 17",
     image: ["/images/festamate-thumb.png"],
@@ -88,15 +84,14 @@ export const PROJECTS = [
     ],
     links: {
       github: "https://github.com/Gobongbab/Festamate-Web",
-      demo: "https://festamate-web.vercel.app/"
+      demo: "https://festamate-web.vercel.app/",
     },
     status: "completed",
-    thumb: "/images/festamate-thumb.png"
-
+    thumb: "/images/festamate-thumb.png",
   },
   {
     id: "5",
-    title: "Took! : 전자투표 웹앱",
+    title: "Took!",
     description: "간편하고 안전한 온라인 투표 시스템",
     period: "2025. 05. 21 ~ 2025. 07. 18",
     image: ["/images/took-poster.png"],
@@ -104,38 +99,38 @@ export const PROJECTS = [
     role: "Full Stack Developer",
     teamSize: "6명",
     myContribution: "프론트엔드 개발",
-    achievements: [
-      "실시간 투표 결과 시각화",
-      "투표 보안 시스템 구축",
-    ],
+    achievements: ["실시간 투표 결과 시각화", "투표 보안 시스템 구축"],
     links: {
       github: "https://github.com/KGU-Vote-System/Client",
-      demo: "https://took-five.vercel.app/"
+      demo: "https://took-five.vercel.app/",
     },
     status: "completed",
-    thumb: "/images/took-poster.png"
-
+    thumb: "/images/took-poster.png",
   },
   {
     id: "6",
-    title: "쉼표 : 관광데이터공모전 출품작",
+    title: "쉼표",
     description: `사용자의 디지털 피로도를 기반으로 한 힐링 여행 추천 서비스`,
     period: "2025. 08. 16 ~ 2025. 09. 18",
-    image: ["/images/shwimpyo-poster.png", "/images/shwimpyo-1.png", "/images/shwimpyo-2.png", "/images/shwimpyo-3.png", "/images/shwimpyo-4.png", "/images/shwimpyo-5.png"],
+    image: [
+      "/images/shwimpyo-poster.png",
+      "/images/shwimpyo-1.png",
+      "/images/shwimpyo-2.png",
+      "/images/shwimpyo-3.png",
+      "/images/shwimpyo-4.png",
+      "/images/shwimpyo-5.png",
+    ],
     techStack: ["React Native", "TypeScript", "Tanstack Query", "Zustand"],
     role: "Frontend Developer",
     teamSize: "4명",
     myContribution: "프론트엔드 개발",
-    achievements: [
-      "원스토어 배포 성공"
-    ],
+    achievements: ["원스토어 배포 성공"],
     links: {
       github: "https://github.com/DDOX-2025/FE",
-      appStore: "https://m.onestore.co.kr/v2/ko-kr/app/0001002397"
+      appStore: "https://m.onestore.co.kr/v2/ko-kr/app/0001002397",
     },
     status: "done",
-    thumb: "/images/shwimpyo-poster.png"
-
+    thumb: "/images/shwimpyo-poster.png",
   },
   {
     id: "7",
@@ -149,14 +144,13 @@ export const PROJECTS = [
     myContribution: "프론트엔드 개발",
     achievements: [
       "구름톤 유니브 2025 시즌톤 본선 진출",
-      "복잡한 폼을 React-Hook-Form 리액트 네이티브를 사용해 구현"
+      "복잡한 폼을 React-Hook-Form 리액트 네이티브를 사용해 구현",
     ],
     links: {
       github: "https://github.com/9oormthon-univ/2025_SEASONTHON_TEAM_73_FE",
     },
     status: "done",
-    thumb: "/images/livingmate-thumb.png"
-
+    thumb: "/images/livingmate-thumb.png",
   },
   // {
   //   id: "7",
