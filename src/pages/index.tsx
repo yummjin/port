@@ -88,7 +88,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="mt-8 grid grid-cols-3 place-items-center gap-4 sm:grid-cols-5 md:grid-cols-7 lg:grid-cols-9 xl:grid-cols-11">
+      <section className="mt-8 grid grid-cols-3 place-items-center gap-4 sm:grid-cols-5 md:grid-cols-7">
         {PROJECTS.map((project) => (
           <Link
             href={`/projects/${project.id}`}
