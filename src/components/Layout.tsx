@@ -4,12 +4,16 @@ import Footer from "./Footer";
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
-    <main className="scrollbar-hide flex h-screen w-screen flex-col overflow-y-auto">
-      <div className="mx-auto mb-20 h-full w-full max-w-[1020px] flex-1 p-4 pt-6">
+    <>
+      <main className="p-4">
         <NavBar />
-        {children}
-      </div>
+        <div className="size-full">
+          <main className="relative mx-auto min-h-[calc(100vh-280px)] w-full max-w-[1020px] pb-20">
+            {children}
+          </main>
+        </div>
+      </main>
       <Footer />
-    </main>
+    </>
   );
 }
