@@ -9,7 +9,7 @@ export default function NavBar() {
           Hello!
           <span className="font-wagon-italic">
             {" "}
-            I'm <b>Yujin</b>,
+            I&apos;m <b>Yujin</b>,
           </span>
         </p>
         <p className="font-point-dot text-2xl">
