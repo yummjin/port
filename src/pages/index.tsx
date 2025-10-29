@@ -1,141 +1,152 @@
-import { DESCRIPTION, PROJECTS, SKILLS, HACKATHONS } from "@/shared/data";
-import { cn } from "@/shared/utils";
+import Layout from "@/components/Layout";
+import { PROJECTS, SKILLS } from "@/shared/data";
+import Title from "@/shared/components/Title";
 import Head from "next/head";
+import Image from "next/image";
+import { motion } from "motion/react";
 import Link from "next/link";
-import { useState } from "react";
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState<"who" | "what" | "etc">("who");
-
-  const renderTabContent = () => {
-    if (activeTab === "who") {
-      return (
-        <div className="flex flex-col gap-1">
-          <h1 className="text-xl font-bold md:text-2xl">{DESCRIPTION.name}</h1>
-          <p className="hover:text-subLight cursor-pointer font-mono">
-            {DESCRIPTION.email}
-          </p>
-          <p className="mt-1 leading-relaxed">{DESCRIPTION.description}</p>
-        </div>
-      );
-    } else if (activeTab === "what") {
-      return (
-        <div className="flex w-full flex-col justify-between">
-          <div className="flex flex-col gap-1">
-            <h1 className="text-xl font-bold md:text-2xl">주요 기술 스택</h1>
-            <p>
-              아래 기술 스택을 바탕으로 다양한 기술을 활용해 프로젝트를
-              진행합니다.
-            </p>
-          </div>
-          <div className="flex flex-col gap-2">
-            {SKILLS.map((skill) => (
-              <div key={skill.name} className="border-subDark/50 border-b pb-2">
-                {skill.name}
-              </div>
-            ))}
-          </div>
-        </div>
-      );
-    } else if (activeTab === "etc") {
-      return (
-        <div className="flex flex-col gap-1">
-          <h1 className="text-xl font-bold md:text-2xl">기타</h1>
-          <p className="hover:text-subLight cursor-pointer font-mono">
-            et cetera...
-          </p>
-          <p className="mt-1 leading-relaxed">
-            저는 수족냉증이 있어서 개발할 때 손이 시렵습니다.. ㅜㅜ
-          </p>
-        </div>
-      );
-    }
-  };
-
   return (
-    <>
+    <Layout>
       <Head>
-        <title>한유진</title>
-        <meta name="description" content="프론트엔드 개발자 한유진입니다" />
+        <title>한유진 - Frontend Developer</title>
+        <meta
+          name="description"
+          content="프론트엔드 개발자 한유진의 포트폴리오입니다"
+        />
       </Head>
-      <section className="flex flex-col gap-4 md:flex-row">
-        <div className="bg-subWhite text-subDark relative flex h-100 w-full justify-between gap-4 rounded-4xl p-10 pt-18">
-          <div className="text-subDark bg-background absolute top-0 left-0 flex h-10 w-[84%] max-w-[730px] gap-1 rounded-br-4xl">
-            <TabButton
-              label="who am i?"
-              onClick={() => setActiveTab("who")}
-              active={activeTab === "who"}
-            />
 
-            <TabButton
-              label="what i do?"
-              onClick={() => setActiveTab("what")}
-              active={activeTab === "what"}
-            />
-            <TabButton
-              label="etc"
-              onClick={() => setActiveTab("etc")}
-              active={activeTab === "etc"}
-            />
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-16">
+        <section className="flex min-h-[calc(100vh-100px)] w-full flex-col justify-center gap-4 md:gap-6">
+          <div className="bg-card-background border-text-muted w-fit rounded-full px-4 py-2">
+            안녕하세요! 👋
           </div>
-          {renderTabContent()}
-        </div>
-        <div className="bg-subDark text-subWhite hidden h-100 w-[40%] gap-4 rounded-4xl px-8 py-10 md:flex md:flex-col">
-          <Card number={PROJECTS.length} title="총 프로젝트" />
-          <Card number={SKILLS.length} title="기술 스택" />
-          <Card number={HACKATHONS.length} title="해커톤" />
-          <Card number={2025} title="활동년도" />
-        </div>
-      </section>
-
-      <section className="mt-8 grid grid-cols-3 place-items-center gap-4 sm:grid-cols-5 md:grid-cols-7">
-        {PROJECTS.map((project) => (
-          <Link
-            href={`/projects/${project.id}`}
-            className="flex flex-col gap-1"
-            key={project.id}
+          <Title
+            size="2xl"
+            as="h1"
+            subTitle={
+              <>
+                디자인과 성능, 그리고 사용자 경험을 통해 <br />
+                어떻게 사용자와 더 가까워질 수 있을지 고민하는 것을 즐깁니다.
+              </>
+            }
+            className="max-w-2xl"
           >
-            <div className="relative col-span-1 size-20 cursor-pointer transition-transform hover:scale-105">
-              <div className="bg-subLight absolute top-0 left-0 z-20 h-2 w-[60%] rounded-tl-4xl rounded-tr-4xl" />
-              <div className="bg-subLight absolute top-2 right-0 z-20 h-4 w-[100%] rounded-tr-xl" />
-              <div className="bg-background absolute top-0 right-0 z-10 h-6 w-full" />
-              <div className="bg-subLight/60 relative h-18 w-20 rounded-2xl" />
-            </div>
-            <p className="text-center text-sm">{project.title}</p>
-          </Link>
-        ))}
-      </section>
-    </>
-  );
-}
+            프론트엔드 개발자
+            <br />
+            한유진입니다
+          </Title>
+        </section>
 
-function Card({ number, title }: { number: number; title: string }) {
-  return (
-    <div className="flex items-center gap-2 rounded-2xl transition-all">
-      <div className="text-sm opacity-70">{title}</div>
-      <div className="font-bold">{number}</div>
-    </div>
-  );
-}
+        <section
+          id="skills"
+          className="flex min-h-screen flex-col justify-center"
+        >
+          <Title size="lg" as="h2" className="mb-8 w-full text-center">
+            이런 기술들을 주로 사용해요!
+          </Title>
+          <div className="relative overflow-hidden">
+            <div className="from-background pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r to-transparent" />
+            <div className="from-background pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l to-transparent" />
+            <motion.div
+              className="flex gap-4 pr-4"
+              initial={{ x: 0 }}
+              animate={{ x: ["0%", "-100%"] }}
+              transition={{ duration: 50, ease: "linear", repeat: Infinity }}
+            >
+              {[...SKILLS, ...SKILLS].map((skill, index) => (
+                <div
+                  key={`${skill.name}-${index}`}
+                  className="bg-card-background border-border flex w-[260px] shrink-0 rounded-xl border p-4"
+                >
+                  <div className="flex flex-col items-start gap-2">
+                    <div className="bg-border relative grid size-10 place-items-center overflow-hidden rounded-full">
+                      <Image
+                        src={skill.image}
+                        alt={skill.name}
+                        width={42}
+                        height={42}
+                        className="object-contain"
+                      />
+                    </div>
+                    <div className="min-w-0">
+                      <h3 className="text-foreground truncate text-base font-semibold">
+                        {skill.name}
+                      </h3>
+                      <p className="text-text-muted text-sm">
+                        숙련도 {skill.proficiency} / 5
+                      </p>
+                      <div className="mt-2 space-y-2">{skill.description}</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </motion.div>
+          </div>
+        </section>
 
-function TabButton({
-  label,
-  onClick,
-  active,
-}: {
-  label: string;
-  onClick: () => void;
-  active: boolean;
-}) {
-  return (
-    <button
-      className={cn(
-        "bg-subLight grid h-full w-[28%] max-w-[200px] cursor-pointer place-items-center rounded-t-4xl",
-        active && "bg-subWhite",
-      )}
-      onClick={onClick}
-    >
-      {label}
-    </button>
+        {/* Project Grid */}
+        <section
+          id="projects"
+          className="mb-20 flex min-h-[calc(100vh-100px)] w-full scroll-mt-24 justify-center gap-12"
+        >
+          <Title size="lg" as="h2" className="text-nowrap">
+            최근에는 <br />
+            이런 프로젝트를
+            <br className="block md:hidden" /> 진행했어요!
+          </Title>
+          <div className="flex w-full flex-col gap-4">
+            {PROJECTS.slice(0, 4).map((project) => (
+              <Link
+                href={`/projects/${project.id}`}
+                key={project.id}
+                className="group"
+              >
+                <div className="bg-card-background border-border hover:border-accent w-full overflow-hidden rounded-xl border transition-all duration-200 hover:shadow-lg">
+                  <div className="p-4">
+                    <h3 className="text-foreground group-hover:text-accent mb-2 flex items-center gap-2 font-semibold transition-colors">
+                      {project.title}
+                      <span className="bg-card-background border-border text-text-muted rounded-full border px-2 py-1 text-sm">
+                        {project.period}
+                      </span>
+                    </h3>
+                    <p className="text-text-muted line-clamp-2 text-sm">
+                      {project.description}
+                    </p>
+                  </div>
+                </div>
+              </Link>
+            ))}
+
+            {/* 더 보기 버튼 */}
+            <Link href="/projects" className="group">
+              <div className="bg-card-background border-border hover:border-accent w-full overflow-hidden rounded-xl border transition-all duration-200 hover:shadow-lg">
+                <div className="flex min-h-[80px] items-center justify-center p-4">
+                  <div className="text-text-muted group-hover:text-accent flex items-center gap-3 transition-colors">
+                    <span className="text-sm font-medium">
+                      모든 프로젝트 보기
+                    </span>
+                    <svg
+                      className="h-4 w-4 transition-transform group-hover:translate-x-1"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </Link>
+          </div>
+        </section>
+      </div>
+    </Layout>
   );
 }
