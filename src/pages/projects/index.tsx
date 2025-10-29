@@ -1,11 +1,60 @@
 import { PROJECTS } from "@/shared/data";
+import type { ProjectBase } from "@/shared/data";
+import { getMarkdownContent } from "@/shared/utils/markdown";
+import type { GetStaticProps, InferGetStaticPropsType } from "next";
 import Layout from "@/components/Layout";
 import Title from "@/shared/components/Title";
 import Link from "next/link";
 import Head from "next/head";
 import Image from "next/image";
 
-export default function ProjectsPage() {
+type ProjectListItem = {
+  id: string;
+  title: string;
+  description: string;
+  status: "completed" | "in_progress";
+  thumb: string | null;
+  mdThumb: string | null;
+  mdPeriod: string | null;
+  mdStack: string[] | null;
+};
+
+export const getStaticProps: GetStaticProps<{
+  projects: ProjectListItem[];
+}> = async () => {
+  const projects: ProjectListItem[] = PROJECTS.map((p) => {
+    const md = getMarkdownContent(p.id);
+    const mdThumb = (md.data.thumb as string) || null;
+    const mdPeriod = (md.data.period as string) || null;
+    const mdStack = (md.data.stack as string[]) || null;
+    return {
+      id: p.id,
+      title: p.title,
+      description: p.description,
+      status: p.status,
+      thumb: Array.isArray((p as ProjectBase).image)
+        ? ((p as ProjectBase).image as string[])[0]
+        : null,
+      mdThumb,
+      mdPeriod,
+      mdStack,
+    };
+  }).sort((a, b) => {
+    const parse = (period: string | null) => {
+      if (!period) return 0;
+      const start = period.split("~")[0]?.trim()?.replace(/\./g, "-");
+      const d = new Date(start);
+      return d.getTime() || 0;
+    };
+    return parse(b.mdPeriod) - parse(a.mdPeriod);
+  });
+
+  return { props: { projects } };
+};
+
+export default function ProjectsPage({
+  projects,
+}: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
     <>
       <Head>
@@ -27,33 +76,41 @@ export default function ProjectsPage() {
             </Title>
 
             <section className="flex justify-end border-b border-gray-700 pb-6">
-              <div className="text-text-muted">총 {PROJECTS.length}개</div>
+              <div className="text-text-muted">총 {projects.length}개</div>
             </section>
 
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {PROJECTS.map((project) => (
+              {projects.map((project) => (
                 <Link
                   href={`/projects/${project.id}`}
                   key={project.id}
                   className="group"
                 >
                   <div className="bg-card-background border-border hover:border-accent h-full overflow-hidden rounded-xl border transition-all duration-200 hover:shadow-lg">
-                    <div className="aspect-video w-full overflow-hidden bg-gray-100">
-                      <Image
-                        src={project.thumb}
-                        alt={project.title}
-                        width={500}
-                        height={500}
-                        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                      />
-                    </div>
+                    {(project.thumb || project.mdThumb) && (
+                      <div className="aspect-video w-full overflow-hidden bg-gray-100">
+                        <Image
+                          src={project.thumb || project.mdThumb || ""}
+                          alt={project.title}
+                          width={500}
+                          height={500}
+                          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        />
+                      </div>
+                    )}
 
                     <div className="p-6">
                       <div className="mb-3 flex items-start justify-between gap-3">
                         <h3 className="text-foreground group-hover:text-accent text-lg font-semibold transition-colors">
                           {project.title}
                         </h3>
-                        <span className="bg-card-background border-border text-text-muted flex-shrink-0 rounded-full border px-2 py-1 text-xs">
+                        <span
+                          className={`flex-shrink-0 rounded-full px-2 py-1 text-xs font-medium ${
+                            project.status === "completed"
+                              ? "border border-green-200 bg-green-100 text-green-800 dark:border-green-700 dark:bg-green-900/30 dark:text-green-400"
+                              : "border border-blue-200 bg-blue-100 text-blue-800 dark:border-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
+                          }`}
+                        >
                           {project.status === "completed" ? "완료" : "진행중"}
                         </span>
                       </div>
@@ -62,26 +119,30 @@ export default function ProjectsPage() {
                         {project.description}
                       </p>
 
-                      <div className="mb-4 flex flex-wrap gap-1">
-                        {project.techStack.slice(0, 3).map((tech) => (
-                          <span
-                            key={tech}
-                            className="rounded bg-gray-800 px-2 py-1 text-xs text-gray-300"
-                          >
-                            {tech}
-                          </span>
-                        ))}
-                        {project.techStack.length > 3 && (
-                          <span className="text-text-muted text-xs">
-                            +{project.techStack.length - 3}개
-                          </span>
-                        )}
-                      </div>
+                      {project.mdStack && project.mdStack.length > 0 && (
+                        <div className="mb-4 flex flex-wrap gap-1">
+                          {project.mdStack.slice(0, 3).map((tech) => (
+                            <span
+                              key={tech}
+                              className="rounded bg-gray-800 px-2 py-1 text-xs text-gray-300"
+                            >
+                              {tech}
+                            </span>
+                          ))}
+                          {project.mdStack.length > 3 && (
+                            <span className="text-text-muted text-xs">
+                              +{project.mdStack.length - 3}개
+                            </span>
+                          )}
+                        </div>
+                      )}
 
                       <div className="flex items-center justify-between">
-                        <span className="text-text-muted text-sm">
-                          {project.period}
-                        </span>
+                        {project.mdPeriod && (
+                          <span className="text-text-muted text-sm">
+                            {project.mdPeriod}
+                          </span>
+                        )}
                         <div className="text-text-muted group-hover:text-accent flex items-center gap-2 transition-colors">
                           <span className="text-sm">자세히 보기</span>
                           <svg
