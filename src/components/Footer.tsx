@@ -1,7 +1,11 @@
 export default function Footer() {
   return (
-    <footer className="bg-foreground/5 text-subWhite grid h-20 w-full flex-shrink-0 place-items-center">
-      <p className="font-point-dot">© 2025 Yujin. All rights reserved.</p>
+    <footer className="border-border bg-card-background border-t">
+      <div className="mx-auto max-w-6xl px-4 py-8">
+        <div className="text-text-muted text-center">
+          <p>© 2025 한유진. All rights reserved.</p>
+        </div>
+      </div>
     </footer>
   );
 }
