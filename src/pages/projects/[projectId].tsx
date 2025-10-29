@@ -160,7 +160,7 @@ export default function ProjectDetail({
                           return <h6 id={id}>{children}</h6>;
                         },
                         img: ({ src, alt }) => (
-                          <img
+                          <Image
                             src={String(src)}
                             alt={String(alt || "")}
                             className="cursor-zoom-in"
