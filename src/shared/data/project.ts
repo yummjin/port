@@ -1,4 +1,16 @@
-export const PROJECTS = [
+// 프로젝트 기간을 파싱하여 정렬용 날짜를 반환하는 함수
+const parseProjectDate = (period: string): Date => {
+  // "2024.10.20 ~ 2024.11.20" 형식에서 시작 날짜 추출
+  const startDate = period.split(" ~ ")[0];
+
+  // "2024.10.20" 형식을 "2024-10-20" 형식으로 변환
+  const normalizedDate = startDate.replace(/\./g, "-");
+
+  return new Date(normalizedDate);
+};
+
+// 프로젝트 데이터
+const PROJECTS_DATA = [
   {
     id: "1",
     title: "기룡아 밥먹자",
@@ -174,3 +186,10 @@ export const PROJECTS = [
 
   // },
 ];
+
+// 프로젝트를 시작 날짜 기준으로 내림차순 정렬 (최신순)
+export const PROJECTS = PROJECTS_DATA.sort((a, b) => {
+  const dateA = parseProjectDate(a.period);
+  const dateB = parseProjectDate(b.period);
+  return dateB.getTime() - dateA.getTime();
+});

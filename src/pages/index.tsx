@@ -18,7 +18,7 @@ export default function Home() {
       </Head>
 
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-16">
-        <section className="flex min-h-[calc(100vh-100px)] w-full flex-col justify-center gap-4 md:gap-6">
+        <section className="flex min-h-[calc(100vh-100px)] w-full flex-col justify-center gap-4 pb-20 md:gap-6">
           <div className="bg-card-background border-text-muted w-fit rounded-full px-4 py-2">
             안녕하세요! 👋
           </div>
@@ -86,10 +86,9 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Project Grid */}
         <section
           id="projects"
-          className="mb-20 flex min-h-[calc(100vh-100px)] w-full scroll-mt-24 justify-center gap-12"
+          className="mb-20 flex min-h-[calc(100vh-100px)] w-full scroll-mt-24 flex-col justify-center gap-12 md:flex-row"
         >
           <Title size="lg" as="h2" className="text-nowrap">
             최근에는 <br />
