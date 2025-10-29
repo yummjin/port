@@ -77,7 +77,7 @@ export default function Home() {
                       <p className="text-text-muted text-sm">
                         숙련도 {skill.proficiency} / 5
                       </p>
-                      <div className="mt-2 space-y-2">{skill.description}</div>
+                      {/* <div className="mt-2 space-y-2">{skill.description}</div> */}
                     </div>
                   </div>
                 </div>
@@ -106,9 +106,6 @@ export default function Home() {
                   <div className="p-4">
                     <h3 className="text-foreground group-hover:text-accent mb-2 flex items-center gap-2 font-semibold transition-colors">
                       {project.title}
-                      <span className="bg-card-background border-border text-text-muted rounded-full border px-2 py-1 text-sm">
-                        {project.period}
-                      </span>
                     </h3>
                     <p className="text-text-muted line-clamp-2 text-sm">
                       {project.description}

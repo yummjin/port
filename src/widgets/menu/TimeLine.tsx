@@ -1,4 +1,5 @@
 import { PROJECTS } from "@/shared/data";
+import { getMarkdownContent } from "@/shared/utils/markdown";
 import { cn } from "@/shared/utils";
 import { motion } from "motion/react";
 
@@ -10,10 +11,19 @@ interface TimelineItem {
 const timeline: { year: string; event: string }[] = [];
 
 PROJECTS.map((project) => {
-  timeline.push({
-    year: project.period.split(".")[0] + "." + project.period.split(".")[1],
-    event: project.title.split(":")[0],
-  });
+  const md = getMarkdownContent(project.id);
+  const period = md.data.period as string;
+  if (period) {
+    timeline.push({
+      year: period.split(".")[0] + "." + period.split(".")[1],
+      event: project.title.split(":")[0],
+    });
+  } else {
+    timeline.push({
+      year: "",
+      event: project.title.split(":")[0],
+    });
+  }
 });
 
 export default function Timeline({
@@ -21,13 +31,15 @@ export default function Timeline({
   selectedProject,
 }: TimelineItem) {
   return (
-    <div className="relative flex-wrap -z-10 md:mt-0 mt-4 w-full gap-4 flex mb-2.5">
+    <div className="relative -z-10 mt-4 mb-2.5 flex w-full flex-wrap gap-4 md:mt-0">
       {timeline.map((item, index) => (
         <motion.button
           key={index}
           className={cn(
-            "flex flex-col gap-0.5 font-mono items-center cursor-pointer outline-none",
-            selectedProject === index && "border-main text-main"
+            "flex cursor-pointer flex-col items-center gap-0.5 font-mono transition-colors outline-none",
+            selectedProject === index
+              ? "border-main text-main"
+              : "text-text-muted hover:text-foreground",
           )}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

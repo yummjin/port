@@ -37,6 +37,11 @@ type Project = {
   description: string;
   status: "completed" | "in_progress";
   image?: string[];
+  links?: {
+    github?: string;
+    demo?: string;
+    appStore?: string;
+  };
 };
 
 export default function ProjectDetail({
@@ -68,7 +73,7 @@ export default function ProjectDetail({
               {project.image.map((imgSrc, index) => (
                 <div
                   key={index}
-                  className="group relative h-[180px] w-full cursor-pointer overflow-hidden rounded-lg bg-gray-100"
+                  className="group bg-card-background relative h-[180px] w-full cursor-pointer overflow-hidden rounded-lg"
                   onClick={() => setSelectedImage(imgSrc)}
                 >
                   <Image
@@ -184,7 +189,7 @@ export default function ProjectDetail({
               <div className="relative max-h-[90vh] max-w-[90vw]">
                 <button
                   onClick={() => setSelectedImage(null)}
-                  className="absolute -top-10 right-0 text-white hover:text-gray-300"
+                  className="hover:text-foreground absolute -top-10 right-0 text-white"
                 >
                   ✕ 닫기
                 </button>
@@ -210,20 +215,35 @@ const ProjectHeader = ({
 }: {
   project: Project;
   markdownData: MarkdownData;
-}) => (
-  <header className="flex flex-col gap-8 md:flex-row md:justify-between">
-    <div className="space-y-4">
-      <Title
-        size="3xl"
-        as="h1"
-        subTitle={project.description}
-        className="text-gray-400"
-      >
-        {markdownData.data.title || project.title.split(":")[0]}
-      </Title>
-    </div>
-  </header>
-);
+}) => {
+  const links = {
+    github: project.links?.github,
+    demo: project.links?.demo,
+    appStore: project.links?.appStore,
+  };
+
+  const hasLinks = links.github || links.demo || links.appStore;
+
+  return (
+    <header className="flex flex-col gap-8 md:flex-row md:justify-between">
+      <div className="space-y-4">
+        <Title
+          size="3xl"
+          as="h1"
+          subTitle={project.description}
+          className="text-text-muted"
+        >
+          {markdownData.data.title || project.title.split(":")[0]}
+        </Title>
+      </div>
+      {hasLinks && (
+        <div className="flex items-start">
+          <ProjectLinks links={links} />
+        </div>
+      )}
+    </header>
+  );
+};
 
 const ProjectDetails = ({ markdownData }: { markdownData: MarkdownData }) => (
   <div className="space-y-8">
@@ -258,15 +278,52 @@ const ProjectDetails = ({ markdownData }: { markdownData: MarkdownData }) => (
 
 const InfoItem = ({ label, value }: { label: string; value: string }) => (
   <div className="flex items-start gap-4">
-    <span className="min-w-[80px] text-sm font-medium text-gray-500">
+    <span className="text-text-muted min-w-[80px] text-sm font-medium">
       {label}
     </span>
-    <span className="text-gray-300">{value}</span>
+    <span className="text-foreground">{value}</span>
   </div>
 );
 
 const TechTag = ({ tech }: { tech: string }) => (
-  <span className="rounded-md bg-gray-800 px-3 py-1 font-mono text-xs text-gray-300 transition-colors hover:bg-gray-700">
+  <span className="bg-card-background text-foreground rounded-md px-3 py-1 font-mono text-xs transition-colors hover:bg-[color-mix(in_srgb,var(--card-background)_85%,var(--foreground))]">
     {tech}
   </span>
 );
+
+type ProjectLinksProps = {
+  links: {
+    github?: string;
+    demo?: string;
+    appStore?: string;
+  };
+};
+
+const ProjectLinks = ({ links }: ProjectLinksProps) => {
+  const linkConfig = [
+    { key: "github", label: "GitHub", href: links.github },
+    { key: "demo", label: "Demo", href: links.demo },
+    { key: "appstore", label: "App Store", href: links.appStore },
+  ];
+
+  return (
+    <div className="flex flex-col gap-3">
+      {linkConfig.map(({ key, label, href }) =>
+        href ? (
+          <a
+            key={key}
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group hover:border-subLight border-border bg-card-background flex items-center gap-2 rounded-lg border px-4 py-3 text-sm transition-all hover:bg-[color-mix(in_srgb,var(--card-background)_85%,var(--foreground))]"
+          >
+            <span>{label}</span>
+            <span className="transition-transform group-hover:translate-x-1">
+              →
+            </span>
+          </a>
+        ) : null,
+      )}
+    </div>
+  );
+};

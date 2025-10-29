@@ -55,17 +55,17 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ items }) => {
 
   return (
     <div className="sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto">
-      <div className="rounded-lg border border-gray-700 bg-gray-800/50 p-4">
-        <h3 className="mb-4 text-sm font-semibold text-gray-300">목차</h3>
+      <div className="border-border bg-card-background/50 rounded-lg border p-4">
+        <h3 className="text-foreground mb-4 text-sm font-semibold">목차</h3>
         <nav className="space-y-1">
           {items.map((item) => (
             <button
               key={item.id}
               onClick={() => scrollToHeading(item.id)}
-              className={`block w-full text-left text-sm transition-colors hover:text-white ${
+              className={`hover:text-foreground block w-full text-left text-sm transition-colors ${
                 activeId === item.id
-                  ? "font-medium text-white"
-                  : "text-gray-400"
+                  ? "text-foreground font-medium"
+                  : "text-text-muted"
               }`}
               style={{
                 paddingLeft: `${(item.level - 1) * 12}px`,

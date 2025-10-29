@@ -11,7 +11,7 @@ export const SKILLS = [
     name: "JavaScript",
     description: "웹 개발을 위한 동적 프로그래밍 언어입니다.",
     image: "/skills-javascript.png",
-    proficiency: 5,
+    proficiency: 4,
     projectNumber: 3,
     relatedProjects: [
       "포트폴리오 웹사이트",
@@ -24,7 +24,7 @@ export const SKILLS = [
     name: "Next.js",
     description: "React 기반의 풀스택 웹 애플리케이션 프레임워크입니다.",
     image: "/skills-nextjs.png",
-    proficiency: 4,
+    proficiency: 3.5,
     projectNumber: 1,
     relatedProjects: ["포트폴리오 웹사이트"],
   },

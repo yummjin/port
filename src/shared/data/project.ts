@@ -5,6 +5,11 @@ export type ProjectBase = {
   status: "completed" | "in_progress";
   thumb?: string;
   image?: string[];
+  links?: {
+    github?: string;
+    demo?: string;
+    appStore?: string;
+  };
 };
 
 const PROJECTS_DATA: ProjectBase[] = [
@@ -19,6 +24,10 @@ const PROJECTS_DATA: ProjectBase[] = [
       "/kiryong-page.png",
       "/kiryong-mobile.png",
     ],
+    links: {
+      github: "https://github.com/Kyonggi-Univ-Diet-Information/FE",
+      demo: "https://www.kiryong.kr/ko",
+    },
   },
   {
     id: "2",
@@ -27,6 +36,9 @@ const PROJECTS_DATA: ProjectBase[] = [
     status: "completed",
     thumb: "/images/teampu-thumb.png",
     image: ["/images/teampu-thumb.png"],
+    links: {
+      github: "https://github.com/Gobongbab/TeamPu-Web",
+    },
   },
   {
     id: "3",
@@ -35,6 +47,9 @@ const PROJECTS_DATA: ProjectBase[] = [
     status: "completed",
     thumb: "/images/soup-thumb.png",
     image: ["/images/soup-thumb.png"],
+    links: {
+      github: "https://github.com/Team-Soup-Soup/Soup-FE",
+    },
   },
   {
     id: "4",
@@ -43,6 +58,10 @@ const PROJECTS_DATA: ProjectBase[] = [
     status: "completed",
     thumb: "/images/festamate-thumb.png",
     image: ["/images/festamate-thumb.png"],
+    links: {
+      github: "https://github.com/Gobongbab/Festamate-Web",
+      demo: "https://festamate-web.vercel.app/",
+    },
   },
   {
     id: "8",
@@ -58,6 +77,9 @@ const PROJECTS_DATA: ProjectBase[] = [
       "/images/piggo-4.png",
       "/images/piggo-5.png",
     ],
+    links: {
+      github: "https://github.com/ByteCrew-Khuthon/frontend",
+    },
   },
   {
     id: "9",
@@ -79,6 +101,9 @@ const PROJECTS_DATA: ProjectBase[] = [
       "/images/ng-4.png",
       "/images/ng-5.png",
     ],
+    links: {
+      github: "https://github.com/ByteCrew-Uscode/Web",
+    },
   },
   {
     id: "5",
@@ -87,6 +112,9 @@ const PROJECTS_DATA: ProjectBase[] = [
     status: "completed",
     thumb: "/images/took-poster.png",
     image: ["/images/took-poster.png"],
+    links: {
+      github: "https://github.com/KGU-Vote-System/Client",
+    },
   },
   {
     id: "6",
@@ -102,6 +130,9 @@ const PROJECTS_DATA: ProjectBase[] = [
       "/images/shwimpyo-4.png",
       "/images/shwimpyo-5.png",
     ],
+    links: {
+      appStore: "https://m.onestore.co.kr/v2/ko-kr/app/0001002397",
+    },
   },
   {
     id: "7",
@@ -110,6 +141,9 @@ const PROJECTS_DATA: ProjectBase[] = [
     status: "completed",
     thumb: "/images/livingmate-thumb.png",
     image: ["/images/livingmate-thumb.png"],
+    links: {
+      github: "https://github.com/9oormthon-univ/2025_SEASONTHON_TEAM_73_FE",
+    },
   },
 ];
 

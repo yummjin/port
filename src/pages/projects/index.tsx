@@ -75,7 +75,7 @@ export default function ProjectsPage({
               프로젝트
             </Title>
 
-            <section className="flex justify-end border-b border-gray-700 pb-6">
+            <section className="border-border flex justify-end border-b pb-6">
               <div className="text-text-muted">총 {projects.length}개</div>
             </section>
 
@@ -88,7 +88,7 @@ export default function ProjectsPage({
                 >
                   <div className="bg-card-background border-border hover:border-accent h-full overflow-hidden rounded-xl border transition-all duration-200 hover:shadow-lg">
                     {(project.thumb || project.mdThumb) && (
-                      <div className="aspect-video w-full overflow-hidden bg-gray-100">
+                      <div className="bg-card-background aspect-video w-full overflow-hidden">
                         <Image
                           src={project.thumb || project.mdThumb || ""}
                           alt={project.title}
@@ -107,8 +107,8 @@ export default function ProjectsPage({
                         <span
                           className={`flex-shrink-0 rounded-full px-2 py-1 text-xs font-medium ${
                             project.status === "completed"
-                              ? "border border-green-200 bg-green-100 text-green-800 dark:border-green-700 dark:bg-green-900/30 dark:text-green-400"
-                              : "border border-blue-200 bg-blue-100 text-blue-800 dark:border-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
+                              ? "border-status-success-border bg-status-success-bg text-status-success-text border"
+                              : "border-status-progress-border bg-status-progress-bg text-status-progress-text border"
                           }`}
                         >
                           {project.status === "completed" ? "완료" : "진행중"}
@@ -120,17 +120,17 @@ export default function ProjectsPage({
                       </p>
 
                       {project.mdStack && project.mdStack.length > 0 && (
-                        <div className="mb-4 flex flex-wrap gap-1">
+                        <div className="mb-4 flex flex-wrap items-center gap-1">
                           {project.mdStack.slice(0, 3).map((tech) => (
                             <span
                               key={tech}
-                              className="rounded bg-gray-800 px-2 py-1 text-xs text-gray-300"
+                              className="bg-text-muted text-background rounded px-2 py-1 text-xs"
                             >
                               {tech}
                             </span>
                           ))}
                           {project.mdStack.length > 3 && (
-                            <span className="text-text-muted text-xs">
+                            <span className="text-text-muted ml-2 text-xs">
                               +{project.mdStack.length - 3}개
                             </span>
                           )}
@@ -144,7 +144,9 @@ export default function ProjectsPage({
                           </span>
                         )}
                         <div className="text-text-muted group-hover:text-accent flex items-center gap-2 transition-colors">
-                          <span className="text-sm">자세히 보기</span>
+                          <span className="text-sm text-nowrap">
+                            자세히 보기
+                          </span>
                           <svg
                             className="h-4 w-4 transition-transform group-hover:translate-x-1"
                             fill="none"
