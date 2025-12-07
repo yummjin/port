@@ -4,6 +4,7 @@ export type ProjectBase = {
   description: string;
   status: "completed" | "in_progress";
   thumb?: string;
+  icon: string;
   image?: string[];
   links?: {
     github?: string;
@@ -19,6 +20,7 @@ const PROJECTS_DATA: ProjectBase[] = [
     description: "대학 식당 식단 정보를 제공하는 웹사이트",
     status: "completed",
     thumb: "/kiryong-thumbnail.png",
+    icon: "/icons/icon-kiryong.png",
     image: [
       "/kiryong-thumbnail.png",
       "/kiryong-page.png",
@@ -35,6 +37,7 @@ const PROJECTS_DATA: ProjectBase[] = [
     description: "컴퓨터공학부 팀프로젝트실 예약 및 관리 시스템",
     status: "completed",
     thumb: "/images/teampu-thumb.png",
+    icon: "/icons/icon-teampu.png",
     image: ["/images/teampu-thumb.png"],
     links: {
       github: "https://github.com/Gobongbab/TeamPu-Web",
@@ -46,6 +49,7 @@ const PROJECTS_DATA: ProjectBase[] = [
     description: "대학생 팀 프로젝트를 위한 협업 및 관리 도구",
     status: "completed",
     thumb: "/images/soup-thumb.png",
+    icon: "/icons/icon-soup.png",
     image: ["/images/soup-thumb.png"],
     links: {
       github: "https://github.com/Team-Soup-Soup/Soup-FE",
@@ -57,6 +61,7 @@ const PROJECTS_DATA: ProjectBase[] = [
     description: "대학 축제에서 함께할 친구를 찾는 매칭 서비스",
     status: "completed",
     thumb: "/images/festamate-thumb.png",
+    icon: "/icons/icon-festamate.png",
     image: ["/images/festamate-thumb.png"],
     links: {
       github: "https://github.com/Gobongbab/Festamate-Web",
@@ -69,6 +74,7 @@ const PROJECTS_DATA: ProjectBase[] = [
     description: `Khuthon 2025 참가 프로젝트 - 돼지 기침 감지 축사 관리 시스템`,
     status: "completed",
     thumb: "/images/piggo-thumb.png",
+    icon: "/icons/icon-piggo.png",
     image: [
       "/images/piggo-thumb.png",
       "/images/piggo-1.png",
@@ -87,6 +93,7 @@ const PROJECTS_DATA: ProjectBase[] = [
     description: `us:code in 의성 2025 참가 프로젝트 - 농기구 대여 서비스 개선 프로젝트`,
     status: "completed",
     thumb: "/images/ng-thumb.png",
+    icon: "/icons/icon-ng.png",
     image: [
       "/images/ng-thumb.png",
       "/images/ng-6.png",
@@ -111,6 +118,7 @@ const PROJECTS_DATA: ProjectBase[] = [
     description: "간편하고 안전한 온라인 투표 시스템",
     status: "completed",
     thumb: "/images/took-poster.png",
+    icon: "/icons/icon-took.png",
     image: ["/images/took-poster.png"],
     links: {
       github: "https://github.com/KGU-Vote-System/Client",
@@ -122,6 +130,7 @@ const PROJECTS_DATA: ProjectBase[] = [
     description: `사용자의 디지털 피로도를 기반으로 한 힐링 여행 추천 서비스`,
     status: "completed",
     thumb: "/images/shwimpyo-poster.png",
+    icon: "/icons/icon-shwimpyo.png",
     image: [
       "/images/shwimpyo-poster.png",
       "/images/shwimpyo-1.png",
@@ -140,6 +149,7 @@ const PROJECTS_DATA: ProjectBase[] = [
     description: `같이 살 룸메이트를 구하는 서비스`,
     status: "completed",
     thumb: "/images/livingmate-thumb.png",
+    icon: "/icons/icon-livingmate.png",
     image: ["/images/livingmate-thumb.png"],
     links: {
       github: "https://github.com/9oormthon-univ/2025_SEASONTHON_TEAM_73_FE",

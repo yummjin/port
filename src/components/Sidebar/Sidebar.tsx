@@ -40,6 +40,14 @@ export default function Sidebar() {
             <MenuButton className="size-6" />
           </button>
           <YoutubeLogo className="ml-4 h-5" />
+          {/* <div className="relative ml-4 h-8 w-18">
+            <Image
+              src="/icons/sitelogowhite.png"
+              alt="Site Logo"
+              objectFit="cover"
+              fill
+            />
+          </div> */}
         </header>
         <section className="border-border flex w-full flex-col border-b-[1px] p-3 pr-6">
           <SidebarButton
@@ -75,7 +83,7 @@ export default function Sidebar() {
               isActive={isActive(`/projects/${project.id}`)}
               icon={
                 <Image
-                  src={project.thumb || ""}
+                  src={project.icon || ""}
                   alt={project.title}
                   width={24}
                   height={24}
