@@ -1,5 +1,4 @@
 import Head from "next/head";
-import { GiBarbute } from "react-icons/gi";
 
 import Layout from "@/components/Layout";
 import PostLayout from "@/components/PostLayout";
@@ -57,7 +56,7 @@ const VideoCard = () => (
       <div className="size-9 rounded-full bg-white" />
       <div className="flex flex-col gap-0.5 font-semibold">
         <p>주토피아 보고 왔어요</p>
-        <p className="text-text-muted text-sm">주토피아 존나 재밋음</p>
+        <p className="text-text-muted text-sm">너무 귀엽더라구용</p>
         <p className="text-text-muted text-sm">2025.12.07</p>
       </div>
     </div>
