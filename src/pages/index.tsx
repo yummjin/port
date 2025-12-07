@@ -1,4 +1,9 @@
 import Head from "next/head";
+import Image from "next/image";
+
+import Card from "@/shared/components/Card";
+import CardWrapper from "@/shared/components/CardWrapper";
+import { SKILLS } from "@/shared/data";
 
 import Layout from "@/components/Layout";
 import PostLayout from "@/components/PostLayout";
@@ -18,28 +23,30 @@ export default function Home() {
         <PostLayout>
           <div className="flex flex-col gap-6">
             <h1 className="text-2xl font-bold">
-              안녕하세요! 프론트엔드 개발자 한유진입니다.
+              안녕하세요!
+              <br />
+              프론트엔드 개발자 한유진입니다.
             </h1>
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <CardWrapper>
               <VideoCard />
               <VideoCard />
               <VideoCard />
-              <VideoCard />
+            </CardWrapper>
+          </div>
+          <div className="flex flex-col gap-6">
+            <h1 className="text-2xl font-bold">이런 기술들을 주로 사용해요</h1>
+            <div className="flex items-center gap-8">
+              {SKILLS.map((skill) => (
+                <SkillCard key={skill.name} {...skill} />
+              ))}
             </div>
           </div>
           <div className="flex flex-col gap-6">
-            <h1 className="text-2xl font-bold">구현했던 화면들이에요</h1>
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <h1 className="text-2xl font-bold">이렇게 공부해요</h1>
+            <CardWrapper>
               <VideoCard />
               <VideoCard />
-            </div>
-          </div>
-          <div className="flex flex-col gap-6">
-            <h1 className="text-2xl font-bold">사용한 기술스택들이에요</h1>
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              <VideoCard />
-              <VideoCard />
-            </div>
+            </CardWrapper>
           </div>
         </PostLayout>
       </section>
@@ -47,11 +54,31 @@ export default function Home() {
   );
 }
 
+const SkillCard = ({
+  image,
+  name,
+  description,
+}: {
+  image: string;
+  name: string;
+  description: string;
+}) => (
+  <div className="flex w-32 shrink-0 flex-col gap-2">
+    <div className="relative size-32 overflow-hidden rounded-full">
+      <Image src={image} alt={name} fill objectFit="cover" />
+    </div>
+    <div className="flex flex-col items-center gap-0.5">
+      <p>{name}</p>
+      <p className="text-text-muted line-clamp-2 text-sm">{description}</p>
+    </div>
+  </div>
+);
+
 const VideoCard = () => (
   <div className="flex flex-col gap-3">
-    <div className="bg-card-background h-[40vh] max-h-[240px] min-h-[170px] rounded-[10px] p-4">
+    <Card>
       <div className="flex items-center gap-2"></div>
-    </div>
+    </Card>
     <div className="flex items-start gap-3">
       <div className="size-9 rounded-full bg-white" />
       <div className="flex flex-col gap-0.5 font-semibold">
