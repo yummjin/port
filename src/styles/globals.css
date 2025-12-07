@@ -1,25 +1,25 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --card-background: #f8f9fa;
-  --border-color: #e5e7eb;
-  --text-muted: #6b7280;
+  --background: #0a0a0a;
+  --foreground: #f4f4f4;
+  --card-background: #303030;
+  --border-color: #374151;
+  --text-muted: #9ca3af;
   --accent: #2137d8;
   --accent-light: #59b9c6;
-  --status-success-border: #86efac;
-  --status-success-bg: #dcfce7;
-  --status-success-text: #166534;
-  --status-progress-border: #93c5fd;
-  --status-progress-bg: #dbeafe;
-  --status-progress-text: #1e40af;
+  --status-success-border: #166534;
+  --status-success-bg: rgba(34, 197, 94, 0.3);
+  --status-success-text: #86efac;
+  --status-progress-border: #1e40af;
+  --status-progress-bg: rgba(59, 130, 246, 0.3);
+  --status-progress-text: #93c5fd;
 }
 
 [data-theme="dark"] {
   --background: #0a0a0a;
   --foreground: #f4f4f4;
-  --card-background: #1a1a1a;
+  --card-background: #303030;
   --border-color: #374151;
   --text-muted: #9ca3af;
   --accent: #2137d8;
@@ -38,6 +38,10 @@
 }
 
 @theme inline {
+  --breakpoint-md: 571px;
+  --breakpoint-lg: 961px;
+  --breakpoint-xl: 1312px;
+  --breakpoint-2xl: 1536px;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card-background: var(--card-background);

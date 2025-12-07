@@ -1,15 +1,14 @@
 import { ReactNode } from "react";
-import NavBar from "./NavBar";
-import Footer from "./Footer";
+
+import Sidebar from "./Sidebar/Sidebar";
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
-    <div className="bg-background min-h-screen">
-      <main className="p-6">
-        <NavBar />
-        <div className="mx-auto max-w-6xl">{children}</div>
+    <div className="bg-background flex min-h-screen">
+      <Sidebar />
+      <main className="scrollbar-hide h-screen flex-1 overflow-y-auto px-6">
+        {children}
       </main>
-      <Footer />
     </div>
   );
 }
