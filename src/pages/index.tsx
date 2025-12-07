@@ -35,7 +35,7 @@ export default function Home() {
           </div>
           <div className="flex flex-col gap-6">
             <h1 className="text-2xl font-bold">이런 기술들을 주로 사용해요</h1>
-            <div className="flex items-center gap-8">
+            <div className="scrollbar-hide flex w-full items-center gap-8 overflow-x-auto">
               {SKILLS.map((skill) => (
                 <SkillCard key={skill.name} {...skill} />
               ))}
