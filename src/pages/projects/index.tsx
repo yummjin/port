@@ -3,6 +3,8 @@ import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 
+import Card from "@/shared/components/Card";
+import CardWrapper from "@/shared/components/CardWrapper";
 import { PROJECTS } from "@/shared/data";
 import type { ProjectBase } from "@/shared/data";
 import { getMarkdownContent } from "@/shared/utils/markdown";
@@ -71,11 +73,11 @@ export default function ProjectsPage({
       <Layout>
         <section className="flex flex-col">
           <PostLayout>
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <CardWrapper>
               {projects.map((project) => (
                 <VideoCard key={project.id} project={project} />
               ))}
-            </div>
+            </CardWrapper>
           </PostLayout>
         </section>
       </Layout>
@@ -85,7 +87,7 @@ export default function ProjectsPage({
 
 const VideoCard = ({ project }: { project: ProjectListItem }) => (
   <Link href={`/projects/${project.id}`} className="flex flex-col gap-3">
-    <div className="bg-card-background h-[40vh] max-h-[240px] min-h-[170px] overflow-hidden rounded-[10px]">
+    <Card>
       <Image
         src={project.thumb || ""}
         alt={project.title}
@@ -93,7 +95,7 @@ const VideoCard = ({ project }: { project: ProjectListItem }) => (
         height={500}
         className="h-full w-full object-cover"
       />
-    </div>
+    </Card>
     <div className="flex items-start gap-3">
       <div className="size-9 overflow-hidden rounded-full">
         <Image
