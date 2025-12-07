@@ -12,7 +12,7 @@ export default function Home() {
   return (
     <Layout>
       <Head>
-        <title>한유진 - Frontend Developer</title>
+        <title>Yujin Han</title>
         <meta
           name="description"
           content="프론트엔드 개발자 한유진의 포트폴리오입니다"
