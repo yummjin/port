@@ -1,7 +1,8 @@
-import { PROJECTS } from "@/shared/data";
-import { getMarkdownContent } from "@/shared/utils/markdown";
-import { cn } from "@/shared/utils";
 import { motion } from "motion/react";
+
+import { PROJECTS } from "@/shared/data";
+import { cn } from "@/shared/utils";
+import { getMarkdownContent } from "@/shared/utils/markdown";
 
 interface TimelineItem {
   setSelectedProject: (project: number) => void;

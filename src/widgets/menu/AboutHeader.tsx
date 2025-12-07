@@ -1,12 +1,13 @@
 "use client";
 
-import { useRef, useState } from "react";
 
 import { motion } from "motion/react";
 import type { Variants } from "motion/react";
-import { PATH } from "@/shared/constants/path";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
+import { useRef, useState } from "react";
+
+import { PATH } from "@/shared/constants/path";
 import { cn } from "@/shared/utils";
 
 const buttons = [

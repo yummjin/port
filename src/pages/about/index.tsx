@@ -1,7 +1,9 @@
-import Layout from "@/components/Layout";
-import { DESCRIPTION } from "@/shared/data";
 import Head from "next/head";
 import Image from "next/image";
+
+import { DESCRIPTION } from "@/shared/data";
+
+import Layout from "@/components/Layout";
 
 export default function AboutPage() {
   return (

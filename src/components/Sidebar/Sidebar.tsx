@@ -1,3 +1,8 @@
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { BsGithub } from "react-icons/bs";
+
 import {
   ChevronRight,
   HomeIcon,
@@ -7,11 +12,8 @@ import {
 import { PATH } from "@/shared/constants";
 import { PROJECTS } from "@/shared/data";
 import { cn } from "@/shared/utils";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { BsGithub } from "react-icons/bs";
+
 import SidebarButton from "./SidebarButton";
-import Image from "next/image";
 
 export default function Sidebar() {
   const pathname = usePathname();

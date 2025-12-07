@@ -1,6 +1,7 @@
-import { useTheme } from "@/contexts/ThemeContext";
 import { motion, AnimatePresence } from "motion/react";
 import { useMemo } from "react";
+
+import { useTheme } from "@/contexts/ThemeContext";
 
 export default function ThemeToggle() {
   const { theme, toggleTheme } = useTheme();

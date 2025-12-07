@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+
 import { TableOfContentsItem } from "@/shared/utils/markdown";
 
 interface TableOfContentsProps {

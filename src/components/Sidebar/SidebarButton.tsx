@@ -1,6 +1,7 @@
-import { cn } from "@/shared/utils";
 import Link from "next/link";
 import { ReactNode } from "react";
+
+import { cn } from "@/shared/utils";
 
 interface SidebarButtonProps {
   href: string;

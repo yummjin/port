@@ -1,12 +1,13 @@
+import type { GetStaticProps, InferGetStaticPropsType } from "next";
+import Head from "next/head";
+import Image from "next/image";
+import Link from "next/link";
+
 import { PROJECTS } from "@/shared/data";
 import type { ProjectBase } from "@/shared/data";
 import { getMarkdownContent } from "@/shared/utils/markdown";
-import type { GetStaticProps, InferGetStaticPropsType } from "next";
+
 import Layout from "@/components/Layout";
-import Title from "@/shared/components/Title";
-import Link from "next/link";
-import Head from "next/head";
-import Image from "next/image";
 
 type ProjectListItem = {
   id: string;

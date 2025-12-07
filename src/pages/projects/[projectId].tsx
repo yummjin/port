@@ -1,6 +1,3 @@
-import { PROJECTS } from "@/shared/data";
-import { getMarkdownContent, MarkdownData } from "@/shared/utils/markdown";
-import Title from "@/shared/components/Title";
 import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
 import Head from "next/head";
 import Image from "next/image";
@@ -8,8 +5,13 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import TableOfContents from "@/components/TableOfContents";
+
+import Title from "@/shared/components/Title";
+import { PROJECTS } from "@/shared/data";
+import { getMarkdownContent, MarkdownData } from "@/shared/utils/markdown";
+
 import Layout from "@/components/Layout";
+import TableOfContents from "@/components/TableOfContents";
 
 export const getStaticProps = async (context: GetStaticPropsContext) => {
   const { projectId } = context.params || {};
