@@ -8,6 +8,7 @@ import type { ProjectBase } from "@/shared/data";
 import { getMarkdownContent } from "@/shared/utils/markdown";
 
 import Layout from "@/components/Layout";
+import PostLayout from "@/components/PostLayout";
 
 type ProjectListItem = {
   id: string;
@@ -15,6 +16,7 @@ type ProjectListItem = {
   description: string;
   status: "completed" | "in_progress";
   thumb: string | null;
+  icon: string;
   mdThumb: string | null;
   mdPeriod: string | null;
   mdStack: string[] | null;
@@ -36,6 +38,7 @@ export const getStaticProps: GetStaticProps<{
       thumb: Array.isArray((p as ProjectBase).image)
         ? ((p as ProjectBase).image as string[])[0]
         : null,
+      icon: p.icon,
       mdThumb,
       mdPeriod,
       mdStack,
@@ -67,29 +70,13 @@ export default function ProjectsPage({
       </Head>
       <Layout>
         <section className="flex flex-col">
-          <header className="bg-background/70 fixed top-0 z-50 flex w-full flex-col backdrop-blur-xl">
-            <div className="box-border flex h-14 items-center justify-between">
-              프로젝트
-            </div>
-            <div className="flex items-center gap-2 py-3">
-              <span className="text-background flex h-[32px] w-fit items-center justify-center rounded-[8px] bg-white px-3 text-sm font-medium">
-                전체
-              </span>
-              <span className="bg-card-background flex h-[32px] w-fit items-center justify-center rounded-[8px] px-3 text-sm font-medium text-white">
-                프로젝트
-              </span>
-              <span className="bg-card-background flex h-[32px] w-fit items-center justify-center rounded-[8px] px-3 text-sm font-medium text-white">
-                기술스택
-              </span>
-            </div>
-          </header>
-          <div className="scrollbar-hide mt-32">
+          <PostLayout>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {projects.map((project) => (
                 <VideoCard key={project.id} project={project} />
               ))}
             </div>
-          </div>
+          </PostLayout>
         </section>
       </Layout>
     </>
@@ -108,7 +95,15 @@ const VideoCard = ({ project }: { project: ProjectListItem }) => (
       />
     </div>
     <div className="flex items-start gap-3">
-      <div className="size-9 rounded-full bg-white" />
+      <div className="size-9 overflow-hidden rounded-full">
+        <Image
+          src={project.icon}
+          alt={project.title}
+          width={36}
+          height={36}
+          objectFit="cover"
+        />
+      </div>
       <div className="flex flex-col gap-0.5 font-semibold">
         <p>{project.title}</p>
         <p className="text-text-muted text-sm">{project.description}</p>

@@ -1,6 +1,8 @@
 import Head from "next/head";
+import { GiBarbute } from "react-icons/gi";
 
 import Layout from "@/components/Layout";
+import PostLayout from "@/components/PostLayout";
 
 export default function Home() {
   return (
@@ -14,44 +16,33 @@ export default function Home() {
       </Head>
 
       <section className="flex flex-col">
-        <header className="bg-background/70 fixed top-0 z-50 flex w-full flex-col backdrop-blur-xl">
-          <div className="box-border flex h-14 items-center justify-between">
-            안녕하세요! 프론트엔드 개발자 한유진입니다.
+        <PostLayout>
+          <div className="flex flex-col gap-6">
+            <h1 className="text-2xl font-bold">
+              안녕하세요! 프론트엔드 개발자 한유진입니다.
+            </h1>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              <VideoCard />
+              <VideoCard />
+              <VideoCard />
+              <VideoCard />
+            </div>
           </div>
-          <div className="flex items-center gap-2 py-3">
-            <span className="text-background flex h-[32px] w-fit items-center justify-center rounded-[8px] bg-white px-3 text-sm font-medium">
-              전체
-            </span>
-            <span className="bg-card-background flex h-[32px] w-fit items-center justify-center rounded-[8px] px-3 text-sm font-medium text-white">
-              프로젝트
-            </span>
-            <span className="bg-card-background flex h-[32px] w-fit items-center justify-center rounded-[8px] px-3 text-sm font-medium text-white">
-              기술스택
-            </span>
+          <div className="flex flex-col gap-6">
+            <h1 className="text-2xl font-bold">구현했던 화면들이에요</h1>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              <VideoCard />
+              <VideoCard />
+            </div>
           </div>
-        </header>
-
-        <div className="scrollbar-hide mt-32">
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            <VideoCard />
-            <VideoCard />
-            <VideoCard />
-            <VideoCard />
-            <VideoCard />
-            <VideoCard />
-            <VideoCard />
-            <VideoCard />
-            <VideoCard />
-            <VideoCard />
-            <VideoCard />
-            <VideoCard />
-            <VideoCard />
-            <VideoCard />
-            <VideoCard />
-            <VideoCard />
-            <VideoCard />
+          <div className="flex flex-col gap-6">
+            <h1 className="text-2xl font-bold">사용한 기술스택들이에요</h1>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              <VideoCard />
+              <VideoCard />
+            </div>
           </div>
-        </div>
+        </PostLayout>
       </section>
     </Layout>
   );
@@ -60,7 +51,7 @@ export default function Home() {
 const VideoCard = () => (
   <div className="flex flex-col gap-3">
     <div className="bg-card-background h-[40vh] max-h-[240px] min-h-[170px] rounded-[10px] p-4">
-      <div className="flex items-center gap-2">gd</div>
+      <div className="flex items-center gap-2"></div>
     </div>
     <div className="flex items-start gap-3">
       <div className="size-9 rounded-full bg-white" />
