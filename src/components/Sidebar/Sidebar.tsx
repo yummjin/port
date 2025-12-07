@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { BsGithub } from "react-icons/bs";
+import { SiVelog } from "react-icons/si";
 
 import {
   ChevronRight,
@@ -40,14 +41,6 @@ export default function Sidebar() {
             <MenuButton className="size-6" />
           </button>
           <YoutubeLogo className="ml-4 h-5" />
-          {/* <div className="relative ml-4 h-8 w-18">
-            <Image
-              src="/icons/sitelogowhite.png"
-              alt="Site Logo"
-              objectFit="cover"
-              fill
-            />
-          </div> */}
         </header>
         <section className="border-border flex w-full flex-col border-b-[1px] p-3 pr-6">
           <SidebarButton
@@ -60,6 +53,13 @@ export default function Sidebar() {
             href="https://github.com/yummjin"
             icon={<BsGithub className="size-6" />}
             label="Github"
+            isActive={isActive("https://github.com/yummjin")}
+            target="_blank"
+          />
+          <SidebarButton
+            href="https://velog.io/@yummjin"
+            icon={<SiVelog className="size-6" />}
+            label="Velog"
             isActive={isActive("https://github.com/yummjin")}
             target="_blank"
           />
