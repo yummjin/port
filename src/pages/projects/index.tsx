@@ -65,111 +65,54 @@ export default function ProjectsPage({
         />
       </Head>
       <Layout>
-        <div className="min-h-screen p-6 md:p-12 md:pt-8">
-          <div className="mx-auto w-full max-w-6xl space-y-6">
-            <Title
-              size="lg"
-              as="h1"
-              subTitle="개발에 참여했던 크고 작은 프로젝트입니다."
-            >
+        <section className="flex flex-col">
+          <header className="bg-background/70 fixed top-0 z-50 flex w-full flex-col backdrop-blur-xl">
+            <div className="box-border flex h-14 items-center justify-between">
               프로젝트
-            </Title>
-
-            <section className="border-border flex justify-end border-b pb-6">
-              <div className="text-text-muted">총 {projects.length}개</div>
-            </section>
-
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            </div>
+            <div className="flex items-center gap-2 py-3">
+              <span className="text-background flex h-[32px] w-fit items-center justify-center rounded-[8px] bg-white px-3 text-sm font-medium">
+                전체
+              </span>
+              <span className="bg-card-background flex h-[32px] w-fit items-center justify-center rounded-[8px] px-3 text-sm font-medium text-white">
+                프로젝트
+              </span>
+              <span className="bg-card-background flex h-[32px] w-fit items-center justify-center rounded-[8px] px-3 text-sm font-medium text-white">
+                기술스택
+              </span>
+            </div>
+          </header>
+          <div className="scrollbar-hide mt-32">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {projects.map((project) => (
-                <Link
-                  href={`/projects/${project.id}`}
-                  key={project.id}
-                  className="group"
-                >
-                  <div className="bg-card-background border-border hover:border-accent h-full overflow-hidden rounded-xl border transition-all duration-200 hover:shadow-lg">
-                    {(project.thumb || project.mdThumb) && (
-                      <div className="bg-card-background aspect-video w-full overflow-hidden">
-                        <Image
-                          src={project.thumb || project.mdThumb || ""}
-                          alt={project.title}
-                          width={500}
-                          height={500}
-                          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                        />
-                      </div>
-                    )}
-
-                    <div className="p-6">
-                      <div className="mb-3 flex items-start justify-between gap-3">
-                        <h3 className="text-foreground group-hover:text-accent text-lg font-semibold transition-colors">
-                          {project.title}
-                        </h3>
-                        <span
-                          className={`flex-shrink-0 rounded-full px-2 py-1 text-xs font-medium ${
-                            project.status === "completed"
-                              ? "border-status-success-border bg-status-success-bg text-status-success-text border"
-                              : "border-status-progress-border bg-status-progress-bg text-status-progress-text border"
-                          }`}
-                        >
-                          {project.status === "completed" ? "완료" : "진행중"}
-                        </span>
-                      </div>
-
-                      <p className="text-text-muted mb-4 line-clamp-2 text-sm">
-                        {project.description}
-                      </p>
-
-                      {project.mdStack && project.mdStack.length > 0 && (
-                        <div className="mb-4 flex flex-wrap items-center gap-1">
-                          {project.mdStack.slice(0, 3).map((tech) => (
-                            <span
-                              key={tech}
-                              className="bg-text-muted text-background rounded px-2 py-1 text-xs"
-                            >
-                              {tech}
-                            </span>
-                          ))}
-                          {project.mdStack.length > 3 && (
-                            <span className="text-text-muted ml-2 text-xs">
-                              +{project.mdStack.length - 3}개
-                            </span>
-                          )}
-                        </div>
-                      )}
-
-                      <div className="flex items-center justify-between">
-                        {project.mdPeriod && (
-                          <span className="text-text-muted text-sm">
-                            {project.mdPeriod}
-                          </span>
-                        )}
-                        <div className="text-text-muted group-hover:text-accent flex items-center gap-2 transition-colors">
-                          <span className="text-sm text-nowrap">
-                            자세히 보기
-                          </span>
-                          <svg
-                            className="h-4 w-4 transition-transform group-hover:translate-x-1"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M9 5l7 7-7 7"
-                            />
-                          </svg>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </Link>
+                <VideoCard key={project.id} project={project} />
               ))}
             </div>
           </div>
-        </div>
+        </section>
       </Layout>
     </>
   );
 }
+
+const VideoCard = ({ project }: { project: ProjectListItem }) => (
+  <Link href={`/projects/${project.id}`} className="flex flex-col gap-3">
+    <div className="bg-card-background h-[40vh] max-h-[240px] min-h-[170px] overflow-hidden rounded-[10px]">
+      <Image
+        src={project.thumb || ""}
+        alt={project.title}
+        width={500}
+        height={500}
+        className="h-full w-full object-cover"
+      />
+    </div>
+    <div className="flex items-start gap-3">
+      <div className="size-9 rounded-full bg-white" />
+      <div className="flex flex-col gap-0.5 font-semibold">
+        <p>{project.title}</p>
+        <p className="text-text-muted text-sm">{project.description}</p>
+        <p className="text-text-muted text-sm">{project.mdPeriod}</p>
+      </div>
+    </div>
+  </Link>
+);

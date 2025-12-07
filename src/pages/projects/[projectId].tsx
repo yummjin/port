@@ -9,6 +9,7 @@ import React, { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import TableOfContents from "@/components/TableOfContents";
+import Layout from "@/components/Layout";
 
 export const getStaticProps = async (context: GetStaticPropsContext) => {
   const { projectId } = context.params || {};
@@ -52,7 +53,7 @@ export default function ProjectDetail({
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   return (
-    <>
+    <Layout>
       <Head>
         <title>프로젝트 - {project.title.split(":")[0]}</title>
       </Head>
@@ -180,7 +181,6 @@ export default function ProjectDetail({
             </div>
           )}
 
-          {/* 이미지 팝업 모달 */}
           {selectedImage && (
             <div
               className="bg-opacity-75 fixed inset-0 z-50 flex items-center justify-center bg-black"
@@ -205,7 +205,7 @@ export default function ProjectDetail({
           )}
         </div>
       </div>
-    </>
+    </Layout>
   );
 }
 
