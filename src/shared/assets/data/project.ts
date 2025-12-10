@@ -19,12 +19,12 @@ const PROJECTS_DATA: ProjectBase[] = [
     title: "기룡아 밥먹자",
     description: "대학 식당 식단 정보를 제공하는 웹사이트",
     status: "completed",
-    thumb: "/kiryong-thumbnail.png",
+    thumb: "/images/kiryong-thumbnail.png",
     icon: "/icons/icon-kiryong.png",
     image: [
-      "/kiryong-thumbnail.png",
-      "/kiryong-page.png",
-      "/kiryong-mobile.png",
+      "/images/kiryong-thumbnail.png",
+      "/images/kiryong-page.png",
+      "/images/kiryong-mobile.png",
     ],
     links: {
       github: "https://github.com/Kyonggi-Univ-Diet-Information/FE",

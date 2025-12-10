@@ -20,12 +20,12 @@ export default function AboutPage() {
           <div className="flex gap-6">
             <div className="relative size-30 overflow-hidden rounded-full object-cover">
               <Image
-                src="/profile.jpeg"
+                src="/images/profile.jpeg"
                 alt="한유진"
                 fill
                 objectFit="cover"
                 loading="lazy"
-                blurDataURL="/profile.jpeg"
+                blurDataURL="/images/profile.jpeg"
                 placeholder="blur"
               />
             </div>
