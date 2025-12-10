@@ -6,12 +6,13 @@ import React, { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
-import Title from "@/shared/components/Title";
-import { PROJECTS } from "@/shared/data";
-import { getMarkdownContent, MarkdownData } from "@/shared/utils/markdown";
+import { PROJECTS } from "@/shared/assets";
+import { Title } from "@/shared/components";
+import { RootLayout } from "@/shared/layouts";
+import { MarkdownData } from "@/shared/utils";
+import { getMarkdownContent } from "@/shared/utils/markdown.server";
 
-import Layout from "@/components/Layout";
-import TableOfContents from "@/components/TableOfContents";
+import { TableOfContents } from "@/features/projects/components";
 
 export const getStaticProps = async (context: GetStaticPropsContext) => {
   const { projectId } = context.params || {};
@@ -55,7 +56,7 @@ export default function ProjectDetail({
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   return (
-    <Layout>
+    <RootLayout>
       <Head>
         <title>프로젝트 - {project.title.split(":")[0]}</title>
       </Head>
@@ -207,7 +208,7 @@ export default function ProjectDetail({
           )}
         </div>
       </div>
-    </Layout>
+    </RootLayout>
   );
 }
 

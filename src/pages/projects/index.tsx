@@ -3,14 +3,10 @@ import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 
-import Card from "@/shared/components/Card";
-import CardWrapper from "@/shared/components/CardWrapper";
-import { PROJECTS } from "@/shared/data";
-import type { ProjectBase } from "@/shared/data";
-import { getMarkdownContent } from "@/shared/utils/markdown";
-
-import Layout from "@/components/Layout";
-import PostLayout from "@/components/PostLayout";
+import { PROJECTS, type ProjectBase } from "@/shared/assets";
+import { Card, CardWrapper } from "@/shared/components";
+import { PostLayout, RootLayout } from "@/shared/layouts";
+import { getMarkdownContent } from "@/shared/utils/markdown.server";
 
 type ProjectListItem = {
   id: string;
@@ -70,7 +66,7 @@ export default function ProjectsPage({
           content="개발한 모든 프로젝트를 확인해보세요."
         />
       </Head>
-      <Layout>
+      <RootLayout>
         <section className="flex flex-col">
           <PostLayout>
             <CardWrapper>
@@ -80,7 +76,7 @@ export default function ProjectsPage({
             </CardWrapper>
           </PostLayout>
         </section>
-      </Layout>
+      </RootLayout>
     </>
   );
 }

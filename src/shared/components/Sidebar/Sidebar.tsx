@@ -10,8 +10,8 @@ import {
   MenuButton,
   YoutubeLogo,
 } from "@/shared/assets";
+import { PROJECTS } from "@/shared/assets";
 import { PATH } from "@/shared/constants";
-import { PROJECTS } from "@/shared/data";
 import { cn } from "@/shared/utils";
 
 import SidebarButton from "./SidebarButton";

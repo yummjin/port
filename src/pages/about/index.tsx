@@ -1,13 +1,12 @@
 import Head from "next/head";
 import Image from "next/image";
 
-import { DESCRIPTION } from "@/shared/data";
-
-import Layout from "@/components/Layout";
+import { DESCRIPTION } from "@/shared/assets";
+import { RootLayout } from "@/shared/layouts";
 
 export default function AboutPage() {
   return (
-    <Layout>
+    <RootLayout>
       <Head>
         <title>Yujin Han - About</title>
         <meta
@@ -37,6 +36,6 @@ export default function AboutPage() {
           </div>
         </header>
       </section>
-    </Layout>
+    </RootLayout>
   );
 }

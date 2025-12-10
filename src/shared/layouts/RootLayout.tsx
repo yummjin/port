@@ -1,8 +1,8 @@
 import { ReactNode } from "react";
 
-import Sidebar from "./Sidebar/Sidebar";
+import { Sidebar } from "@/shared/components";
 
-export default function Layout({ children }: { children: ReactNode }) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <div className="bg-background flex min-h-screen">
       <Sidebar />

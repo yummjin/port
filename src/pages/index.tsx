@@ -1,16 +1,13 @@
 import Head from "next/head";
 import Image from "next/image";
 
-import Card from "@/shared/components/Card";
-import CardWrapper from "@/shared/components/CardWrapper";
-import { SKILLS } from "@/shared/data";
-
-import Layout from "@/components/Layout";
-import PostLayout from "@/components/PostLayout";
+import { SKILLS } from "@/shared/assets";
+import { Card, CardWrapper } from "@/shared/components";
+import { PostLayout, RootLayout } from "@/shared/layouts";
 
 export default function Home() {
   return (
-    <Layout>
+    <RootLayout>
       <Head>
         <title>Yujin Han</title>
         <meta
@@ -42,7 +39,9 @@ export default function Home() {
             </div>
           </div>
           <div className="flex flex-col gap-6">
-            <h1 className="text-2xl font-bold">이렇게 공부해요</h1>
+            <h1 className="text-2xl font-bold">
+              최근에는 이렇게 공부하고 있어요
+            </h1>
             <CardWrapper>
               <VideoCard />
               <VideoCard />
@@ -50,7 +49,7 @@ export default function Home() {
           </div>
         </PostLayout>
       </section>
-    </Layout>
+    </RootLayout>
   );
 }
 
@@ -71,6 +70,14 @@ const SkillCard = ({
       <p>{name}</p>
       <p className="text-text-muted line-clamp-2 text-sm">{description}</p>
     </div>
+  </div>
+);
+
+const PostCard = () => (
+  <div className="flex flex-col gap-3">
+    <Card>
+      <div className="flex items-center gap-2"></div>
+    </Card>
   </div>
 );
 
