@@ -52,7 +52,30 @@ export default function Home() {
             />
           ))}
         </div>
-
+        <motion.p
+          className="text-center text-3xl font-semibold text-white/90"
+          initial={{ opacity: 0, y: 0 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
+        >
+          안녕하세요
+        </motion.p>
+        <motion.p
+          className="mt-1 text-center text-3xl font-semibold text-white/90"
+          initial={{ opacity: 0, y: 0 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 1.5, ease: "easeOut" }}
+        >
+          한유진입니다.
+        </motion.p>
+        <motion.p
+          className="text-text-muted mt-1 mt-2 text-center"
+          initial={{ opacity: 0, y: 0 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 2.5, ease: "easeOut" }}
+        >
+          프론트엔드 개발에 몰입하고 있습니다.
+        </motion.p>
         <div
           className="pointer-events-none absolute inset-0"
           style={{

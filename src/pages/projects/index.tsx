@@ -61,16 +61,13 @@ export default function ProjectsPage({
     <>
       <Head>
         <title>프로젝트 - 모든 프로젝트</title>
-        <meta
-          name="description"
-          content="개발한 모든 프로젝트를 확인해보세요."
-        />
+        <meta name="description" content="개발에 참여한 모든 프로젝트" />
       </Head>
       <RootLayout>
         <section className="flex flex-col">
           <PostLayout
             title="프로젝트"
-            description="개발한 모든 프로젝트를 확인해보세요."
+            description="개발에 참여한 모든 프로젝트"
           >
             <CardWrapper>
               {projects.map((project) => (
@@ -85,7 +82,7 @@ export default function ProjectsPage({
 }
 
 const VideoCard = ({ project }: { project: ProjectListItem }) => (
-  <Link href={`/projects/${project.id}`} className="flex flex-col gap-3">
+  <Link href={`/projects/${project.id}`} className="flex flex-col gap-4">
     <Card>
       <Image
         src={project.thumb || ""}
@@ -105,10 +102,14 @@ const VideoCard = ({ project }: { project: ProjectListItem }) => (
           objectFit="cover"
         />
       </div>
-      <div className="flex flex-col gap-0.5 font-semibold">
-        <p>{project.title}</p>
-        <p className="text-text-muted text-sm">{project.description}</p>
-        <p className="text-text-muted text-sm">{project.mdPeriod}</p>
+      <div className="flex flex-col gap-2 leading-none font-semibold">
+        <p className="line-clamp-1">{project.title}</p>
+        <p className="text-text-muted line-clamp-1 text-sm leading-none font-normal">
+          {project.description}
+        </p>
+        <p className="text-text-muted line-clamp-1 text-xs leading-none font-normal">
+          {project.mdPeriod}
+        </p>
       </div>
     </div>
   </Link>
