@@ -7,7 +7,7 @@ import { PATH } from "../constants";
 
 export default function Header() {
   return (
-    <header className="bg-background/50 h-header fixed top-6 z-50 flex w-[calc(100%-48px)] max-w-[1200px] flex-shrink-0 items-center justify-between rounded-full border border-white/10 px-6 py-4 backdrop-blur-xl lg:border-none">
+    <header className="bg-background/50 h-header fixed top-6 z-50 mx-[24px] flex w-[calc(100%-48px)] max-w-[1200px] flex-shrink-0 items-center justify-between rounded-full border border-white/10 px-6 py-4 backdrop-blur-xl lg:border-none">
       <Link href={PATH.HOME} className="cursor-pointer">
         <span className="font-bold">yummjin</span>
       </Link>
