@@ -31,7 +31,7 @@ const VideoCard = ({ content }: { content: Post }) => (
   <Link
     href={content.href}
     target="_blank"
-    className="group flex cursor-pointer flex-col gap-3"
+    className="group flex cursor-pointer flex-col gap-4"
   >
     <Card>
       <Image
@@ -50,10 +50,16 @@ const VideoCard = ({ content }: { content: Post }) => (
       <div className="flex size-9 shrink-0 items-center justify-center rounded-full bg-white">
         <SiVelog className="text-background size-4" />
       </div>
-      <div className="flex flex-col gap-0.5 font-semibold">
-        <p className="line-clamp-1">{content.title.split(".")[1]}</p>
-        <p className="text-text-muted line-clamp-2 text-sm">{content.body}</p>
-        <p className="text-text-muted text-sm">{content.date}</p>
+      <div className="flex flex-col gap-2 font-semibold">
+        <p className="line-clamp-1 leading-none">
+          {content.title.split(".")[1]}
+        </p>
+        <p className="text-text-muted line-clamp-1 text-sm leading-none font-normal">
+          {content.body.slice(0, 40)}
+        </p>
+        <p className="text-text-muted text-xs leading-none font-normal">
+          {content.date}
+        </p>
       </div>
     </div>
   </Link>

@@ -60,6 +60,7 @@
   --color-status-progress-border: var(--status-progress-border);
   --color-status-progress-bg: var(--status-progress-bg);
   --color-status-progress-text: var(--status-progress-text);
+  --spacing-header: 64px;
 }
 
 @layer {

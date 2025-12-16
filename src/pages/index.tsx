@@ -1,107 +1,29 @@
 import Head from "next/head";
-import Image from "next/image";
 
-import { SKILLS } from "@/shared/assets";
-import { PostLayout, RootLayout } from "@/shared/layouts";
+import { RootLayout } from "@/shared/layouts";
 
-import { SeriesSection } from "@/features/home";
-import { Series } from "@/features/home/model/series";
-
-export default function Home({ series }: { series: Series }) {
+export default function Home() {
   return (
     <RootLayout>
       <Head>
-        <title>Yujin Han</title>
+        <title>yummjin</title>
         <meta
           name="description"
           content="프론트엔드 개발자 한유진의 포트폴리오입니다"
         />
       </Head>
 
-      <section className="flex flex-col">
-        <PostLayout>
-          <div className="flex flex-col gap-6">
-            <h1 className="text-2xl font-bold">
-              안녕하세요!
-              <br />
-              프론트엔드 개발자 한유진입니다.
-            </h1>
-            {/* <CardWrapper>
-              <VideoCard />
-              <VideoCard />
-              <VideoCard />
-            </CardWrapper> */}
-          </div>
-          <div className="flex flex-col gap-6">
-            <h1 className="text-xl font-semibold">
-              저는 이런 기술들을 주로 사용해요
-            </h1>
-            <div className="scrollbar-hide flex w-full items-center gap-8 overflow-x-auto">
-              {SKILLS.map((skill) => (
-                <SkillCard key={skill.name} {...skill} />
-              ))}
-            </div>
-          </div>
-          <div className="flex flex-col gap-6">
-            <h1 className="text-xl font-semibold">
-              최근에는 이렇게 공부하고 있어요
-            </h1>
-            <SeriesSection series={series} />
-          </div>
-        </PostLayout>
+      <section className="relative flex h-[calc(100vh-88px)] w-full flex-col overflow-hidden">
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-purple-500/20 to-transparent" />
+        <div className="from-background to-background pointer-events-none absolute inset-0 bg-gradient-to-r via-transparent" />
+        <div
+          className="absolute right-1/2 bottom-0 mx-auto w-[200vw] rounded-[50%] border border-[0.5px] border-white/20 shadow-[inset_0_0_30px_rgba(255,255,255,0.3),0_0_100px_rgba(255,255,255,0.4)]"
+          style={{
+            height: "100vw",
+            transform: "translateX(50%) translateY(65%)",
+          }}
+        />
       </section>
     </RootLayout>
   );
-}
-
-const SkillCard = ({
-  image,
-  name,
-  description,
-}: {
-  image: string;
-  name: string;
-  description: string;
-}) => (
-  <div className="flex w-32 shrink-0 flex-col gap-2">
-    <div className="relative size-32 overflow-hidden rounded-full">
-      <Image src={image} alt={name} fill objectFit="cover" />
-    </div>
-    <div className="flex flex-col items-center gap-0.5">
-      <p>{name}</p>
-      <p className="text-text-muted line-clamp-2 text-sm">{description}</p>
-    </div>
-  </div>
-);
-
-// const VideoCard = () => (
-//   <div className="flex flex-col gap-3">
-//     <Card>
-//       <div className="flex items-center gap-2"></div>
-//     </Card>
-//     <div className="flex items-start gap-3">
-//       <div className="size-9 rounded-full bg-white" />
-//       <div className="flex flex-col gap-0.5 font-semibold">
-//         <p>주토피아 보고 왔어요</p>
-//         <p className="text-text-muted text-sm">너무 귀엽더라구용</p>
-//         <p className="text-text-muted text-sm">2025.12.07</p>
-//       </div>
-//     </div>
-//   </div>
-// );
-
-export async function getStaticProps() {
-  const response = await fetch(
-    "https://velog-scraper.vercel.app/api/v1/series?url=" +
-      encodeURIComponent(
-        "https://velog.io/@yummjin/series/JavaScript-Deep-Dive",
-      ),
-  );
-  const data: Series = await response.json();
-
-  return {
-    props: {
-      series: data,
-    },
-  };
 }

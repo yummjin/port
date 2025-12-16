@@ -1,12 +1,12 @@
 import { ReactNode } from "react";
 
-import { Sidebar } from "@/shared/components";
+import Header from "../components/Header";
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="bg-background flex min-h-screen">
-      <Sidebar />
-      <main className="scrollbar-hide h-screen flex-1 overflow-y-auto px-6">
+    <div className="bg-background scrollbar-hide absolute relative inset-0 mx-auto flex max-w-[1200px] flex-col overflow-y-scroll px-[24px]">
+      <Header />
+      <main className="scrollbar-hide flex-1 pt-[calc(64px+24px)]">
         {children}
       </main>
     </div>

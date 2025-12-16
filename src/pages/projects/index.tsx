@@ -68,7 +68,10 @@ export default function ProjectsPage({
       </Head>
       <RootLayout>
         <section className="flex flex-col">
-          <PostLayout>
+          <PostLayout
+            title="프로젝트"
+            description="개발한 모든 프로젝트를 확인해보세요."
+          >
             <CardWrapper>
               {projects.map((project) => (
                 <VideoCard key={project.id} project={project} />

@@ -16,7 +16,7 @@ export default function AboutPage() {
       </Head>
 
       <section className="flex flex-col">
-        <header className="bg-background/70 fixed top-0 z-50 flex w-full flex-col pt-6 backdrop-blur-xl">
+        <header className="flex w-full flex-col pt-6">
           <div className="flex gap-6">
             <div className="relative size-30 overflow-hidden rounded-full object-cover">
               <Image
