@@ -10,3 +10,9 @@ export type Post = {
   date: string;
   href: string;
 };
+
+export type Tag = {
+  id: string;
+  name: string;
+  posts_count: number;
+};

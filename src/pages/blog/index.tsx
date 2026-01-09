@@ -1,26 +1,45 @@
 import Head from "next/head";
+import { useState } from "react";
 
 import { PostLayout, RootLayout } from "@/shared/layouts";
 
 import { SeriesSection } from "@/features/home";
-import { Series } from "@/features/home/model/series";
+import { Series, Tag } from "@/features/home/model/series";
 
-export default function BlogPage({ series }: { series: Series }) {
+export default function BlogPage({
+  series,
+  tags,
+}: {
+  series: Series;
+  tags: Tag[];
+}) {
+  const [activeTagId, setActiveTagId] = useState<string | null>(tags[0].id);
+
   return (
     <RootLayout>
       <Head>
-        <title>yummjin.log</title>
+        <title>블로그</title>
         <meta name="description" content="yummjin.log - blog" />
       </Head>
 
       <PostLayout title="블로그" description="다양한 기록을 남기고 있습니다">
         <div className="flex gap-2">
-          <button className="text-background cursor-pointer rounded-full bg-white px-4 py-2 text-sm font-medium focus:outline-none">
-            All
-          </button>
-          <button className="text-background cursor-pointer rounded-full bg-white px-4 py-2 text-sm font-medium focus:outline-none">
-            JavaScript
-          </button>
+          {tags.map((tag) => {
+            const isActive = activeTagId === tag.id;
+            return (
+              <button
+                key={tag.id}
+                onClick={() => setActiveTagId(isActive ? null : tag.id)}
+                className={`cursor-pointer rounded-full px-4 py-2 text-sm font-medium focus:outline-none ${
+                  isActive
+                    ? "text-background bg-white"
+                    : "text-background/70 bg-white/50"
+                }`}
+              >
+                {tag.name == "frontend" ? "All" : tag.name}
+              </button>
+            );
+          })}
         </div>
         <SeriesSection series={series} />
       </PostLayout>
@@ -35,11 +54,16 @@ export async function getStaticProps() {
         "https://velog.io/@yummjin/series/JavaScript-Deep-Dive",
       ),
   );
-  const data: Series = await response.json();
 
-  return {
-    props: {
-      series: data,
-    },
-  };
+  const tagsResponse = await fetch(
+    "https://velog-scraper.vercel.app/api/v1/tags?url=" +
+      encodeURIComponent("https://velog.io/@yummjin"),
+  );
+
+  const [data, tagsData] = await Promise.all([
+    response.json(),
+    tagsResponse.json(),
+  ]);
+
+  return { props: { series: data, tags: tagsData.tags } };
 }
