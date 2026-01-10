@@ -1,6 +1,7 @@
 import Head from "next/head";
 import { useState } from "react";
 
+import { USER_CONFIG } from "@/shared/config/user.config";
 import { PostLayout, RootLayout } from "@/shared/layouts";
 
 import { SeriesSection } from "@/features/home";
@@ -48,22 +49,24 @@ export default function BlogPage({
 }
 
 export async function getStaticProps() {
-  const response = await fetch(
-    "https://velog-scraper.vercel.app/api/v1/series?url=" +
-      encodeURIComponent(
-        "https://velog.io/@yummjin/series/JavaScript-Deep-Dive",
-      ),
-  );
+  const fetchSeries = async () => {
+    const response = await fetch(
+      "https://velog-scraper.vercel.app/api/v1/series?userId=" +
+        USER_CONFIG.velogId +
+        +"&seriesTitle=JavaScript Deep Dive",
+    );
+    return response.json();
+  };
 
-  const tagsResponse = await fetch(
-    "https://velog-scraper.vercel.app/api/v1/tags?url=" +
-      encodeURIComponent("https://velog.io/@yummjin"),
-  );
+  const fetchTags = async () => {
+    const response = await fetch(
+      "https://velog-scraper.vercel.app/api/v1/tags?userId=" +
+        USER_CONFIG.velogId,
+    );
+    return response.json();
+  };
 
-  const [data, tagsData] = await Promise.all([
-    response.json(),
-    tagsResponse.json(),
-  ]);
+  const [series, tags] = await Promise.all([fetchSeries(), fetchTags()]);
 
-  return { props: { series: data, tags: tagsData.tags } };
+  return { props: { series, tags } };
 }
