@@ -23,6 +23,13 @@ const PROJECTS_DATA: ProjectBase[] = [
     icon: "/icons/icon-kiryong.png",
     image: [
       "/images/kiryong-thumbnail.png",
+      "/images/kiryong-mobile-new.png",
+      "/images/kiryong-mobile-new-2.png",
+      "/images/kiryong-mobile-new-3.png",
+      "/images/kiryong-mobile-new-4.png",
+      "/images/kiryong-mobile-new-5.png",
+      "/images/kiryong-mobile-new-6.png",
+      "/images/kiryong-thumbnail-old.png",
       "/images/kiryong-page.png",
       "/images/kiryong-mobile.png",
     ],
