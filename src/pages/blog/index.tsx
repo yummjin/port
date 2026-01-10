@@ -14,7 +14,9 @@ export default function BlogPage({
   series: Series;
   tags: Tag[];
 }) {
-  const [activeTagId, setActiveTagId] = useState<string | null>(tags[0].id);
+  const [activeTagId, setActiveTagId] = useState<string | null>(
+    tags[0]?.id ?? null,
+  );
 
   return (
     <RootLayout>
@@ -51,22 +53,25 @@ export default function BlogPage({
 export async function getStaticProps() {
   const fetchSeries = async () => {
     const response = await fetch(
-      "https://velog-scraper.vercel.app/api/v1/series?userId=" +
-        USER_CONFIG.velogId +
-        +"&seriesTitle=JavaScript Deep Dive",
+      `https://velog-scraper.vercel.app/api/v1/series?userId=${USER_CONFIG.velogId}&seriesTitle=JavaScript Deep Dive`,
     );
     return response.json();
   };
 
-  const fetchTags = async () => {
-    const response = await fetch(
-      "https://velog-scraper.vercel.app/api/v1/tags?userId=" +
-        USER_CONFIG.velogId,
-    );
-    return response.json();
+  const fetchTags = async (): Promise<{ tags: Tag[] }> => {
+    try {
+      const response = await fetch(
+        `https://velog-scraper.vercel.app/api/v1/tags?userId=${USER_CONFIG.velogId}`,
+      );
+      const data = await response.json();
+      return data as { tags: Tag[] };
+    } catch (error) {
+      console.error("Failed to fetch tags:", error);
+      return { tags: [] };
+    }
   };
 
   const [series, tags] = await Promise.all([fetchSeries(), fetchTags()]);
 
-  return { props: { series, tags } };
+  return { props: { series, tags: tags.tags } };
 }
