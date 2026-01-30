@@ -1,14 +1,13 @@
 import type { GetStaticProps, InferGetStaticPropsType } from "next";
 import Head from "next/head";
-import Image from "next/image";
-import Link from "next/link";
 
 import { PROJECTS, type ProjectBase } from "@/shared/assets";
-import { Card, CardWrapper } from "@/shared/components";
 import { PostLayout, RootLayout } from "@/shared/layouts";
 import { getMarkdownContent } from "@/shared/utils/markdown.server";
 
-type ProjectListItem = {
+import ProjectSection from "@/features/projects/components/ProjectSection";
+
+export type ProjectListItem = {
   id: string;
   title: string;
   description: string;
@@ -69,48 +68,10 @@ export default function ProjectsPage({
             title="프로젝트"
             description="개발에 참여한 모든 프로젝트"
           >
-            <CardWrapper>
-              {projects.map((project) => (
-                <VideoCard key={project.id} project={project} />
-              ))}
-            </CardWrapper>
+            <ProjectSection projects={projects} />
           </PostLayout>
         </section>
       </RootLayout>
     </>
   );
 }
-
-const VideoCard = ({ project }: { project: ProjectListItem }) => (
-  <Link href={`/projects/${project.id}`} className="flex flex-col gap-4">
-    <Card>
-      <Image
-        src={project.thumb || ""}
-        alt={project.title}
-        width={500}
-        height={500}
-        className="h-full w-full object-cover"
-      />
-    </Card>
-    <div className="flex items-start gap-3">
-      <div className="size-9 overflow-hidden rounded-full">
-        <Image
-          src={project.icon}
-          alt={project.title}
-          width={36}
-          height={36}
-          objectFit="cover"
-        />
-      </div>
-      <div className="flex flex-col gap-2 leading-none font-semibold">
-        <p className="line-clamp-1">{project.title}</p>
-        <p className="text-text-muted line-clamp-1 text-sm leading-none font-normal">
-          {project.description}
-        </p>
-        <p className="text-text-muted line-clamp-1 text-xs leading-none font-normal">
-          {project.mdPeriod}
-        </p>
-      </div>
-    </div>
-  </Link>
-);
