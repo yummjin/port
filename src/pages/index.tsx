@@ -26,6 +26,20 @@ export default function Home() {
       </Head>
 
       <section className="relative flex h-[calc(100vh-88px)] w-full flex-col overflow-hidden">
+        <div
+          className="pointer-events-none absolute inset-y-0 left-0 z-10 w-[15%] min-w-[80px]"
+          style={{
+            background:
+              "linear-gradient(to right, var(--background) 0%, transparent 100%)",
+          }}
+        />
+        <div
+          className="pointer-events-none absolute inset-y-0 right-0 z-10 w-[15%] min-w-[80px]"
+          style={{
+            background:
+              "linear-gradient(to left, var(--background) 0%, transparent 100%)",
+          }}
+        />
         <div className="absolute relative top-60 left-0 h-2/5">
           {particles.map((particle) => (
             <motion.div
