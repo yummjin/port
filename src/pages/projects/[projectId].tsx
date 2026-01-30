@@ -1,7 +1,6 @@
 import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import { useRouter } from "next/router";
 import React, { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -11,8 +10,6 @@ import { Title } from "@/shared/components";
 import { RootLayout } from "@/shared/layouts";
 import { MarkdownData } from "@/shared/utils";
 import { getMarkdownContent } from "@/shared/utils/markdown.server";
-
-import { TableOfContents } from "@/features/projects/components";
 
 export const getStaticProps = async (context: GetStaticPropsContext) => {
   const { projectId } = context.params || {};
@@ -52,7 +49,6 @@ export default function ProjectDetail({
   project,
   markdownData,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
-  const router = useRouter();
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   return (
@@ -60,19 +56,9 @@ export default function ProjectDetail({
       <Head>
         <title>프로젝트 - {project.title.split(":")[0]}</title>
       </Head>
-      <div className="min-h-screen p-6 md:p-12 md:pt-8">
-        <button
-          onClick={() => {
-            router.push("/projects");
-          }}
-          className="cursor-pointer py-4 font-mono outline-none hover:underline active:underline"
-        >
-          go back
-        </button>
-        <div className="mx-auto flex w-full max-w-6xl flex-col gap-10 pt-8 md:pt-12">
-          <ProjectHeader project={project} markdownData={markdownData} />
-
-          {Array.isArray(project.image) && project.image.length > 0 && (
+      <div className="min-h-screen">
+        <div className="mx-auto flex w-full max-w-[1000px] flex-col gap-10 px-6 pt-10">
+          {/* {Array.isArray(project.image) && project.image.length > 0 && (
             <div className="grid w-full grid-cols-3 gap-4 md:grid-cols-4">
               {project.image.map((imgSrc, index) => (
                 <div
@@ -89,16 +75,34 @@ export default function ProjectDetail({
                 </div>
               ))}
             </div>
-          )}
-
-          <div className="grid gap-16 md:grid-cols-2">
-            <ProjectDetails markdownData={markdownData} />
-          </div>
+          )} */}
 
           {markdownData.content && (
             <div className="w-full">
-              <div className="grid grid-cols-1 gap-8 lg:grid-cols-4">
-                <div className="lg:col-span-3">
+              <div className="gap-8 lg:grid lg:grid-cols-7">
+                <div className="lg:col-span-5">
+                  {Array.isArray(project.image) && project.image.length > 0 && (
+                    <div
+                      className="group relative mb-10 aspect-[2/1] w-full cursor-pointer overflow-hidden rounded-xl"
+                      onClick={() => setSelectedImage(project.image![0])}
+                    >
+                      <Image
+                        src={project.image[0]}
+                        alt={project.title}
+                        fill
+                        className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+                        priority
+                      />
+                    </div>
+                  )}
+
+                  <ProjectHeader
+                    project={project}
+                    markdownData={markdownData}
+                  />
+                  <div className="mt-8 lg:hidden">
+                    <ProjectDetails markdownData={markdownData} />
+                  </div>
                   <div className="prose prose-lg max-w-none">
                     <ReactMarkdown
                       remarkPlugins={[remarkGfm]}
@@ -177,8 +181,8 @@ export default function ProjectDetail({
                     </ReactMarkdown>
                   </div>
                 </div>
-                <div className="lg:col-span-1">
-                  <TableOfContents items={markdownData.tableOfContents} />
+                <div className="col-span-2 hidden pt-90 lg:block">
+                  <ProjectDetails markdownData={markdownData} />
                 </div>
               </div>
             </div>
@@ -228,10 +232,10 @@ const ProjectHeader = ({
   const hasLinks = links.github || links.demo || links.appStore;
 
   return (
-    <header className="flex flex-col gap-8 md:flex-row md:justify-between">
+    <header className="flex justify-between gap-8 md:flex-row md:justify-between">
       <div className="space-y-4">
         <Title
-          size="3xl"
+          size="xl"
           as="h1"
           subTitle={project.description}
           className="text-text-muted"
@@ -249,7 +253,7 @@ const ProjectHeader = ({
 };
 
 const ProjectDetails = ({ markdownData }: { markdownData: MarkdownData }) => (
-  <div className="space-y-8">
+  <div className="space-y-8 rounded-2xl border border-white/20 p-6">
     <div>
       <Title size="sm" as="h3" className="text-subLight mb-6">
         프로젝트 정보
@@ -281,10 +285,10 @@ const ProjectDetails = ({ markdownData }: { markdownData: MarkdownData }) => (
 
 const InfoItem = ({ label, value }: { label: string; value: string }) => (
   <div className="flex items-start gap-4">
-    <span className="text-text-muted min-w-[80px] text-sm font-medium">
+    <span className="text-text-muted min-w-[30px] text-sm font-medium">
       {label}
     </span>
-    <span className="text-foreground">{value}</span>
+    <span className="text-foreground text-sm">{value}</span>
   </div>
 );
 
@@ -318,12 +322,9 @@ const ProjectLinks = ({ links }: ProjectLinksProps) => {
             href={href}
             target="_blank"
             rel="noopener noreferrer"
-            className="group hover:border-subLight border-border bg-card-background flex items-center gap-2 rounded-lg border px-4 py-3 text-sm transition-all hover:bg-[color-mix(in_srgb,var(--card-background)_85%,var(--foreground))]"
+            className="text-foreground bg-card-background cursor-pointer rounded-full px-4 py-2 text-center text-sm font-medium focus:outline-none"
           >
             <span>{label}</span>
-            <span className="transition-transform group-hover:translate-x-1">
-              →
-            </span>
           </a>
         ) : null,
       )}

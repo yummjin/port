@@ -18,7 +18,7 @@ export default function Header() {
   const closeMenu = () => setIsMenuOpen(false);
 
   return (
-    <div className="fixed top-6 z-50 mx-[24px] flex w-[calc(100%-48px)] max-w-[1200px] flex-col">
+    <div className="fixed top-6 left-1/2 z-50 flex w-[calc(100%-48px)] max-w-[1200px] -translate-x-1/2 flex-col">
       <header className="bg-background/50 h-header flex flex-shrink-0 items-center justify-between rounded-full border border-white/10 px-6 py-4 backdrop-blur-xl lg:border-none">
         <Link href={PATH.HOME} className="cursor-pointer" onClick={closeMenu}>
           <span className="font-bold">yummjin</span>
