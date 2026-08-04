@@ -4,5 +4,6 @@ export const PATH = {
   USER: "/about",
   SKILLS: "/",
   PROJECTS: "/projects",
+  PLAYGROUND: "/playground",
   HACKATHONS: "/about/hackathons",
 };

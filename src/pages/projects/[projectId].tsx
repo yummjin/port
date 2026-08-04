@@ -253,7 +253,7 @@ const ProjectHeader = ({
 };
 
 const ProjectDetails = ({ markdownData }: { markdownData: MarkdownData }) => (
-  <div className="space-y-8 rounded-2xl border border-white/20 p-6">
+  <div className="space-y-8 rounded-2xl border border-black/10 p-6">
     <div>
       <Title size="sm" as="h3" className="text-subLight mb-6">
         프로젝트 정보

@@ -35,7 +35,9 @@ export default function BlogPage({
                 key={tag.id}
                 onClick={() => setActiveTagName(isActive ? null : tag.name)}
                 className={`cursor-pointer rounded-full px-4 py-2 text-sm font-medium focus:outline-none ${
-                  isActive ? "text-background bg-white" : "text-white"
+                  isActive
+                    ? "bg-main text-white"
+                    : "text-foreground hover:bg-black/5"
                 }`}
               >
                 {tag.name === "frontend" ? "All" : capitalize(tag.name)}

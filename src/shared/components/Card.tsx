@@ -1,8 +1,21 @@
 import { ReactNode } from "react";
 
-export default function Card({ children }: { children: ReactNode }) {
+import { cn } from "@/shared/utils";
+
+export default function Card({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
   return (
-    <div className="bg-card-background relative h-[30vh] max-h-[240px] min-h-[170px] overflow-hidden rounded-[10px] border border-[rgb(41,41,41)]">
+    <div
+      className={cn(
+        "bg-card-background border-border relative h-[30vh] max-h-[240px] min-h-[170px] overflow-hidden rounded-2xl border",
+        className,
+      )}
+    >
       {children}
     </div>
   );

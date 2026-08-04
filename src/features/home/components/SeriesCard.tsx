@@ -38,15 +38,15 @@ export const SeriesCard = ({
           fill
           className="object-cover object-center"
         />
-        <div className="group-hover:bg-background/30 absolute inset-0 bg-transparent group-hover:opacity-100">
-          <div className="group-hover:bg-background absolute top-4 right-4 flex size-9 shrink-0 items-center justify-center rounded-full bg-transparent">
+        <div className="absolute inset-0 bg-transparent group-hover:bg-black/30">
+          <div className="absolute top-4 right-4 flex size-9 shrink-0 items-center justify-center rounded-full bg-transparent group-hover:bg-black/60">
             <IoLink className="size-4 text-transparent group-hover:text-white" />
           </div>
         </div>
       </Card>
       <div className="flex items-start gap-3">
-        <div className="flex size-9 shrink-0 items-center justify-center rounded-full bg-white">
-          <SiVelog className="text-background size-4" />
+        <div className="bg-foreground flex size-9 shrink-0 items-center justify-center rounded-full">
+          <SiVelog className="size-4 text-white" />
         </div>
         <div className="flex flex-col gap-2 font-semibold">
           <p className="line-clamp-1 leading-none">{content.title}</p>
