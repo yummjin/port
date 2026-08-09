@@ -15,7 +15,7 @@ export default function Home({ posts }: { posts: PostMeta[] }) {
         <title>Yujin</title>
         <meta
           name="description"
-          content="코드를 통해 사용자 일상에 녹아들고자 하는 개발자 Yujin의 포트폴리오입니다."
+          content="프론트엔드 개발자 한유진입니다."
         />
       </Head>
 
@@ -32,14 +32,14 @@ export default function Home({ posts }: { posts: PostMeta[] }) {
         />
 
         <div className="m-auto flex w-full max-w-[1000px] flex-col gap-6">
-          <p className="text-body text-secondary">Frontend Developer</p>
+          <p className="text-body text-secondary">프론트엔드 개발자 한유진입니다!</p>
           <h1 className="text-display-hero text-foreground font-bold">
             <HeroLine words={["일상에", "녹아드는"]} startDelay={0} />
             <HeroLine words={["개발을", "해요"]} startDelay={2} />
           </h1>
           <p className="text-body text-secondary max-w-[560px]">
-            당근에서 프론트엔드 개발자로 일하고 있는 한유진입니다.<br />작은
-            디테일과 체감되는 변화를 중요하게 생각합니다.
+            항상 제품 중심으로 사고하고, 사용자가 우선이에요.<br />
+            코드를 통해 일상에 녹아드는 제품을 만드는 개발자가 되려고 노력해요.
           </p>
 
           <div className="mt-4 flex gap-3">

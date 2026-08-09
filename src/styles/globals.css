@@ -189,6 +189,39 @@
   }
 }
 
+/* About page skill detail: fade in on selection change */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.fade-in {
+  animation: fade-in 200ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-in {
+    animation: none;
+  }
+}
+
+/* MDX code rendering: no backtick decoration around inline code, and a
+   surface-colored background on code blocks (typography plugin's default
+   pre background is semi-transparent black, which is nearly invisible on
+   the dark canvas) */
+.prose code::before,
+.prose code::after {
+  content: none;
+}
+
+.prose pre {
+  background-color: var(--color-surface);
+}
+
 /* rehype-highlight token colors for blog code blocks */
 .hljs-keyword,
 .hljs-selector-tag,

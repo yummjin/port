@@ -41,7 +41,11 @@ export default function BlogPostPage({
 
       <main className="px-content mx-auto flex max-w-[720px] flex-col gap-6 pt-16 pb-20">
         <p className="text-caption text-muted">{meta.date}</p>
-        <h1 className="text-section">{meta.title}</h1>
+        <div className="text-section border-b border-muted/50 mb-2">
+          {meta.title}
+          <h1 className="text-body-small mt-3 mb-6">{meta.description}</h1>
+        </div>
+
 
         <article className="prose dark:prose-invert max-w-none">
           <ReactMarkdown

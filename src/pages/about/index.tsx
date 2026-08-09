@@ -1,7 +1,9 @@
 import Head from "next/head";
 import Image from "next/image";
+import { useState } from "react";
 
 import { Card } from "@/components/Card";
+import { cn } from "@/lib/cn";
 
 const SKILLS = [
   {
@@ -28,7 +30,19 @@ const SKILLS = [
   },
 ];
 
+const TIMELINE = [
+  { period: "2026.05", title: "당근 프론트엔드 인턴" },
+  { period: "2025.10 – 2026.02", title: "CMC Web 팀원" },
+  { period: "2025.06", title: "us:code in 의성 해커톤 최우수상" },
+  { period: "2025.05", title: "Khuthon 우수상" },
+  { period: "2025.03 – 2025.08", title: "구름톤 유니브 경기대학교 프론트엔드 활동" },
+  { period: "2023 – 2027", title: "경기대학교 컴퓨터공학전공" },
+];
+
 export default function AboutPage() {
+  const [selected, setSelected] = useState(SKILLS[0].name);
+  const selectedSkill = SKILLS.find((skill) => skill.name === selected)!;
+
   return (
     <>
       <Head>
@@ -52,25 +66,66 @@ export default function AboutPage() {
 
         <section className="flex flex-col gap-6">
           <h2 className="text-tile-heading">기술 스택</h2>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            {SKILLS.map((skill) => (
-              <Card key={skill.name} className="flex flex-col gap-3 p-4">
-                <div className="flex items-center gap-2">
+
+          <div className="border-border bg-border grid grid-cols-2 gap-px overflow-hidden rounded-docs-card border sm:grid-cols-4">
+            {SKILLS.map((skill) => {
+              const isSelected = skill.name === selected;
+              return (
+                <button
+                  key={skill.name}
+                  type="button"
+                  aria-pressed={isSelected}
+                  onClick={() => setSelected(skill.name)}
+                  className={cn(
+                    "bg-surface flex flex-col items-center gap-3 px-4 py-6 transition-colors",
+                    isSelected
+                      ? "bg-canvas border-b-primary border-b-2"
+                      : "hover:bg-canvas border-b-2 border-b-transparent",
+                  )}
+                >
                   <Image
                     src={skill.image}
                     alt=""
-                    width={24}
-                    height={24}
-                    className="rounded-[4px]"
+                    width={32}
+                    height={32}
+                    className="rounded-[6px]"
                   />
-                  <h3 className="text-body font-medium">{skill.name}</h3>
-                </div>
-                <p className="text-body-small text-secondary">
-                  {skill.description}
-                </p>
-              </Card>
-            ))}
+                  <span
+                    className={cn(
+                      "text-body-small",
+                      isSelected
+                        ? "text-foreground font-medium"
+                        : "text-secondary",
+                    )}
+                  >
+                    {skill.name}
+                  </span>
+                </button>
+              );
+            })}
           </div>
+
+          <Card className="p-4">
+            <p
+              key={selectedSkill.name}
+              className="text-body-small text-secondary fade-in"
+            >
+              {selectedSkill.description}
+            </p>
+          </Card>
+        </section>
+
+        <section className="flex flex-col gap-6">
+          <h2 className="text-tile-heading">경험</h2>
+          <ol className="border-border flex flex-col gap-8 border-l pl-6">
+            {TIMELINE.map((item) => (
+              <li key={item.title} className="relative">
+                <span className="bg-primary absolute top-1 -left-[29px] h-2.5 w-2.5 rounded-full" />
+                <p className="text-caption text-muted">{item.period}</p>
+                <h3 className="text-body font-medium">{item.title}</h3>
+              </li>
+            ))}
+          </ol>
         </section>
       </main>
     </>
