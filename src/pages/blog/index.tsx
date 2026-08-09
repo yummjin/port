@@ -1,87 +1,105 @@
+import type { GetStaticProps, InferGetStaticPropsType } from "next";
 import Head from "next/head";
-import { useState } from "react";
+import Link from "next/link";
+import { useMemo, useState } from "react";
 
-import { USER_CONFIG } from "@/shared/config/user.config";
-import { PostLayout, RootLayout } from "@/shared/layouts";
-import { capitalize } from "@/shared/utils";
+import { PageHeader } from "@/components/PageHeader";
+import { cn } from "@/lib/cn";
+import { getAllPosts, type PostMeta } from "@/lib/posts";
 
-import { SeriesSection } from "@/features/home";
-import { Post, Series, Tag } from "@/features/home/model/series";
+export const getStaticProps: GetStaticProps<{
+  posts: PostMeta[];
+}> = async () => {
+  return { props: { posts: getAllPosts() } };
+};
 
 export default function BlogPage({
-  series,
-  tags,
-}: {
-  series: Series;
-  tags: Tag[];
-}) {
-  const [activeTagName, setActiveTagName] = useState<string | null>(
-    tags[0]?.name ?? null,
+  posts,
+}: InferGetStaticPropsType<typeof getStaticProps>) {
+  const [selectedTag, setSelectedTag] = useState<string | null>(null);
+
+  const tags = useMemo(
+    () => Array.from(new Set(posts.flatMap((post) => post.tags))),
+    [posts],
   );
+  const visiblePosts = selectedTag
+    ? posts.filter((post) => post.tags.includes(selectedTag))
+    : posts;
 
   return (
-    <RootLayout>
+    <>
       <Head>
         <title>블로그</title>
-        <meta name="description" content="yummjin.log - blog" />
+        <meta name="description" content="Yujin's blog" />
       </Head>
 
-      <PostLayout title="블로그" description="다양한 기록을 남기고 있습니다">
-        <div className="flex gap-2">
-          {tags.map((tag) => {
-            const isActive = activeTagName === tag.name;
-            return (
-              <button
-                key={tag.id}
-                onClick={() => setActiveTagName(isActive ? null : tag.name)}
-                className={`cursor-pointer rounded-full px-4 py-2 text-sm font-medium focus:outline-none ${
-                  isActive
-                    ? "bg-main text-white"
-                    : "text-foreground hover:bg-black/5"
-                }`}
-              >
-                {tag.name === "frontend" ? "All" : capitalize(tag.name)}
-              </button>
-            );
-          })}
-        </div>
-        <SeriesSection
-          activeTagName={activeTagName}
-          posts={series.contents.filter((content: Post) =>
-            content.title.includes(
-              capitalize(
-                activeTagName === "frontend" ? "" : (activeTagName ?? ""),
-              ),
-            ),
-          )}
+      <main className="px-content mx-auto flex max-w-[1000px] flex-col gap-8 pt-16 pb-20">
+        <PageHeader
+          title="블로그"
+          description="개발과 일상에 대한 기록을 남겨요."
         />
-      </PostLayout>
-    </RootLayout>
+
+        {tags.length > 0 && (
+          <div className="flex flex-wrap gap-2">
+            <TagChip
+              label="전체"
+              selected={selectedTag === null}
+              onClick={() => setSelectedTag(null)}
+            />
+            {tags.map((tag) => (
+              <TagChip
+                key={tag}
+                label={tag}
+                selected={selectedTag === tag}
+                onClick={() => setSelectedTag(tag)}
+              />
+            ))}
+          </div>
+        )}
+
+        <div className="flex flex-col gap-10">
+          {visiblePosts.map((post) => (
+            <Link
+              key={post.slug}
+              href={`/blog/${post.slug}`}
+              className="flex flex-col gap-2 transition-opacity hover:opacity-70"
+            >
+              <h2 className="text-tile-heading text-link">
+                {post.title} →
+              </h2>
+              <p className="text-caption text-muted">{post.date}</p>
+              <p className="text-body-small text-secondary">
+                {post.description}
+              </p>
+            </Link>
+          ))}
+        </div>
+      </main>
+    </>
   );
 }
 
-export async function getStaticProps() {
-  const fetchSeries = async () => {
-    const response = await fetch(
-      `https://velog-scraper.vercel.app/api/v1/post-all?userId=yummjin`,
-    );
-    return response.json();
-  };
-
-  const fetchTags = async (): Promise<{ tags: Tag[] }> => {
-    try {
-      const response = await fetch(
-        `https://velog-scraper.vercel.app/api/v1/tags?userId=${USER_CONFIG.velogId}`,
-      );
-      const data = await response.json();
-      return data as { tags: Tag[] };
-    } catch (error) {
-      console.error("Failed to fetch tags:", error);
-      return { tags: [] };
-    }
-  };
-
-  const [series, tags] = await Promise.all([fetchSeries(), fetchTags()]);
-
-  return { props: { series, tags: tags.tags } };
+function TagChip({
+  label,
+  selected,
+  onClick,
+}: {
+  label: string;
+  selected: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={cn(
+        "cursor-pointer rounded-marketing-pill border px-4 py-1.5 text-body-small transition-opacity hover:opacity-80",
+        selected
+          ? "border-primary bg-primary text-on-primary"
+          : "border-border text-secondary",
+      )}
+    >
+      {label}
+    </button>
+  );
 }

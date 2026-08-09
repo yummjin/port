@@ -2,15 +2,15 @@ import "@/styles/globals.css";
 import { Analytics } from "@vercel/analytics/next";
 import type { AppProps } from "next/app";
 
-import { geistMono, geistSans, wantedSans } from "@/styles/font";
+import { Header } from "@/components/Header";
+import { ThemeProvider } from "@/lib/theme";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <div
-      className={`${geistMono.variable} ${geistSans.variable} ${wantedSans.variable}`}
-    >
+    <ThemeProvider>
+      <Header />
       <Component {...pageProps} />
       <Analytics />
-    </div>
+    </ThemeProvider>
   );
 }

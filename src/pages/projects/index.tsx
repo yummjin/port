@@ -1,77 +1,68 @@
-import type { GetStaticProps, InferGetStaticPropsType } from "next";
 import Head from "next/head";
+import Image from "next/image";
+import Link from "next/link";
 
-import { PROJECTS, type ProjectBase } from "@/shared/assets";
-import { PostLayout, RootLayout } from "@/shared/layouts";
-import { getMarkdownContent } from "@/shared/utils/markdown.server";
+import { Card } from "@/components/Card";
+import { PageHeader } from "@/components/PageHeader";
+import { getAllProjects } from "@/lib/projects";
 
-import ProjectSection from "@/features/projects/components/ProjectSection";
-
-export type ProjectListItem = {
-  id: string;
-  title: string;
-  description: string;
-  status: "completed" | "in_progress";
-  thumb: string | null;
-  icon: string;
-  mdThumb: string | null;
-  mdPeriod: string | null;
-  mdStack: string[] | null;
-};
-
-export const getStaticProps: GetStaticProps<{
-  projects: ProjectListItem[];
-}> = async () => {
-  const projects: ProjectListItem[] = PROJECTS.map((p) => {
-    const md = getMarkdownContent(p.id);
-    const mdThumb = (md.data.thumb as string) || null;
-    const mdPeriod = (md.data.period as string) || null;
-    const mdStack = (md.data.stack as string[]) || null;
-    return {
-      id: p.id,
-      title: p.title,
-      description: p.description,
-      status: p.status,
-      thumb: Array.isArray((p as ProjectBase).image)
-        ? ((p as ProjectBase).image as string[])[0]
-        : null,
-      icon: p.icon,
-      mdThumb,
-      mdPeriod,
-      mdStack,
-    };
-  }).sort((a, b) => {
-    const parse = (period: string | null) => {
-      if (!period) return 0;
-      const start = period.split("~")[0]?.trim()?.replace(/\./g, "-");
-      const d = new Date(start);
-      return d.getTime() || 0;
-    };
-    return parse(b.mdPeriod) - parse(a.mdPeriod);
-  });
-
-  return { props: { projects } };
+export const getStaticProps = async () => {
+  return { props: { projects: getAllProjects() } };
 };
 
 export default function ProjectsPage({
   projects,
-}: InferGetStaticPropsType<typeof getStaticProps>) {
+}: {
+  projects: ReturnType<typeof getAllProjects>;
+}) {
   return (
     <>
       <Head>
-        <title>프로젝트 - 모든 프로젝트</title>
+        <title>프로젝트</title>
         <meta name="description" content="개발에 참여한 모든 프로젝트" />
       </Head>
-      <RootLayout>
-        <section className="flex flex-col">
-          <PostLayout
-            title="프로젝트"
-            description="개발에 참여한 모든 프로젝트"
-          >
-            <ProjectSection projects={projects} />
-          </PostLayout>
-        </section>
-      </RootLayout>
+
+      <main className="px-content mx-auto flex max-w-[1000px] flex-col gap-8 pt-16 pb-20">
+        <PageHeader
+          title="프로젝트"
+          description="다양한 사이드 프로젝트와 함께했어요."
+        />
+
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {projects.map((project, index) => (
+            <Link
+              key={project.id}
+              href={`/projects/${project.id}`}
+              className="card-rise"
+              style={{ animationDelay: `${index * 100}ms` }}
+            >
+              <Card className="flex h-full flex-col transition-opacity hover:opacity-80">
+                <Card.Image>
+                  <Image
+                    src={project.image[0]}
+                    alt={project.title}
+                    fill
+                    className="object-cover"
+                  />
+                </Card.Image>
+                <Card.Content className="flex flex-col gap-1">
+                  <div className="flex items-center gap-2">
+                    <Image
+                      src={project.icon}
+                      alt=""
+                      width={20}
+                      height={20}
+                      className="rounded-[4px]"
+                    />
+                    <Card.Title>{project.title}</Card.Title>
+                  </div>
+                  <Card.Description>{project.description}</Card.Description>
+                </Card.Content>
+              </Card>
+            </Link>
+          ))}
+        </div>
+      </main>
     </>
   );
 }
