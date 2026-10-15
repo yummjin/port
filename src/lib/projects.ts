@@ -16,6 +16,8 @@ export type ProjectMeta = {
     github?: string;
     demo?: string;
     appStore?: string;
+    playStore?: string;
+    oneStore?: string;
   };
 };
 
@@ -33,6 +35,9 @@ const PROJECTS: ProjectMeta[] = [
     links: {
       github: "https://github.com/Kyonggi-Univ-Diet-Information/FE",
       demo: "https://www.kiryong.kr/ko",
+      appStore: "https://apps.apple.com/kr/app/id6758451053",
+      playStore:
+        "https://play.google.com/store/apps/details?id=apple.auth.diet.kyonggi.com",
     },
   },
   {
@@ -81,7 +86,7 @@ const PROJECTS: ProjectMeta[] = [
     status: "completed",
     icon: "/icons/icon-shwimpyo.webp",
     image: ["/images/shwimpyo-poster.webp", "/images/shwimpyo-1.webp"],
-    links: { appStore: "https://m.onestore.co.kr/v2/ko-kr/app/0001002397" },
+    links: { oneStore: "https://m.onestore.co.kr/v2/ko-kr/app/0001002397" },
   },
   {
     id: "7",

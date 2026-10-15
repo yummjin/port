@@ -38,6 +38,8 @@ const LINK_LABELS: Record<string, string> = {
   github: "GitHub",
   demo: "Demo",
   appStore: "App Store",
+  playStore: "Google Play",
+  oneStore: "ONE store",
 };
 
 export default function ProjectDetailPage({ project }: Props) {
