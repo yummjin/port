@@ -4,27 +4,47 @@ import Link from "next/link";
 
 import { Card } from "@/components/Card";
 import { PageHeader } from "@/components/PageHeader";
+import { cn } from "@/lib/cn";
+import { getAllExperiences, type ExperienceMeta } from "@/lib/experiences";
 import { getAllProjects } from "@/lib/projects";
 
-const TIMELINE = [
-  { period: "2026.05", title: "당근 프론트엔드 인턴" },
-  { period: "2025.10 – 2026.02", title: "CMC Web 팀원" },
-  { period: "2025.06", title: "us:code in 의성 해커톤 최우수상" },
-  { period: "2025.05", title: "Khuthon 우수상" },
-  {
-    period: "2025.03 – 2025.08",
-    title: "구름톤 유니브 경기대학교 프론트엔드 활동",
-  },
-  { period: "2023 – 2027", title: "경기대학교 컴퓨터공학전공" },
-];
+function ExperienceLink({ experience }: { experience: ExperienceMeta }) {
+  return (
+    <Link
+      href={`/work/experiences/${experience.slug}`}
+      className="group flex flex-col gap-0.5"
+    >
+      <span className="text-caption text-muted">{experience.period}</span>
+      <span className="text-body text-foreground group-hover:text-link font-medium break-keep transition-colors">
+        {experience.title}
+        <span className="ml-1 inline-block transition-transform group-hover:translate-x-0.5">
+          ›
+        </span>
+      </span>
+    </Link>
+  );
+}
+
+function groupByYear(experiences: ExperienceMeta[]) {
+  const groups = new Map<string, typeof experiences>();
+  for (const experience of experiences) {
+    const year = experience.period.slice(0, 4);
+    groups.set(year, [...(groups.get(year) ?? []), experience]);
+  }
+  return [...groups].sort(([a], [b]) => b.localeCompare(a));
+}
 
 export const getStaticProps = async () => {
-  return { props: { projects: getAllProjects() } };
+  return {
+    props: { experiences: getAllExperiences(), projects: getAllProjects() },
+  };
 };
 
 export default function WorkPage({
+  experiences,
   projects,
 }: {
+  experiences: ReturnType<typeof getAllExperiences>;
   projects: ReturnType<typeof getAllProjects>;
 }) {
   return (
@@ -34,7 +54,7 @@ export default function WorkPage({
         <meta name="description" content="지금까지의 경험과 참여한 프로젝트" />
       </Head>
 
-      <main className="px-content mx-auto flex max-w-[1000px] flex-col gap-16 pt-16 pb-20">
+      <main className="px-content mx-auto flex max-w-[1000px] flex-col gap-16 pt-12 pb-20">
         <PageHeader
           title="Work"
           description="지금까지 해온 일과 만든 것들이에요."
@@ -42,12 +62,50 @@ export default function WorkPage({
 
         <section className="flex flex-col gap-6">
           <h2 className="text-tile-heading">경험</h2>
-          <ol className="border-border flex flex-col gap-8 border-l pl-6">
-            {TIMELINE.map((item) => (
-              <li key={item.title} className="relative">
-                <span className="bg-primary absolute top-1 -left-[29px] h-2.5 w-2.5 rounded-full" />
-                <p className="text-caption text-muted">{item.period}</p>
-                <h3 className="text-body font-medium">{item.title}</h3>
+          <ol
+            className="hidden grid-rows-[auto_1px_auto] gap-x-4 md:grid"
+            style={{
+              gridTemplateColumns: `repeat(${experiences.length + 1}, minmax(0, 1fr))`,
+            }}
+          >
+            <li aria-hidden className="bg-border col-span-full row-start-2" />
+            {[...experiences].reverse().map((experience, index) => {
+              const isAbove = index % 2 === 0;
+              return (
+                <li
+                  key={experience.slug}
+                  className={cn(
+                    "border-border relative col-span-2 border-l pl-4",
+                    isAbove ? "row-start-1 self-end pb-6" : "row-start-3 pt-6",
+                  )}
+                  style={{ gridColumnStart: index + 1 }}
+                >
+                  <span
+                    className={cn(
+                      "bg-primary absolute -left-[5.5px] h-2.5 w-2.5 rounded-full",
+                      isAbove ? "-bottom-[5.5px]" : "-top-[5.5px]",
+                    )}
+                  />
+                  <ExperienceLink experience={experience} />
+                </li>
+              );
+            })}
+          </ol>
+
+          <ol className="flex flex-col gap-10 md:hidden">
+            {groupByYear(experiences).map(([year, items]) => (
+              <li key={year} className="flex flex-col gap-5">
+                <div className="flex items-center gap-3">
+                  <span className="text-tile-heading">{year}</span>
+                  <span className="bg-border h-px flex-1" />
+                </div>
+                <ul className="flex flex-col gap-4">
+                  {items.map((experience) => (
+                    <li key={experience.slug}>
+                      <ExperienceLink experience={experience} />
+                    </li>
+                  ))}
+                </ul>
               </li>
             ))}
           </ol>
