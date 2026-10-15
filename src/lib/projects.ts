@@ -12,6 +12,7 @@ export type ProjectMeta = {
   status: "completed" | "in_progress";
   icon: string;
   image: string[];
+  color: string;
   links?: {
     github?: string;
     demo?: string;
@@ -24,6 +25,7 @@ export type ProjectMeta = {
 const PROJECTS: ProjectMeta[] = [
   {
     id: "1",
+    color: "#f55800",
     title: "기룡아 밥먹자",
     description: "대학 식당 식단 정보를 제공하는 웹사이트",
     status: "completed",
@@ -42,6 +44,7 @@ const PROJECTS: ProjectMeta[] = [
   },
   {
     id: "2",
+    color: "#30a660",
     title: "TeamPu",
     description: "컴퓨터공학부 팀프로젝트실 예약 및 관리 시스템",
     status: "completed",
@@ -51,6 +54,7 @@ const PROJECTS: ProjectMeta[] = [
   },
   {
     id: "3",
+    color: "#ffb111",
     title: "Soup",
     description: "대학생 팀 프로젝트를 위한 협업 및 관리 도구",
     status: "completed",
@@ -60,6 +64,7 @@ const PROJECTS: ProjectMeta[] = [
   },
   {
     id: "4",
+    color: "#795ef0",
     title: "FestaMate",
     description: "대학 축제에서 함께할 친구를 찾는 매칭 서비스",
     status: "completed",
@@ -72,6 +77,7 @@ const PROJECTS: ProjectMeta[] = [
   },
   {
     id: "5",
+    color: "#639bfb",
     title: "Took!",
     description: "간편하고 안전한 온라인 투표 시스템",
     status: "completed",
@@ -81,6 +87,7 @@ const PROJECTS: ProjectMeta[] = [
   },
   {
     id: "6",
+    color: "#0ed486",
     title: "쉼표",
     description: "사용자의 디지털 피로도를 기반으로 한 힐링 여행 추천 서비스",
     status: "completed",
@@ -90,6 +97,7 @@ const PROJECTS: ProjectMeta[] = [
   },
   {
     id: "7",
+    color: "#42a2f8",
     title: "리빙메이트",
     description: "같이 살 룸메이트를 구하는 서비스",
     status: "completed",
@@ -101,6 +109,7 @@ const PROJECTS: ProjectMeta[] = [
   },
   {
     id: "8",
+    color: "#ed939c",
     title: "Piggo",
     description: "Khuthon 2025 참가 프로젝트 - 돼지 기침 감지 축사 관리 시스템",
     status: "completed",
@@ -110,6 +119,7 @@ const PROJECTS: ProjectMeta[] = [
   },
   {
     id: "9",
+    color: "#689433",
     title: "농기구 온",
     description:
       "us:code in 의성 2025 참가 프로젝트 - 농기구 대여 서비스 개선 프로젝트",
