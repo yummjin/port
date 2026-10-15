@@ -58,6 +58,7 @@
 @layer base {
   html {
     color-scheme: light dark;
+    overscroll-behavior-y: none;
   }
 
   body {
