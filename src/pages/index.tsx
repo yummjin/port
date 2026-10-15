@@ -43,8 +43,8 @@ export default function Home({ posts }: { posts: PostMeta[] }) {
           </p>
 
           <div className="mt-4 flex gap-3">
-            <LinkButton href="/projects" variant="primary">
-              프로젝트 보기
+            <LinkButton href="/work" variant="primary">
+              작업 보기
             </LinkButton>
             <LinkButton href="/blog" variant="outline">
               블로그 보기
