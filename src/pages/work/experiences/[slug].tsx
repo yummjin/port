@@ -34,7 +34,7 @@ export default function ExperiencePage({
         <title>{title}</title>
       </Head>
 
-      <main className="px-content mx-auto flex max-w-[720px] flex-col gap-6 pt-12 pb-20">
+      <main className="px-content mx-auto flex max-w-[1000px] flex-col gap-6 pt-12 pb-20">
         <p className="text-caption text-muted">{period}</p>
         <h1 className="text-section border-muted/50 mb-2 border-b pb-6">
           {title}

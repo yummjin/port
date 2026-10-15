@@ -33,7 +33,7 @@ export default function BlogPage({
         <meta name="description" content="Yujin's blog" />
       </Head>
 
-      <main className="px-content mx-auto flex max-w-[1000px] flex-col gap-8 pt-16 pb-20">
+      <main className="px-content mx-auto flex max-w-[1000px] flex-col gap-8 pt-12 pb-20">
         <PageHeader
           title="블로그"
           description="개발과 일상에 대한 기록을 남겨요."
@@ -64,9 +64,7 @@ export default function BlogPage({
               href={`/blog/${post.slug}`}
               className="flex flex-col gap-2 transition-opacity hover:opacity-70"
             >
-              <h2 className="text-tile-heading text-link">
-                {post.title} →
-              </h2>
+              <h2 className="text-tile-heading text-link">{post.title} →</h2>
               <p className="text-caption text-muted">{post.date}</p>
               <p className="text-body-small text-secondary">
                 {post.description}
@@ -93,7 +91,7 @@ function TagChip({
       type="button"
       onClick={onClick}
       className={cn(
-        "cursor-pointer rounded-marketing-pill border px-4 py-1.5 text-body-small transition-opacity hover:opacity-80",
+        "rounded-marketing-pill text-body-small cursor-pointer border px-4 py-1.5 transition-opacity hover:opacity-80",
         selected
           ? "border-primary bg-primary text-on-primary"
           : "border-border text-secondary",

@@ -39,13 +39,12 @@ export default function BlogPostPage({
         <meta name="description" content={meta.description} />
       </Head>
 
-      <main className="px-content mx-auto flex max-w-[720px] flex-col gap-6 pt-16 pb-20">
+      <main className="px-content mx-auto flex max-w-[1000px] flex-col gap-6 pt-12 pb-20">
         <p className="text-caption text-muted">{meta.date}</p>
-        <div className="text-section border-b border-muted/50 mb-2">
+        <div className="text-section border-muted/50 mb-2 border-b">
           {meta.title}
           <h1 className="text-body-small mt-3 mb-6">{meta.description}</h1>
         </div>
-
 
         <article className="prose dark:prose-invert max-w-none">
           <ReactMarkdown
@@ -54,7 +53,12 @@ export default function BlogPostPage({
             components={{
               img: ({ src, alt }) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={String(src)} alt={alt ?? ""} loading="lazy" />
+                <img
+                  src={String(src)}
+                  alt={alt ?? ""}
+                  loading="lazy"
+                  className="block max-h-[400px] w-auto max-w-full object-contain object-left"
+                />
               ),
             }}
           >
