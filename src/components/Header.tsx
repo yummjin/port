@@ -21,33 +21,43 @@ export function Header() {
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
   return (
-    <header className="border-border bg-surface/70 sticky top-0 z-50 border-b backdrop-blur-md">
+    <header className="sticky top-0 z-50 bg-transparent">
       <div className="px-content mx-auto flex h-14 max-w-[1000px] items-center justify-between">
         <Link
           href="/"
-          className="text-tile-heading text-sm"
+          className="text-body-small bg-foreground text-canvas px-1.5 py-0.5 font-medium dark:bg-white/80"
           onClick={() => setOpen(false)}
         >
           Yujin Han
         </Link>
 
-        <nav className="hidden items-center gap-1 md:flex">
+        <nav className="hidden items-center gap-6 md:flex">
           {NAV_LINKS.map(({ href, label }) => (
             <Link
               key={href}
               href={href}
               className={cn(
-                "rounded-marketing-pill px-control-inline py-compact text-body-small transition-opacity hover:opacity-70",
-                isLinkActive(href) ? "text-primary" : "text-secondary",
+                "text-body-small transition-colors",
+                isLinkActive(href)
+                  ? "text-foreground"
+                  : "text-muted hover:text-foreground",
               )}
             >
               {label}
             </Link>
           ))}
+          <a
+            href="https://github.com/yummjin"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="border-border text-body-small text-foreground border px-3 py-1 transition-opacity hover:opacity-70"
+          >
+            GitHub
+          </a>
           <ThemeToggle />
         </nav>
 
-        <div className="flex items-center gap-1 md:hidden">
+        <div className="flex items-center gap-2 md:hidden">
           <ThemeToggle />
           <button
             type="button"
@@ -62,20 +72,28 @@ export function Header() {
       </div>
 
       {open && (
-        <nav className="border-border px-content flex flex-col gap-1 border-t py-2 md:hidden">
+        <nav className="border-border px-content flex flex-col border-t md:hidden">
           {NAV_LINKS.map(({ href, label }) => (
             <Link
               key={href}
               href={href}
               onClick={() => setOpen(false)}
               className={cn(
-                "rounded-control px-control-inline py-compact text-body",
-                isLinkActive(href) ? "text-primary" : "text-secondary",
+                "text-body-small border-border border-b py-3",
+                isLinkActive(href) ? "text-foreground" : "text-muted",
               )}
             >
               {label}
             </Link>
           ))}
+          <a
+            href="https://github.com/yummjin"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-muted text-body-small py-3"
+          >
+            GitHub
+          </a>
         </nav>
       )}
     </header>
