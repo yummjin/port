@@ -1,14 +1,27 @@
+import Image from "next/image";
 import Head from "next/head";
 import Link from "next/link";
 
 import { LinkButton } from "@/components/Button";
 import { getAllPosts, type PostMeta } from "@/lib/posts";
+import { getAllProjects } from "@/lib/projects";
 
 export const getStaticProps = async () => {
-  return { props: { posts: getAllPosts().slice(0, 3) } };
+  return {
+    props: {
+      posts: getAllPosts().slice(0, 4),
+      projects: getAllProjects().slice(0, 5),
+    },
+  };
 };
 
-export default function Home({ posts }: { posts: PostMeta[] }) {
+export default function Home({
+  posts,
+  projects,
+}: {
+  posts: PostMeta[];
+  projects: ReturnType<typeof getAllProjects>;
+}) {
   return (
     <>
       <Head>
@@ -16,27 +29,17 @@ export default function Home({ posts }: { posts: PostMeta[] }) {
         <meta name="description" content="프론트엔드 개발자 한유진입니다." />
       </Head>
 
-      <section className="dark px-content relative flex h-screen flex-col justify-end gap-6 overflow-hidden pb-24">
-        <video
-          className="hero-media absolute inset-0 -z-10 h-full w-full object-cover"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          poster="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260806_132328_5f9029c8-218f-4489-82b6-29ff2849920e.png"
-          src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260806_133255_956f653f-5d80-4b06-abd5-0f46c98b60fa.mp4"
-        />
-
-        <div className="m-auto flex w-full max-w-[1000px] flex-col gap-6">
-          <h1 className="text-section text-foreground">안녕하세요!</h1>
-          <p className="text-body text-secondary max-w-[560px]">
-            프론트엔드 개발자 한유진이에요!
-            <br />
+      <section>
+        <div className="px-content mx-auto max-w-[1000px] py-12 md:py-20">
+          <div className="mb-6 h-[400px] w-full bg-white/16" />
+          <p className="text-body-small text-muted mb-4">Frontend Developer</p>
+          <h1 className="text-body">
+            안녕하세요! 프론트엔드 개발자 한유진이에요.
+          </h1>
+          <p className="text-body text-secondary mb-10 max-w-[480px]">
             사용자를 먼저 생각하며, 일상에 녹아드는 제품을 만들어요.
           </p>
-
-          <div className="mt-4 flex gap-3">
+          <div className="flex flex-wrap gap-3">
             <LinkButton href="/work" variant="primary">
               작업 보기
             </LinkButton>
@@ -47,32 +50,96 @@ export default function Home({ posts }: { posts: PostMeta[] }) {
         </div>
       </section>
 
-      <main className="px-content mx-auto flex max-w-[1000px] flex-col gap-24 pt-24 pb-20">
-        <section className="flex flex-col gap-6">
-          <div className="flex items-baseline justify-between">
+      <section>
+        <div className="px-content mx-auto max-w-[1000px] py-16">
+          <div className="mb-8 flex items-baseline justify-between">
             <h2 className="text-tile-heading">블로그</h2>
             <Link href="/blog" className="text-link text-body-small">
               전체보기 →
             </Link>
           </div>
-
-          <div className="flex flex-col gap-10">
-            {posts.map((post) => (
+          <div className="flex flex-col gap-5">
+            <div className="flex gap-5">
+              {posts.slice(0, 3).map((post) => (
+                <Link
+                  key={post.slug}
+                  href={`/blog/${post.slug}`}
+                  className="flex aspect-square w-full flex-col gap-2 border-[0.5px] border-black p-4 transition-opacity hover:opacity-70 dark:border-white/60"
+                >
+                  <h3 className="text-tile-heading text-link">
+                    {post.title} →
+                  </h3>
+                  <p className="text-body-small text-secondary">
+                    {post.description}
+                  </p>
+                  <p className="text-caption text-muted mt-auto w-fit border-[0.5px] border-black px-1.5 py-0.5 dark:border-white/60">
+                    {post.date}
+                  </p>
+                </Link>
+              ))}
+            </div>
+            {posts[3] && (
               <Link
-                key={post.slug}
-                href={`/blog/${post.slug}`}
-                className="flex flex-col gap-2 transition-opacity hover:opacity-70"
+                href={`/blog/${posts[3].slug}`}
+                className="flex flex-col justify-between gap-2 border-[0.5px] border-black p-5 transition-opacity hover:opacity-70 dark:border-white/60"
               >
-                <h3 className="text-tile-heading text-link">{post.title} →</h3>
-                <p className="text-caption text-muted">{post.date}</p>
+                <h3 className="text-tile-heading text-link">
+                  {posts[3].title} →
+                </h3>
+
                 <p className="text-body-small text-secondary">
-                  {post.description}
+                  {posts[3].description}
+                </p>
+                <p className="text-caption text-muted mt-6 w-fit border-[0.5px] border-black px-1.5 py-0.5 dark:border-white/60">
+                  {posts[3].date}
+                </p>
+              </Link>
+            )}
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div className="px-content mx-auto max-w-[600px] pt-16 pb-30">
+          <h2 className="text-tile-heading mb-8">프로젝트</h2>
+          <div className="grid max-w-[600px] grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3">
+            {projects.map((project, index) => (
+              <Link
+                key={project.id}
+                href={`/work/${project.id}`}
+                className="card-rise group flex flex-col gap-2"
+                style={{ animationDelay: `${index * 80}ms` }}
+              >
+                <div
+                  className="aspect-square w-full border-[0.5px] border-black p-4 transition-opacity group-hover:opacity-80 dark:border-white/60"
+                  style={{
+                    backgroundImage: `radial-gradient(120% 90% at 100% 0%, ${project.color}59 0%, ${project.color}1f 45%, transparent 75%)`,
+                  }}
+                >
+                  <Image src={project.icon} alt="" width={48} height={48} />
+                </div>
+                <p className="text-body-small text-foreground leading-snug font-medium">
+                  {project.title}
+                </p>
+                <p className="text-caption text-muted mt-[-6px] line-clamp-1">
+                  {project.description}
                 </p>
               </Link>
             ))}
+
+            {/* 전체보기 원형 버튼 */}
+            <Link
+              href="/work"
+              className="card-rise flex items-center justify-center"
+              style={{ animationDelay: `${projects.length * 80}ms` }}
+            >
+              <div className="border-foreground text-foreground flex aspect-square w-4/5 items-center justify-center rounded-full border text-center transition-opacity hover:opacity-60">
+                <span className="text-body-small leading-snug">전체보기</span>
+              </div>
+            </Link>
           </div>
-        </section>
-      </main>
+        </div>
+      </section>
     </>
   );
 }
