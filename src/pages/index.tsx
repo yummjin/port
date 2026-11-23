@@ -31,7 +31,15 @@ export default function Home({
 
       <section>
         <div className="px-content mx-auto max-w-[1000px] py-12 md:py-20">
-          <div className="mb-6 h-[400px] w-full bg-white/16" />
+          <div className="relative mb-6 h-[400px] w-full overflow-hidden">
+            <Image
+              src="/images/hero.webp"
+              alt=""
+              fill
+              className="object-cover"
+              priority
+            />
+          </div>
           <p className="text-body-small text-muted mb-4">Frontend Developer</p>
           <h1 className="text-body">
             안녕하세요! 프론트엔드 개발자 한유진이에요.
