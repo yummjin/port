@@ -8,11 +8,11 @@
      system stack that resolves to real SF Pro on Apple devices (apple.com
      itself does this on the public web). */
   --font-display:
-    -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto,
-    Helvetica, Arial, sans-serif;
+    var(--font-kmr-waldenburg), "kmrWaldenburg", "kmrWaldenburg Fallback",
+    Helvetica, "Helvetica Neue", Arial, sans-serif;
   --font-text:
-    -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto,
-    Helvetica, Arial, sans-serif;
+    var(--font-kmr-waldenburg), "kmrWaldenburg", "kmrWaldenburg Fallback",
+    Helvetica, "Helvetica Neue", Arial, sans-serif;
 
   --color-primary: #0071e3;
   --color-on-primary: #ffffff;
@@ -24,9 +24,9 @@
   --color-link: var(--link);
   --color-border: var(--border);
 
-  --radius-control: 8px;
-  --radius-docs-card: 18px;
-  --radius-marketing-pill: 980px;
+  --radius-control: 0px;
+  --radius-docs-card: 0px;
+  --radius-marketing-pill: 0px;
 
   --spacing-compact: 8px;
   --spacing-control-inline: 15px;

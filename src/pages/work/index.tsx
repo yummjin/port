@@ -82,7 +82,7 @@ export default function WorkPage({
                 >
                   <span
                     className={cn(
-                      "bg-primary absolute -left-[5.5px] h-2.5 w-2.5 rounded-full",
+                      "bg-primary absolute -left-[5.5px] h-2.5 w-2.5",
                       isAbove ? "-bottom-[5.5px]" : "-top-[5.5px]",
                     )}
                   />

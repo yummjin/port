@@ -76,7 +76,7 @@ export default function ProjectDetailPage({ project }: Props) {
                 {project.stack.map((tech) => (
                   <span
                     key={tech}
-                    className="bg-canvas text-caption rounded-control px-2 py-1"
+                    className="bg-canvas text-caption px-2 py-1"
                   >
                     {tech}
                   </span>
@@ -104,7 +104,7 @@ export default function ProjectDetailPage({ project }: Props) {
         </Card>
 
         {project.image[0] && (
-          <div className="bg-canvas rounded-docs-card relative aspect-[2/1] w-full overflow-hidden">
+          <div className="bg-canvas relative aspect-[2/1] w-full overflow-hidden">
             <Image
               src={project.image[0]}
               alt={project.title}

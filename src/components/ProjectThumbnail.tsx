@@ -39,7 +39,7 @@ export function ProjectThumbnail({
         alt=""
         width={64}
         height={64}
-        className="rounded-[14px]"
+        className=""
       />
       <div className="flex flex-col gap-1">
         <h2 className="text-section text-foreground text-[20px] leading-[26px]">
