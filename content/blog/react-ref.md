@@ -7,10 +7,10 @@ tags: ["React"]
 
 ## 들어가며
 
-프로젝트를 하다 보면 Ref를 종종 사용하게 된다. 
-그리고 다양한 라이브러리들의 구현을 살펴보면 Ref를 사용하는 경우가 많이 보인다. 
-나는 이 Ref를 여러 번 접했지만 아직 잘 알고 있지 않은 것 같다. 
-모호하게만 알고 제대로 알고 사용하고 있다는 느낌이 들지 않았다. 
+프로젝트를 하다 보면 Ref를 종종 사용하게 된다.
+그리고 다양한 라이브러리들의 구현을 살펴보면 Ref를 사용하는 경우가 많이 보인다.
+나는 이 Ref를 여러 번 접했지만 아직 잘 알고 있지 않은 것 같다.
+모호하게만 알고 제대로 알고 사용하고 있다는 느낌이 들지 않았다.
 오늘 한번 각 잡고 제대로 살펴보자!
 
 ## `Ref`는 왜 필요할까?
@@ -20,12 +20,14 @@ Ref가 왜 필요한지 알아보기 위해서는 먼저 React의 기본 철학�
 ### React의 기본 철학, 상태
 
 React는 기본적으로
+
 - 선언적 UI
   ```jsx
   <SearchInput value={value} onChange={...} />
   ```
- 선언적 UI는 선언적 프로그래밍과도 관련이 있는데, 요소를 어떻게 렌더링할지가 아닌 무엇을 보여줄지에 집중하는 방식을 가지고 있다.
- 위 코드에서 `SearchInput` 은 `value` 의 상태를 보여준다는 의미를 선언하고 있으며, DOM을 직접 건드리는 등의 명령적인 행위는 하고 있지 않다.
+
+선언적 UI는 선언적 프로그래밍과도 관련이 있는데, 요소를 어떻게 렌더링할지가 아닌 무엇을 보여줄지에 집중하는 방식을 가지고 있다.
+위 코드에서 `SearchInput` 은 `value` 의 상태를 보여준다는 의미를 선언하고 있으며, DOM을 직접 건드리는 등의 명령적인 행위는 하고 있지 않다.
 
 - 단방향 데이터 흐름
   ```plain text
@@ -54,6 +56,7 @@ useEffect(() => {
   if (shouldFocus) inputRef.current.focus();
 }, [shouldFocus]);
 ```
+
 이렇게 "상태" 의 의미가 UI의 모양을 결정하는 데이터에서 **명령을 트리거하는 요소**로 퇴색된다.
 
 ### `ref` 를 통해 DOM에 접근하자
@@ -64,6 +67,7 @@ UI는 상태와 렌더링을 통해 선언적으로 관리하고,
 선언적으로 표현할 수 없는 동작만을 ref를 통해 명시적으로 분리하며 예측 가능성과 현실성을 유지한다.
 
 정리하면 React의 구조는 다음과 같이 분리된다.
+
 - 상태(state): UI의 모양과 구조를 결정하는 선언적 데이터
 - ref: 이미 존재하는 DOM에 명령형 동작을 수행하기 위한 통로
 
@@ -82,71 +86,73 @@ UI는 상태와 렌더링을 통해 선언적으로 관리하고,
 ### `ref` 생성하기
 
 `useRef` 훅을 통해 `ref` 를 생성할 수 있다.
+
 ```javascript
-import { useRef } from 'react';
+import { useRef } from "react";
 
 const ref = useRef(0);
 ```
+
 위와 같이 작성했을 때, `useRef`는 인자로 받은 초깃값을 `current` 속성으로 가지는 객체를 반환한다.
 
 따라서 `ref` 변수에 할당된 것은 `current` 속성에 초깃값을 가지는 객체이다.
+
 ```javascript
 {
-  current: 0
+  current: 0;
 }
 ```
+
 ### `ref` 접근하기
 
 `ref` 는 위에서 언급한 바와 같이 `current` 속성을 가지고 있다. `current` 값은 읽거나 쓰는 것이 모두 가능하다.
 
 ```jsx
-import { useRef } from 'react';
+import { useRef } from "react";
 
 export default function Counter() {
   let ref = useRef(0);
 
   function handleClick() {
     ref.current = ref.current + 1;
-    alert('You clicked ' + ref.current + ' times!');
+    alert("You clicked " + ref.current + " times!");
   }
 
-  return (
-    <button onClick={handleClick}>
-      Click me!
-    </button>
-  );
+  return <button onClick={handleClick}>Click me!</button>;
 }
 ```
+
 위 예제에서는 버튼의 `onClick` 핸들러 함수에서 `ref.current` 값을 조작하고 있다.
 
 ### `ref` 와 `state` 의 차이
 
 React 공식 문서에서는`ref` 와 `state` 의 차이점을 이렇게 정리하고 있다.
 
-| 기준         | ref                                           | state                                    |
-|------------|-----------------------------------------------|------------------------------------------|
-| 생성        | `useRef(initial) → { current: initial }`      | `useState(initial) → [value, setValue]`  |
-| 재렌더링     | 값 변경해도 리렌더 트리거 X                    | 값 변경하면 리렌더 트리거 O               |
-| 변경 가능성   | mutable — 렌더 중이 아니어도 변경 가능          | immutable — `setState`로만 변경           |
-| 렌더링 중 접근 | 권장 X                                        | 언제든지 읽기 가능                         |
+| 기준           | ref                                      | state                                   |
+| -------------- | ---------------------------------------- | --------------------------------------- |
+| 생성           | `useRef(initial) → { current: initial }` | `useState(initial) → [value, setValue]` |
+| 재렌더링       | 값 변경해도 리렌더 트리거 X              | 값 변경하면 리렌더 트리거 O             |
+| 변경 가능성    | mutable - 렌더 중이 아니어도 변경 가능   | immutable - `setState`로만 변경         |
+| 렌더링 중 접근 | 권장 X                                   | 언제든지 읽기 가능                      |
 
 주목할 만한 부분은 `ref` 는 리렌더링을 유발하지 않는다는 점과 렌더링 중이 아니더라도 변경 가능하다는 점이다. 확실히 `state` 와는 용도부터가 다르기에 이런 차이점들이 존재한다.
 
 ### 사용 예시
 
 React 공식 문서 아래에 있는 챌린지 코드이다.
+
 ```jsx
-import { useState } from 'react';
+import { useState } from "react";
 
 export default function Chat() {
-  const [text, setText] = useState('');
+  const [text, setText] = useState("");
   const [isSending, setIsSending] = useState(false);
   let timeoutID = null;
 
   function handleSend() {
     setIsSending(true);
     timeoutID = setTimeout(() => {
-      alert('Sent!');
+      alert("Sent!");
       setIsSending(false);
     }, 3000);
   }
@@ -161,69 +167,65 @@ export default function Chat() {
       <input
         disabled={isSending}
         value={text}
-        onChange={e => setText(e.target.value)}
+        onChange={(e) => setText(e.target.value)}
       />
-      <button
-        disabled={isSending}
-        onClick={handleSend}>
-        {isSending ? 'Sending...' : 'Send'}
+      <button disabled={isSending} onClick={handleSend}>
+        {isSending ? "Sending..." : "Send"}
       </button>
-      {isSending &&
-        <button onClick={handleUndo}>
-          Undo
-        </button>
-      }
+      {isSending && <button onClick={handleUndo}>Undo</button>}
     </>
   );
 }
-
 ```
+
 `input` 에 텍스트를 입력한 뒤 Send 버튼을 누르면 3초 동안 버튼의 텍스트가 Undo로 바뀐다. 이때 Undo 버튼을 누르면 `handleSend` 에 있는 `setTimeout` 이 초기화되고 버튼의 텍스트가 다시 Send로 돌아오게끔 하는 것이 의도이다.
 
 하지만 위 코드는 정상적으로 작동하지 않는데, 그 이유는 **버튼을 눌렀을 때의 state 변경으로 인해 리렌더링이 발생하며 지역 변수인 `timeoutID` 가 매 렌더마다 초기화되기** 때문이다.
 
 이렇게 UI의 렌더 결과와는 무관하지만 렌더 사이에 유지되어야 하는 값을 관리할 때 `ref` 를 사용하는 것이다. `useRef` 로 생성한 객체는 렌더링 사이에서도 동일한 객체를 유지하며, `current` 프로퍼티를 통해 값을 자유롭게 변경할 수 있지만 리렌더링을 유발하지는 않는다.
+
 ```jsx
 const timeoutRef = useRef(null);
 
 function handleSend() {
-    setIsSending(true);
-    timeoutRef.current = setTimeout(() => {
-      alert('Sent!');
-      setIsSending(false);
-    }, 3000);
-  }
+  setIsSending(true);
+  timeoutRef.current = setTimeout(() => {
+    alert("Sent!");
+    setIsSending(false);
+  }, 3000);
+}
 
 function handleUndo() {
-    setIsSending(false);
-    clearTimeout(timeoutRef.current);
-  }
+  setIsSending(false);
+  clearTimeout(timeoutRef.current);
+}
 ```
+
 그래서 이렇게 `useRef` 를 사용해 저장해야 한다. `handleSend` 에서 설정한 `setTimeout` 의 타이머 ID가 다음 렌더에서도 유지되고 `handleUndo` 에서 동일한 ID를 참조해 정확하게 `clearTimeout` 을 호출하게 됨으로써 의도한 대로 동작하게 된다.
 
 ## `ref` 의 두 가지 타입
 
 `ref` 는 Object Ref와 Callback Ref로 나뉜다.
 
-
-| 구분                 | Object Ref                           | Callback Ref                  |
-|--------------------|--------------------------------------|------------------------------|
-| 형태                 | `{ current: ... }` 객체               | `(node) => void` 함수         |
-| 생성 방법             | `useRef()`                           | 인라인 함수                   |
-| 값 접근              | `ref.current`                        | 함수 인자로 전달              |
-| 마운트/언마운트 시점 감지 | ❌                                   | ✅                            |
-| 일반적인 용도          | DOM 접근, imperative handle          | 생명주기 훅처럼 사용           |
+| 구분                      | Object Ref                  | Callback Ref          |
+| ------------------------- | --------------------------- | --------------------- |
+| 형태                      | `{ current: ... }` 객체     | `(node) => void` 함수 |
+| 생성 방법                 | `useRef()`                  | 인라인 함수           |
+| 값 접근                   | `ref.current`               | 함수 인자로 전달      |
+| 마운트/언마운트 시점 감지 | ❌                          | ✅                    |
+| 일반적인 용도             | DOM 접근, imperative handle | 생명주기 훅처럼 사용  |
 
 대부분의 경우 `useRef` 를 통해 생성하는 Object Ref 를 사용하는데, DOM의 생성 및 제거 시점에 로직이 필요하다면 생명주기 훅처럼 사용하는 Callback Ref도 사용할 수 있다고 한다.
 
 ### Callback Ref 예제
 
 Object Ref는 사용되는 것을 많이 봐왔고 지금 이 글 안에서도 사용하고 있기에 예제 코드는 생략한다. 다소 생소한 Callback Ref에 대한 예제 코드를 가져와봤다.
+
 ```jsx
 import { useState } from "react";
 
 export default function BoxWithMeasuredHeight() {
-  const [height, setHeight] = useState<number | null>(null);
+  const [height, setHeight] = (useState < number) | (null > null);
 
   return (
     <div>
@@ -251,6 +253,7 @@ export default function BoxWithMeasuredHeight() {
   );
 }
 ```
+
 `BoxWithMeasuredHeight` 는 DOM요소의 높이를 측정하고 렌더링하는 컴포넌트인데, `ref` 를 통해 DOM이 마운트되는 순간 호출되는 함수를 전달하여 렌더링 이후에만 가능한 높이 측정 작업을 수행하는 모습이다.
 
 ### Callback Ref와 `useEffect` 의 차이점
@@ -258,7 +261,7 @@ export default function BoxWithMeasuredHeight() {
 그런데 `useEffect` 로도 같은 작업을 수행할 수 있지 않을까? 하는 생각이 든다. 실제로 `useEffect` 를 사용하면 렌더 이후에 DOM에 접근할 수 있으니, 높이를 측정하는 작업 자체는 충분히 Object Ref + `useEffect` 로도 구현 가능하다.
 
 ```javascript
-const ref = useRef<HTMLDivElement>(null);
+const ref = useRef < HTMLDivElement > null;
 
 useEffect(() => {
   if (!ref.current) return;
@@ -266,6 +269,7 @@ useEffect(() => {
   setHeight(height);
 }, []);
 ```
+
 이런 형태가 될 것이다.. 겉보기에는 거의 같은 일을 하는 것처럼 보인다. 둘 다 렌더 이후 DOM에 접근하고 있기 때문이다.
 
 하지만 이 둘은 실행 타이밍과 의도 자체가 다른데, Callback Ref는 노드가 할당되는 순간 바로 호출된다. DOM이 생성되고 `ref` 가 연결되는 그 시점에 바로 실행되는 것이다. 하지만 이에 반해 `useEffect` 는 렌더가 끝난 다음.. 이른바 사후 처리 단계에서 실행된다.
@@ -275,8 +279,6 @@ useEffect(() => {
 그렇기 때문에 `useEffect` 를 사용하면 DOM이 실제로 바뀌지 않았는데도 상태 변화로 인해 `useEffect` 가 다시 실행되어 불필요한 DOM 측정이 반복될 수도 있다.
 
 따라서 DOM 노드 그 자체에 집중하고자 하는 위 예제와 같은 상황이 발생한다면 Callback Ref를 사용하는 것이! 더 React스럽고.. 설계에도 부합하는 것 같다.
-
-
 
 ## `React.forwardRef`
 
@@ -308,12 +310,16 @@ class MyComponent extends React.Component {
   }
 }
 ```
-가령 이런 컴포넌트가 있다면 렌더링 시에 
-``` javascript
+
+가령 이런 컴포넌트가 있다면 렌더링 시에
+
+```javascript
 const instance = new MyComponent(props);
 ```
+
 이렇게 내부적으로 인스턴스가 만들어진다.
 그리고 이런 인스턴스 객체 안에는
+
 ```javascript
 {
   props: { ... },          // 전달받은 props
@@ -323,11 +329,13 @@ const instance = new MyComponent(props);
   render: f(),             // 렌더 함수
   __reactInternalFiber: …  // React 내부용 필드
 }
-  ```
-  이런 속성값들이 들어 있었다. `state`, 그리고 사용자가 정의한 메서드 등등.. 
-  
-  그래서 기존의 `ref` 는 이런 인스턴스 객체 자체에 접근해서 `ref.current.increment` 와 같이 인스턴스의 메서드를 직접 호출하는 용도로 쓰였다.
-  ```jsx
+```
+
+이런 속성값들이 들어 있었다. `state`, 그리고 사용자가 정의한 메서드 등등..
+
+그래서 기존의 `ref` 는 이런 인스턴스 객체 자체에 접근해서 `ref.current.increment` 와 같이 인스턴스의 메서드를 직접 호출하는 용도로 쓰였다.
+
+```jsx
 const instance = new MyComponent(props);
 const ref = React.createRef();
 <MyComponent ref={ref} />;
@@ -339,13 +347,17 @@ ref.current === instance; // true
 그럼 이제 다시 돌아와보자.
 
 함수형 컴포넌트는 인스턴스를 생성하는 것이 아니라 그냥 함수를 호출함으로써 동작한다. 가령 이전 클래스 컴포넌트의 내부 동작이 개념적으로
+
 ```javascript
 const instance = new MyComponent(props);
 ```
+
 였다면 함수형 컴포넌트는
+
 ```javascript
-const result = MyComponent(props)
+const result = MyComponent(props);
 ```
+
 처럼 호출되어 JSX를 반환하는 구조이다. 즉 함수형 컴포넌트에는 유지되는 객체 인스턴스가 존재하지 않는다. 따라서 ref가 가리킬 수 있는 “컴포넌트 자체”라는 대상이 존재하지 않으며, 이 때문에 과거에는 함수형 컴포넌트가 ref를 직접 전달받을 수 없었다.
 
 따라서 만들어진 것이 **`forwardRef`**이다.
@@ -355,8 +367,9 @@ const result = MyComponent(props)
 함수형 컴포넌트에서, 인스턴스 대신 내부의 특정 대상에 대한 참조를 부모 컴포넌트에게 의도적으로 노출하기 위해 사용하는 API이다.
 
 `Form` 이라는 부모 컴포넌트 내부에 들어가는 자식 컴포넌트 `MyInput` 을 구현하는 예시 코드이다. 이때 `forwardRef` 를 사용해서 부모로부터 전달받은 `ref` 를 내부 DOM 요소인 `input` 에 연결하고 있다.
+
 ```jsx
-import { forwardRef } from 'react';
+import { forwardRef } from "react";
 
 const MyInput = forwardRef(function MyInput(props, ref) {
   const { label, ...otherProps } = props;
@@ -368,7 +381,9 @@ const MyInput = forwardRef(function MyInput(props, ref) {
   );
 });
 ```
+
 그럼 부모 컴포넌트에서는
+
 ```jsx
 function Form() {
   const ref = useRef(null);
@@ -387,13 +402,14 @@ function Form() {
   );
 }
 ```
+
 `MyInput` 컴포넌트에 `ref` 를 전달할 수 있고, 이 `ref.current` 는 의도한 대로 `MyInput` 내부의 `input` DOM 을 가리키게 된다. 이렇게 부모 컴포넌트는 이 `ref` 를 통해 `<input>` 에 직접 접근하여 `focus()` 와 같은 명령형 동작을 수행할 수 있다.
 
 이 구조에서 중요한 점은 부모가 `MyInput` 컴포넌트가 `forwardRef` API를 사용해 **의도적으로 노출한 DOM 노드**만을 참조한다는 점이다. **컴포넌트 전체의 내부 구현을 열어두는 것이 아니라, 외부와 상호작용해도 되는 최소한의 인터페이스만 열어두는 방식**이다.
 
 ### 주의할 점
 
-다만 예제 코드를 훝어보면서도 느꼈지만, 이렇게 내부 DOM 노드를 외부에 노출하게 되면 컴포넌트의 캡슐화가 약해지고 내부 구현 변경이 어려워진다는 단점이 있다. 
+다만 예제 코드를 훝어보면서도 느꼈지만, 이렇게 내부 DOM 노드를 외부에 노출하게 되면 컴포넌트의 캡슐화가 약해지고 내부 구현 변경이 어려워진다는 단점이 있다.
 
 나중에 `<input>` 의 구조가 바뀌거나 래핑 구조를 수정하고 싶을 때, 이를 참조하고 있는 부모 컴포넌트들이 함께 영향을 받게 된다.
 
@@ -406,21 +422,25 @@ function Form() {
 React 팀은 이렇게 `forwardRef` 를 통해 `ref` 를 전달하는 구조가 불필요한 보일러플레이트 코드를 만든다고 판단한 듯하다. 따라서 React 19 버전부터는 함수형 컴포넌트도 `ref` prop 을 직접 받을 수 있도록 변경했다.
 
 이제는..
+
 ```jsx
 function MyButton({ ref, ...props }) {
   return <button ref={ref} {...props} />;
 }
 ```
+
 이렇게 `props` 로 받아서 간단하게 넘겨줄 수 있다!
 
 #### 관련 타입
 
 그럼 타입 정의는 어떻게 해야 하는지 덩달아 궁금해진다!
+
 ```typescript
 type MyInputProps = {
   ref?: React.Ref<HTMLInputElement>;
-} & React.ComponentPropsWithoutRef<'input'>;
+} & React.ComponentPropsWithoutRef<"input">;
 ```
+
 직접 명시적으로 정의해줄 때에는 이렇게 React에서 제공하는 `Ref` 에 제네릭으로 요소의 타입을 넘겨준 뒤 `ComponentPropsWithoutRef` 타입을 사용한다.
 
 추가로 `ComponentProps` 와 `ComponentPropsWithoutRef` 는 제네릭으로 전달한 타입의 JSX intrinsic element가 받을 수 있는 모든 props 타입 / 그리고 거기서 `Ref` 만 제외한 타입이다~
@@ -442,8 +462,9 @@ type MyInputProps = {
 ### `useImperativeHandle` 예제
 
 사용 방법, 언제 쓰는지까지 한번에 살펴보자.
+
 ```jsx
-import { useRef, useImperativeHandle } from 'react';
+import { useRef, useImperativeHandle } from "react";
 
 function MyInput({ ref }) {
   const inputRef = useRef(null);
@@ -460,12 +481,14 @@ function MyInput({ ref }) {
   }, []);
 
   return <input ref={inputRef} />;
-};
+}
 ```
+
 이렇게 사용했을 경우 `MyInput` 컴포넌트가 부모로부터 전달받은 `ref` 는 `<input/>` 에 대한 모든 ref가 아니라 `useImperativeHandle` 을 통해 반환한 내부의 메서드에만 접근할 수 있게 된다.
+
 ```jsx
-import { useRef } from 'react';
-import MyInput from './MyInput.js';
+import { useRef } from "react";
+import MyInput from "./MyInput.js";
 
 export default function Form() {
   const ref = useRef(null);
@@ -485,24 +508,27 @@ export default function Form() {
   );
 }
 ```
+
 ![](https://velog.velcdn.com/images/yummjin/post/aca71159-c91a-4b3d-952d-038fe6d90c4a/image.png)
 따라서 `focus` 메서드는 잘 작동하지만, `style` 조작은 작동하지 않는다.
 
 ```jsx
-  useImperativeHandle(ref, () => {
-    return {
-      scrollAndFocusAddComment() {
-        commentsRef.current.scrollToBottom();
-        addCommentRef.current.focus();
-      }
-    };
-  }, []);
-``` 
+useImperativeHandle(ref, () => {
+  return {
+    scrollAndFocusAddComment() {
+      commentsRef.current.scrollToBottom();
+      addCommentRef.current.focus();
+    },
+  };
+}, []);
+```
+
 이렇게 사용자 정의 메서드를 노출시킬 수도 있다.
 
 그래서 결론적으로 아까 위에 스스로 던졌던 질문에 답하자면,
->어차피 `ref` 을 props로 받으면 개발자가 알아서 노출하고 싶은 DOM 노드에 넣어주지 않나? 라고 생각이 들 것이다.
->-> `useImperativeHandle` 을 사용하면 DOM 전체 API를 노출하지 않음으로써 캡슐화를 유지할 수 있다! 
+
+> 어차피 `ref` 을 props로 받으면 개발자가 알아서 노출하고 싶은 DOM 노드에 넣어주지 않나? 라고 생각이 들 것이다.
+> -> `useImperativeHandle` 을 사용하면 DOM 전체 API를 노출하지 않음으로써 캡슐화를 유지할 수 있다!
 
 이제 뭔가 무서워 보이는 `useImperativeHandle` 을 발견하면 겁먹지 말자.
 
