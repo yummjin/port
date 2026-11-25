@@ -85,18 +85,14 @@ export default function MightyPage() {
     <>
       <Head>
         <title>마이티</title>
-        <meta
-          name="description"
-          content="AI 4명과 함께하는 5인 마이티 카드 게임"
-        />
+        <meta name="description" content="5명이 모이면 마이티" />
       </Head>
 
       <main className="px-content mx-auto flex max-w-[1000px] flex-col gap-6 pt-12 pb-20">
         <div className="flex flex-col gap-2">
           <h1 className="text-section text-foreground">마이티</h1>
           <p className="text-body-small text-secondary">
-            AI 4명과 함께하는 5인 트릭테이킹 카드 게임이에요. 기루다와 공약을
-            걸고 주공 팀과 야당 팀으로 나뉘어 점수 카드 20장을 다퉈요.
+            5명이 모이면? 마이티~
           </p>
         </div>
 

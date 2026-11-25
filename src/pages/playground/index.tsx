@@ -12,7 +12,7 @@ const EXPERIMENTS = [
   {
     href: "/playground/mighty",
     title: "마이티",
-    description: "AI 4명과 함께하는 5인 트릭테이킹 카드 게임",
+    description: "5명이 모이면 마이티",
     Icon: RiPokerSpadesFill,
   },
   {
