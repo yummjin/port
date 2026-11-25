@@ -6,7 +6,7 @@ bootstrapped_at: 2026-08-09T06:43:44Z
 tokens:
   source: reconciled
   extracted: "2026-07-11"
-  note: "Base values are Apple's verified public-web tokens (apple.com marketing + HIG docs). Heading sizes and card padding were scaled down from Apple's raw marketing-page values (56/40/28px, 20px card padding) — those read as oversized on a personal-portfolio content density; corrected 2026-08-09 per user feedback. tile-heading was also bumped from Apple's captured 400 weight to 600: at card-title scale (vs. Apple's large 28px+ tile use) a 400-weight heading next to 400-weight body text had no visual hierarchy."
+  note: "Base values are Apple's verified public-web tokens (apple.com marketing + HIG docs). Heading sizes and card padding were scaled down from Apple's raw marketing-page values (56/40/28px, 20px card padding) — those read as oversized on a personal-portfolio content density; corrected 2026-08-09 per user feedback. tile-heading was also bumped from Apple's captured 400 weight to 600: at card-title scale (vs. Apple's large 28px+ tile use) a 400-weight heading next to 400-weight body text had no visual hierarchy. 2026-11-26: the site moved to an angular editorial tone (commit 0f6d147) — all radii are 0, cards and boxes are separated by a 1px opaque border, and the font stack moved from SF Pro to kmrWaldenburg → Helvetica. Colors stay Apple-derived. Typography values below are reconciled to src/styles/globals.css."
   colors:
     primary: "#0071e3"
     brand: "#000000"
@@ -19,37 +19,41 @@ tokens:
     secondary: "#515154"
     link: "#0066cc"
     link-on-dark: "#2997ff"
+    border: "#ebebeb"
+    border-dark: "#3a3a3c"
+    danger: "#d70015"
+    danger-dark: "#ff6961"
   typography:
-    family: { display: "SF Pro Display", text: "SF Pro Text" }
-    display-hero: { size: 40, weight: 600, lineHeight: "44px", tracking: "-0.28px" }
-    section: { size: 28, weight: 600, lineHeight: "32px" }
-    tile-heading: { size: 18, weight: 600, lineHeight: "24px", tracking: "0.196px" }
-    body: { size: 17, weight: 400, lineHeight: "25px", tracking: "-0.374px" }
-    body-small: { size: 14, weight: 400, lineHeight: "18.0008px", tracking: "-0.224px" }
-    caption: { size: 12, weight: 400, lineHeight: "16.0005px", tracking: "-0.12px" }
+    family: { display: "kmrWaldenburg, Helvetica, Arial", text: "kmrWaldenburg, Helvetica, Arial" }
+    display-hero: { size: 40, weight: 600, lineHeight: "46px", tracking: "normal" }
+    section: { size: 28, weight: 600, lineHeight: "34px" }
+    tile-heading: { size: 16, weight: 600, lineHeight: "26px", tracking: "0.196px" }
+    body: { size: 17, weight: 400, lineHeight: "26px", tracking: "normal" }
+    body-small: { size: 14, weight: 400, lineHeight: "20px", tracking: "normal" }
+    caption: { size: 12, weight: 400, lineHeight: "18px", tracking: "normal" }
   spacing: { compact: 8, control-inline: 15, pill-block: 11, pill-inline: 21, content: 20 }
-  rounded: { control: 8, docs-card: 18, marketing-pill: 980 }
+  rounded: { control: 0, docs-card: 0, marketing-pill: 0 }
   components:
-    portfolio-primary: { type: button, bg: "#0071e3", fg: "#ffffff", radius: "980px", padding: "11px 21px", height: "44px", font: "17px / 400", states: "default; add hover/active/focus per platform norms", use: "primary CTA (e.g. 이력서 보기, 연락하기)" }
-    portfolio-outline: { type: button, bg: "transparent", fg: "#0066cc", border: "1px solid #0066cc", radius: "980px", padding: "11px 21px", height: "44px", font: "17px / 400", states: "default; add hover/active/focus per platform norms", use: "secondary action paired with a primary CTA" }
-    portfolio-compact: { type: button, bg: "#0071e3", fg: "#ffffff", radius: "980px", padding: "8px 15px", height: "36px", font: "14px / 400", states: "default; add hover/active/focus per platform norms", use: "inline/tile-level CTA (e.g. project card '자세히 보기')" }
+    portfolio-primary: { type: button, bg: "#0071e3", fg: "#ffffff", radius: "0", padding: "11px 21px", height: "44px", font: "17px / 500", states: "default; add hover/active/focus per platform norms", use: "primary CTA (e.g. 이력서 보기, 연락하기)" }
+    portfolio-outline: { type: button, bg: "transparent", fg: "#0066cc", border: "1px solid #0066cc", radius: "0", padding: "11px 21px", height: "44px", font: "17px / 500", states: "default; add hover/active/focus per platform norms", use: "secondary action paired with a primary CTA" }
+    portfolio-compact: { type: button, bg: "#0071e3", fg: "#ffffff", radius: "0", padding: "8px 15px", height: "36px", font: "14px / 500", states: "default; add hover/active/focus per platform norms", use: "inline/tile-level CTA (e.g. project card '자세히 보기')" }
     project-gallery-tab: { type: tab, fg: "#1d1d1f", height: "53px", font: "17px / 400", states: "selected and unselected", use: "switching between project screenshots/media" }
-    doc-reference-card: { type: card, bg: "#ffffff", radius: "18px", states: "default; add hover", use: "project card, blog post card, skill card" }
+    doc-reference-card: { type: card, bg: "#ffffff", radius: "0", border: "1px solid border", padding: "12px 16px", states: "default; add hover", use: "project card, blog post card, skill card" }
 ---
 
 # Design System Inspiration of Apple
 
 ## 1. Visual Theme & Atmosphere
 
-This portfolio borrows Apple's current web language: a small neutral palette, SF Pro optical families, and one conspicuous blue action, so that project work and writing carry the visual weight instead of decoration. The effect isn't minimalism for its own sake — precise hierarchy, familiar behavior, and limited ornament make a personal site read as considered rather than sparse.
+This portfolio keeps Apple's neutral palette and single blue action, but sets them in an angular, editorial frame: square corners everywhere, content grouped by thin 1px opaque borders instead of rounded tiles, and a neo-grotesque (kmrWaldenburg → Helvetica) type stack. Project work and writing carry the visual weight instead of decoration. The effect isn't minimalism for its own sake — precise hierarchy, ruled structure, and limited ornament make a personal site read as considered rather than sparse.
 
 Three surfaces exist in this project: the marketing-style pages (home, about), the content pages (projects, blog), and any documentation/meta chrome. Treat their typographic and component needs the way Apple separates apple.com marketing from HIG documentation chrome — related, not identical.
 
 **Key Characteristics:**
-- SF Pro Text for body/control roles; SF Pro Display for large hierarchy (hero, section headings)
+- One font stack (kmrWaldenburg → Helvetica → Arial) for both display and text roles; hierarchy comes from size and weight
 - Primary filled action `#0071e3`; text link `#0066cc`; dark-surface link `#2997ff`
-- 44px large pill and 36px compact pill coexist (hero CTA vs. project-tile CTA)
-- Content cards use an 18px radius
+- 44px large and 36px compact buttons coexist (hero CTA vs. project-tile CTA), both square-cornered
+- Radius is 0 across the site; cards and meta boxes are separated by a 1px `border` token (`#ebebeb` light / `#3a3a3c` dark)
 
 ## 2. Color Palette & Roles
 
@@ -63,93 +67,100 @@ Three surfaces exist in this project: the marketing-style pages (home, about), t
 - **On Primary** (`#ffffff`): text on blue filled actions.
 - **Link** (`#0066cc`): inline links and outline-button text/border on light surfaces.
 - **Link on Dark** (`#2997ff`): links on dark sections.
+- **Border** (`#ebebeb` light / `#3a3a3c` dark): 1px rules around cards, meta boxes, and timeline items. Opaque, not translucent, so overlapping boxes don't double up.
+- **Danger** (`#d70015` light / `#ff6961` dark, `text-danger`): error messages and red suit marks only. A semantic status color, not a second accent; never use it for actions or decoration.
 
 Keep this as one accent color system — don't introduce a second brand hue for variety.
 
 ## 3. Typography Rules
 
 ### Font Family
-- **Display**: `SF Pro Display` — hero and section headings.
-- **Text**: `SF Pro Text` — body copy, controls, captions.
-- Fall back to the system font stack (`-apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", ...`) since SF Pro isn't web-licensed for arbitrary redistribution; Apple's own site relies on OS-level SF Pro plus this fallback chain for non-Apple platforms.
+- **Display & Text**: one stack for every role — `var(--font-kmr-waldenburg), "kmrWaldenburg", Helvetica, "Helvetica Neue", Arial, sans-serif`. Hierarchy comes from size and weight, not from switching families.
+- Korean glyphs fall through to the OS default (Apple SD Gothic Neo / Malgun Gothic).
 
-| Role | Family | Size | Weight | Line Height | Tracking |
+| Role | Class | Size | Weight | Line Height | Tracking |
 |---|---|---:|---:|---:|---:|
-| Display Hero | SF Pro Display | 40px | 600 | 44px | -0.28px |
-| Section | SF Pro Display | 28px | 600 | 32px | normal |
-| Tile Heading | SF Pro Display | 18px | 600 | 24px | 0.196px |
-| Body | SF Pro Text | 17px | 400 | 25px | -0.374px |
-| Body Small | SF Pro Text | 14px | 400 | 18.0008px | -0.224px |
-| Caption | SF Pro Text | 12px | 400 | 16.0005px | -0.12px |
+| Display Hero | `text-display-hero` | 40px | 600 | 46px | normal |
+| Section | `text-section` | 28px | 600 | 34px | normal |
+| Tile Heading | `text-tile-heading` | 16px | 600 | 26px | 0.196px |
+| Body | `text-body` | 17px | 400 | 26px | normal |
+| Body Small | `text-body-small` | 14px | 400 | 20px | normal |
+| Caption | `text-caption` | 12px | 400 | 18px | normal |
+
+Use these role classes as-is. Don't override them with arbitrary sizes (`text-[22px]`, `text-[20px]`); if a role is missing, add it here first.
 
 | Evidence class | Status |
 |---|---|
-| **Base** | SF Pro is Apple's system family; not distributable as a web font without an Apple developer/license context |
-| **This project** | Use system-font fallback stack so rendering matches SF Pro on Apple devices and degrades gracefully elsewhere |
-| **Unresolved** | Whether to self-host a licensed SF Pro web build — treat as a later upgrade, not a blocker |
+| **Base** | Neo-grotesque display face (kmrWaldenburg) with Helvetica/Arial fallback, chosen 2026-11-24 (commit 0f6d147) to fit the angular tone |
+| **This project** | `globals.css` references `--font-kmr-waldenburg`, but no `@font-face` / `next/font` loader is defined yet, so the site currently renders in Helvetica/Arial |
+| **Unresolved** | Load kmrWaldenburg (license + self-host) or drop it from the stack. Unused files in `public/font/` (WantedSans, Wagon, OffBit) should be removed or adopted |
 
 ## 4. Component Stylings
 
+All components are square-cornered (radius 0). Structure comes from 1px borders and fills, not rounding.
+
 ### Portfolio Primary
-- Background: `#0071e3` · Text: `#ffffff` · Radius: 980px · Padding: 11px 21px · Height: 44px · Font: 17px / 400 / SF Pro Text
+- Background: `#0071e3` · Text: `#ffffff` · Radius: 0 · Padding: 11px 21px · Height: 44px · Font: 17px / 500
 - Use: hero-level CTA (contact, resume)
 
 ### Portfolio Outline
-- Background: transparent · Text: `#0066cc` · Border: 1px solid `#0066cc` · Radius: 980px · Padding: 11px 21px · Height: 44px · Font: 17px / 400 / SF Pro Text
+- Background: transparent · Text: `#0066cc` · Border: 1px solid `#0066cc` · Radius: 0 · Padding: 11px 21px · Height: 44px · Font: 17px / 500
 - Use: secondary action paired with a primary CTA
 
 ### Portfolio Compact
-- Background: `#0071e3` · Text: `#ffffff` · Radius: 980px · Padding: 8px 15px · Height: 36px · Font: 14px / 400 / SF Pro Text
+- Background: `#0071e3` · Text: `#ffffff` · Radius: 0 · Padding: 8px 15px · Height: 36px · Font: 14px / 500
 - Use: project-card or tile-level CTA
 
 ### Project Gallery Tab
-- Text: `#1d1d1f` · Height: 53px · Font: 17px / 400 / SF Pro Text
+- Text: `#1d1d1f` · Height: 53px · Font: 17px / 400
 - Use: switching between project screenshots/media on a project detail page
 
-### Doc Reference Card
-- Background: `#ffffff` · Radius: 18px · Padding: 16px (scaled down from the reference's 20px `content` spacing — 20px reads as too loose on this project's denser card grids)
+### Content Card (`Card`)
+- Background: `surface` · Border: 1px solid `border` · Radius: 0 · Content padding: 12px 16px
 - Use: project card, blog post card, skill card — the general content-tile shape across the site
+- Meta boxes (period, tags, timeline items) use the same 1px `border` box so cards and meta read as one ruled system.
 
 ---
 
-**Base reference:** Apple, verified 2026-07-11 (apple.com + Human Interface Guidelines, public web evidence)
+**Base reference:** Apple, verified 2026-07-11 (apple.com + Human Interface Guidelines, public web evidence) — colors only; shape and type diverged 2026-11-24 toward an angular editorial tone
 **Adapted for:** 한유진 personal portfolio (Next.js Pages Router)
 
 ## 5. Layout Principles
 
 - Marketing-style pages (home, about) use full-width composition and centered content; content pages (projects, blog) use denser list/detail layout.
-- Spacing is component-local: 8px/15px for compact action padding, 11px/21px for the large pill, 20px as a recurrent content cluster gap.
+- Spacing is component-local: 8px/15px for compact action padding, 11px/21px for the large button, 20px as a recurrent content cluster gap.
 - Don't invent a universal spacing scale beyond what's listed — extend only when a new component genuinely needs it.
 
 ## 6. Depth & Elevation
 
-No shadow token is canonical. Primary/outline buttons are flat; content cards are flat with a radius only. Let imagery, whitespace, and color contrast create depth rather than drop shadows.
+No shadow token is canonical. Primary/outline buttons are flat; content cards are flat, square, and separated by a 1px border. Let imagery, whitespace, borders, and color contrast create depth rather than drop shadows.
 
 ## 7. Do's and Don'ts
 
 ### Do
-- Use SF Pro Display (system-font fallback) for hero/section headings, SF Pro Text for body/controls.
+- Use the single kmrWaldenburg → Helvetica stack for every role; build hierarchy with the role classes in §3.
 - Use `#0071e3` for filled actions and `#0066cc` for light-surface links/outline actions.
 - Keep selected state explicit in gallery-style tabs.
-- Reuse the same button/card shapes across home, about, projects, and blog.
-- In cards, pair `text-tile-heading` (title) with `text-body-small` (description) — the 18px/600 vs 14px/400 contrast is what makes the title read as a title.
+- Reuse the same square button/card shapes and 1px border boxes across home, work, blog, and playground.
+- In cards, pair `text-tile-heading` (title) with `text-body-small` (description) — the 16px/600 vs 14px/400 contrast is what makes the title read as a title.
 
 ### Don't
 - Don't introduce a second accent color for variety.
-- Don't mix the 36px and 44px pill sizes within the same composition.
+- Don't mix the 36px and 44px button sizes within the same composition.
+- Don't reintroduce rounded corners (`rounded-*`) on cards, buttons, or boxes. Circles for intentional graphic marks (e.g. avatar, dot) are the only exception.
 - Don't add drop shadows as a default card treatment.
 - Don't use exclamation marks or emoji in UI copy or CTAs.
 
 ## 8. Responsive Behavior
 
-No universal breakpoints are promoted from the source reference. Preserve control geometry (button height/radius/padding) across breakpoints; adjust font size and layout density with standard Tailwind breakpoints already in use in this codebase.
+No universal breakpoints are promoted from the source reference. Preserve control geometry (button height/padding, square corners) across breakpoints; adjust font size and layout density with standard Tailwind breakpoints already in use in this codebase.
 
 ## 9. Agent Prompt Guide
 
-- "Create a large CTA with `#0071e3`, white text, 44px height, 980px radius, 11px 21px padding, SF Pro Text 17px/400."
+- "Create a large CTA with `#0071e3`, white text, 44px height, square corners, 11px 21px padding, 17px/500."
 - "Pair it with an outline action using transparent background and `#0066cc` text/border."
 - "For a project-card CTA, use the compact 36px / 8px 15px variant."
-- "For project/blog cards, use the 18px-radius flat white card — no drop shadow."
+- "For project/blog cards, use the square `surface` card with a 1px `border` — no radius, no drop shadow."
 
 ## 10. Voice & Tone
 
@@ -159,15 +170,15 @@ Clarity doesn't mean stripping away character — pair **Simplicity** with **Cra
 
 ## 11. Brand Narrative
 
-한유진은 프론트엔드 개발자로, 디자인과 성능, 사용자 경험을 통해 어떻게 사용자와 더 가까워질 수 있을지 고민한다. 이 포트폴리오는 그 관심사를 보여주는 자리다: 정리된 타이포그래피 스케일, 절제된 컬러 팔레트, 일관된 컴포넌트 형태로 "만드는 사람이 디테일에 신경 쓴다"는 것을 말이 아니라 화면으로 증명한다.
+한유진은 프론트엔드 개발자로, 디자인과 성능, 사용자 경험을 통해 어떻게 사용자와 더 가까워질 수 있을지 고민한다. 이 포트폴리오는 그 관심사를 보여주는 자리다: 정리된 타이포그래피 스케일, 절제된 컬러 팔레트, 각진 박스와 가는 테두리로 일관된 컴포넌트 형태로 "만드는 사람이 디테일에 신경 쓴다"는 것을 말이 아니라 화면으로 증명한다.
 
-Apple의 웹 언어를 차용한 이유도 같은 맥락이다 — 제품(여기서는 프로젝트와 글)이 주인공이 되도록 UI는 최대한 절제하고, 계층 구조와 상호작용만 명확하게 남긴다.
+Apple의 컬러 체계를 차용한 이유도 같은 맥락이다 — 제품(여기서는 프로젝트와 글)이 주인공이 되도록 UI는 최대한 절제하고, 계층 구조와 상호작용만 명확하게 남긴다. 곡률을 없앤 에디토리얼 톤은 콘텐츠를 장식 없이 구획해 정리된 인상을 준다.
 
 ## 12. Principles
 
 1. 콘텐츠(프로젝트, 글)가 주인공이 되도록 컨트롤은 시각적으로 절제한다.
 2. 화면마다 하나의 명확한 액션 컬러만 쓴다.
-3. 타이포그래피 역할과 크기를 일치시킨다: Display는 큰 계층, Text는 본문/컨트롤.
+3. 타이포그래피 역할과 크기를 일치시킨다: §3의 역할 클래스만 쓰고 임의 크기로 덮어쓰지 않는다.
 4. 홈/소개/프로젝트/블로그 전반에 걸쳐 같은 버튼·카드 형태를 재사용한다.
 5. 검증된 토큰 값을 우선하고, 새 토큰이 필요할 때만 최소한으로 확장한다.
 
