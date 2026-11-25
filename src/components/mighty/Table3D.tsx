@@ -19,10 +19,10 @@ const ME = 0;
 const CARD_W = 0.8;
 const CARD_H = 1.16;
 const CARD_D = 0.012;
-const TABLE_W = 9;
-const TABLE_D = 6.4;
-const SEAT_RX = 3.6;
-const SEAT_RZ = 2.45;
+const TABLE_R = 4.4;
+const TABLE_T = 0.22;
+const SEAT_RX = 3.45;
+const SEAT_RZ = 3.1;
 /** How long a finished trick stays in the middle before flying to the winner. */
 const COLLECT_DELAY = 450;
 const HAND_TILT = -0.95;
@@ -51,9 +51,17 @@ export default function Table3D(props: Table3DProps) {
       <Canvas
         dpr={[1, 2]}
         camera={{ position: [0, 8.2, 7.2], fov: 42 }}
-        gl={{ antialias: true, alpha: true }}
+        shadows="soft"
+        gl={{
+          antialias: true,
+          toneMapping: THREE.ACESFilmicToneMapping,
+          toneMappingExposure: 1.05,
+        }}
         onPointerMissed={() => setCursor(false)}
       >
+        <color attach="background" args={["#0b0806"]} />
+        <fog attach="fog" args={["#0b0806", 12, 22]} />
+        <Lights />
         <CameraRig onProject={setLabels} />
         <Scene {...props} />
       </Canvas>
@@ -119,23 +127,18 @@ function handPose(
   };
 }
 
-/**
- * Played cards stand upright toward me (not toward the player who played
- * them) and lean back toward the camera so every rank is readable.
- */
 function trickPose(p: number, order: number, card: CardId): Pose {
-  const [x, , z] = seatPoint(p, 0.42);
-  const jitter = ((card.charCodeAt(1) || 0) % 5) * 0.03 - 0.06;
+  const [x, , z] = seatPoint(p, 0.46, 0.02 + order * 0.004);
+  const jitter = ((card.charCodeAt(1) || 0) % 7) * 0.04 - 0.12;
   return {
-    pos: [x * 1.05, 0.36 + order * 0.01, z * 0.85],
-    rot: [FACE_UP + 0.5, jitter, 0],
-    scale: 1.25,
+    pos: [x, 0.02 + order * 0.004, z],
+    rot: [FACE_UP, seatYaw(p) + jitter, 0],
   };
 }
 
 function aiHandPose(p: number, index: number, count: number): Pose {
   const a = seatAngle(p);
-  const [cx, , cz] = seatPoint(p, 0.74);
+  const [cx, , cz] = seatPoint(p, 0.84);
   const t = (index - (count - 1) / 2) * 0.15;
   // Spread along the tangent of the ellipse so the fan faces the center.
   return {
@@ -147,7 +150,6 @@ function aiHandPose(p: number, index: number, count: number): Pose {
 // ---------- scene ----------
 
 function Scene({ game, clickable, dimmed, raised, onCardClick }: Table3DProps) {
-  const colors = useThemeColors();
   const zoom = useZoom();
   const collecting = useCollecting(game);
   const [hovered, setHovered] = useState<CardId | null>(null);
@@ -207,7 +209,7 @@ function Scene({ game, clickable, dimmed, raised, onCardClick }: Table3DProps) {
 
   return (
     <>
-      <TableSurface fill={colors.border} edge={colors.muted} />
+      <WoodTable />
 
       {cards.map(({ card, pose, spawn, interactive, dim }) => (
         <Card3D
@@ -235,27 +237,90 @@ function Scene({ game, clickable, dimmed, raised, onCardClick }: Table3DProps) {
   );
 }
 
-function TableSurface({ fill, edge }: { fill: string; edge: string }) {
-  const outline = useMemo(() => {
-    const w = TABLE_W / 2;
-    const d = TABLE_D / 2;
-    return new THREE.BufferGeometry().setFromPoints([
-      new THREE.Vector3(-w, 0.001, -d),
-      new THREE.Vector3(w, 0.001, -d),
-      new THREE.Vector3(w, 0.001, d),
-      new THREE.Vector3(-w, 0.001, d),
-    ]);
+/** Dim, warm room light: one pool of light over the table plus a faint fill. */
+function Lights() {
+  const spot = useRef<THREE.SpotLight>(null);
+  useEffect(() => {
+    spot.current?.target.position.set(0, 0, 0.6);
+    spot.current?.target.updateMatrixWorld();
   }, []);
 
   return (
+    <>
+      <ambientLight color="#ffb46b" intensity={0.18} />
+      <hemisphereLight args={["#ffcf99", "#1a0f08", 0.25]} />
+      <spotLight
+        ref={spot}
+        position={[0, 9, 1.5]}
+        angle={0.62}
+        penumbra={0.75}
+        decay={1.4}
+        distance={24}
+        intensity={70}
+        color="#ffc27a"
+        castShadow
+        shadow-mapSize={[2048, 2048]}
+        shadow-bias={-0.0004}
+        shadow-radius={6}
+      />
+      {/* Soft warm fill from the viewer's side so my hand stays readable */}
+      <pointLight
+        position={[0, 4.5, 8]}
+        intensity={9}
+        decay={1.6}
+        distance={18}
+        color="#ffb877"
+      />
+    </>
+  );
+}
+
+function WoodTable() {
+  const [top, rim] = useMemo(() => {
+    const topTexture = woodTexture();
+    return [
+      new THREE.MeshStandardMaterial({
+        map: topTexture,
+        roughness: 0.55,
+        metalness: 0.05,
+      }),
+      new THREE.MeshStandardMaterial({ color: "#3a2112", roughness: 0.5 }),
+    ];
+  }, []);
+
+  useEffect(
+    () => () => {
+      top.dispose();
+      rim.dispose();
+    },
+    [top, rim],
+  );
+
+  return (
     <group>
-      <mesh rotation={[-Math.PI / 2, 0, 0]}>
-        <planeGeometry args={[TABLE_W, TABLE_D]} />
-        <meshBasicMaterial color={fill} />
+      {/* Tabletop: cylinder groups are [side, top, bottom] */}
+      <mesh
+        position={[0, -TABLE_T / 2, 0]}
+        material={[rim, top, rim]}
+        receiveShadow
+      >
+        <cylinderGeometry args={[TABLE_R, TABLE_R, TABLE_T, 96]} />
       </mesh>
-      <lineLoop geometry={outline}>
-        <lineBasicMaterial color={edge} />
-      </lineLoop>
+      {/* Rounded edge band */}
+      <mesh
+        position={[0, -0.02, 0]}
+        rotation={[Math.PI / 2, 0, 0]}
+        material={rim}
+        castShadow
+        receiveShadow
+      >
+        <torusGeometry args={[TABLE_R, 0.09, 16, 128]} />
+      </mesh>
+      {/* Floor far below, only to catch the table's shadow falloff */}
+      <mesh position={[0, -3, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <circleGeometry args={[14, 64]} />
+        <meshStandardMaterial color="#120c08" roughness={1} />
+      </mesh>
     </group>
   );
 }
@@ -291,6 +356,81 @@ function SeatLabel({ game, player }: { game: GameState; player: number }) {
 
 // ---------- cards ----------
 
+const CARD_RADIUS = 0.06;
+let cardGeometry: {
+  body: THREE.BufferGeometry;
+  face: THREE.BufferGeometry;
+} | null = null;
+
+/** Rounded-rectangle card: a thin extruded body plus a UV-mapped face shape. */
+function getCardGeometry() {
+  if (cardGeometry) return cardGeometry;
+  const w = CARD_W / 2;
+  const h = CARD_H / 2;
+  const r = CARD_RADIUS;
+  const shape = new THREE.Shape();
+  shape.moveTo(-w + r, -h);
+  shape.lineTo(w - r, -h);
+  shape.quadraticCurveTo(w, -h, w, -h + r);
+  shape.lineTo(w, h - r);
+  shape.quadraticCurveTo(w, h, w - r, h);
+  shape.lineTo(-w + r, h);
+  shape.quadraticCurveTo(-w, h, -w, h - r);
+  shape.lineTo(-w, -h + r);
+  shape.quadraticCurveTo(-w, -h, -w + r, -h);
+
+  const body = new THREE.ExtrudeGeometry(shape, {
+    depth: CARD_D,
+    bevelEnabled: false,
+    curveSegments: 8,
+  });
+  body.translate(0, 0, -CARD_D / 2);
+
+  const face = new THREE.ShapeGeometry(shape, 8);
+  const position = face.attributes.position;
+  const uv = face.attributes.uv;
+  for (let i = 0; i < uv.count; i++) {
+    uv.setXY(
+      i,
+      (position.getX(i) + w) / CARD_W,
+      (position.getY(i) + h) / CARD_H,
+    );
+  }
+  cardGeometry = { body, face };
+  return cardGeometry;
+}
+
+function CardModel({
+  front,
+  back,
+  edge,
+}: {
+  front: THREE.Material;
+  back: THREE.Material;
+  edge: THREE.Material;
+}) {
+  const { body, face } = getCardGeometry();
+  const offset = CARD_D / 2 + 0.0004;
+  return (
+    <>
+      <mesh geometry={body} material={edge} castShadow receiveShadow />
+      <mesh
+        geometry={face}
+        material={front}
+        position={[0, 0, offset]}
+        receiveShadow
+      />
+      <mesh
+        geometry={face}
+        material={back}
+        position={[0, 0, -offset]}
+        rotation={[0, Math.PI, 0]}
+        receiveShadow
+      />
+    </>
+  );
+}
+
 function Card3D({
   card,
   pose,
@@ -308,63 +448,72 @@ function Card3D({
   onHover: (on: boolean) => void;
   onClick: () => void;
 }) {
-  const ref = useRef<THREE.Mesh>(null);
+  const ref = useRef<THREE.Group>(null);
   const reduced = useReducedMotion();
   const materials = useMemo(() => {
-    const edge = new THREE.MeshBasicMaterial({ color: "#d2d2d7" });
-    return [
-      edge,
-      edge,
-      edge,
-      edge,
-      new THREE.MeshBasicMaterial({ map: faceTexture(card) }),
-      new THREE.MeshBasicMaterial({ map: backTexture() }),
-    ];
+    const texture = faceTexture(card);
+    return {
+      edge: new THREE.MeshStandardMaterial({
+        color: "#e9e4da",
+        roughness: 0.7,
+      }),
+      // A little self-light from the face texture keeps ranks readable
+      // under the dim, warm room light.
+      front: new THREE.MeshStandardMaterial({
+        map: texture,
+        emissive: "#ffffff",
+        emissiveMap: texture,
+        emissiveIntensity: 0.25,
+        roughness: 0.55,
+      }),
+      back: new THREE.MeshStandardMaterial({
+        map: backTexture(),
+        roughness: 0.6,
+      }),
+    };
   }, [card]);
 
   useEffect(
-    () => () => materials.forEach((material) => material.dispose()),
+    () => () => Object.values(materials).forEach((m) => m.dispose()),
     [materials],
   );
 
   useEffect(() => {
-    (materials[4] as THREE.MeshBasicMaterial).color.set(
-      dim ? "#9a9aa0" : "#ffffff",
-    );
+    materials.front.color.set(dim ? "#a9a9ae" : "#ffffff");
+    materials.front.emissiveIntensity = dim ? 0.06 : 0.25;
   }, [dim, materials]);
 
   useLayoutEffect(() => {
-    const mesh = ref.current!;
-    mesh.rotation.order = "YXZ";
-    mesh.position.set(...spawn.pos);
-    mesh.rotation.set(...spawn.rot);
+    const group = ref.current!;
+    group.rotation.order = "YXZ";
+    group.position.set(...spawn.pos);
+    group.rotation.set(...spawn.rot);
     // Spawn pose applies only to the first frame this card exists.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useFrame((_, delta) => {
-    const mesh = ref.current;
-    if (!mesh) return;
+    const group = ref.current;
+    if (!group) return;
     const lambda = reduced ? Infinity : 9;
     const dt = Math.min(delta, 0.05);
     const { damp } = THREE.MathUtils;
-    mesh.position.set(
-      damp(mesh.position.x, pose.pos[0], lambda, dt),
-      damp(mesh.position.y, pose.pos[1], lambda, dt),
-      damp(mesh.position.z, pose.pos[2], lambda, dt),
+    group.position.set(
+      damp(group.position.x, pose.pos[0], lambda, dt),
+      damp(group.position.y, pose.pos[1], lambda, dt),
+      damp(group.position.z, pose.pos[2], lambda, dt),
     );
-    mesh.rotation.set(
-      damp(mesh.rotation.x, pose.rot[0], lambda, dt),
-      damp(mesh.rotation.y, pose.rot[1], lambda, dt),
-      damp(mesh.rotation.z, pose.rot[2], lambda, dt),
+    group.rotation.set(
+      damp(group.rotation.x, pose.rot[0], lambda, dt),
+      damp(group.rotation.y, pose.rot[1], lambda, dt),
+      damp(group.rotation.z, pose.rot[2], lambda, dt),
     );
-    mesh.scale.setScalar(damp(mesh.scale.x, pose.scale ?? 1, lambda, dt));
+    group.scale.setScalar(damp(group.scale.x, pose.scale ?? 1, lambda, dt));
   });
 
   return (
-    <mesh
+    <group
       ref={ref}
-      material={materials}
       onPointerOver={(e) => {
         if (!interactive) return;
         e.stopPropagation();
@@ -382,31 +531,43 @@ function Card3D({
         onClick();
       }}
     >
-      <boxGeometry args={[CARD_W, CARD_H, CARD_D]} />
-    </mesh>
+      <CardModel {...materials} />
+    </group>
   );
 }
 
 function CardBack({ pose }: { pose: Pose }) {
   const materials = useMemo(() => {
-    const edge = new THREE.MeshBasicMaterial({ color: "#d2d2d7" });
-    const back = new THREE.MeshBasicMaterial({ map: backTexture() });
-    return [edge, edge, edge, edge, back, back];
+    const back = new THREE.MeshStandardMaterial({
+      map: backTexture(),
+      roughness: 0.6,
+    });
+    return {
+      edge: new THREE.MeshStandardMaterial({
+        color: "#e9e4da",
+        roughness: 0.7,
+      }),
+      front: back,
+      back,
+    };
   }, []);
 
   useEffect(
-    () => () => materials.forEach((material) => material.dispose()),
+    () => () => {
+      materials.edge.dispose();
+      materials.back.dispose();
+    },
     [materials],
   );
 
   return (
-    <mesh
+    <group
       position={pose.pos}
       rotation={new THREE.Euler(...pose.rot, "YXZ")}
-      material={materials}
+      scale={0.8}
     >
-      <boxGeometry args={[CARD_W * 0.8, CARD_H * 0.8, CARD_D]} />
-    </mesh>
+      <CardModel {...materials} />
+    </group>
   );
 }
 
@@ -515,7 +676,6 @@ const PIPS: Record<string, [number, number][]> = {
 
 const RED = "#d70015";
 const BLACK = "#1d1d1f";
-const SERIF = 'Georgia, "Times New Roman", serif';
 
 function faceTexture(card: CardId) {
   return makeTexture(`face-${card}`, (ctx) => {
@@ -528,7 +688,9 @@ function faceTexture(card: CardId) {
     ctx.fillRect(0, 0, TEX_W, TEX_H);
     ctx.strokeStyle = BLACK;
     ctx.lineWidth = 4;
-    ctx.strokeRect(2, 2, TEX_W - 4, TEX_H - 4);
+    ctx.beginPath();
+    ctx.roundRect(2, 2, TEX_W - 4, TEX_H - 4, 18);
+    ctx.stroke();
 
     ctx.fillStyle = ink;
     ctx.textAlign = "center";
@@ -536,14 +698,17 @@ function faceTexture(card: CardId) {
 
     // Corner index (rank over small suit), mirrored at the bottom right.
     const corner = () => {
+      // Heavy sans with a slightly condensed "10" reads best at card scale.
       if (suit) {
-        ctx.font = `bold ${rank === "10" ? 34 : 40}px ${SERIF}`;
-        ctx.fillText(rank, 26, 32);
-        ctx.font = `28px ${FONT}`;
-        ctx.fillText(symbol, 26, 66);
+        ctx.font = `800 ${rank === "10" ? 42 : 48}px ${FONT}`;
+        ctx.letterSpacing = rank === "10" ? "-3px" : "0px";
+        ctx.fillText(rank, 30, 36);
+        ctx.letterSpacing = "0px";
+        ctx.font = `34px ${FONT}`;
+        ctx.fillText(symbol, 30, 76);
       } else {
-        ctx.font = `bold 24px ${SERIF}`;
-        [..."JOKER"].forEach((ch, i) => ctx.fillText(ch, 24, 30 + i * 26));
+        ctx.font = `800 26px ${FONT}`;
+        [..."JOKER"].forEach((ch, i) => ctx.fillText(ch, 26, 32 + i * 28));
       }
     };
     corner();
@@ -936,19 +1101,93 @@ function drawFigure(
 
 function backTexture() {
   return makeTexture("back", (ctx) => {
-    ctx.fillStyle = "#1d1d1f";
+    ctx.fillStyle = "#f4efe6";
     ctx.fillRect(0, 0, TEX_W, TEX_H);
-    ctx.strokeStyle = "#6e6e73";
-    ctx.lineWidth = 4;
-    ctx.strokeRect(18, 18, TEX_W - 36, TEX_H - 36);
+    ctx.fillStyle = "#7a1424";
+    ctx.fillRect(14, 14, TEX_W - 28, TEX_H - 28);
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(22, 22, TEX_W - 44, TEX_H - 44);
+    ctx.clip();
+    ctx.strokeStyle = "rgba(240, 200, 120, 0.55)";
     ctx.lineWidth = 2;
-    for (let x = 18; x <= TEX_W - 18; x += 22) {
+    for (let d = -TEX_H; d < TEX_W + TEX_H; d += 18) {
       ctx.beginPath();
-      ctx.moveTo(x, 18);
-      ctx.lineTo(x, TEX_H - 18);
+      ctx.moveTo(d, 0);
+      ctx.lineTo(d + TEX_H, TEX_H);
+      ctx.moveTo(d, TEX_H);
+      ctx.lineTo(d + TEX_H, 0);
       ctx.stroke();
     }
+    ctx.restore();
+    ctx.strokeStyle = "#e0b45c";
+    ctx.lineWidth = 3;
+    ctx.strokeRect(22, 22, TEX_W - 44, TEX_H - 44);
   });
+}
+
+/** Procedural walnut-like planks for the tabletop (square texture). */
+function woodTexture() {
+  const cached = textureCache.get("wood");
+  if (cached) return cached;
+  const size = 1024;
+  const canvas = document.createElement("canvas");
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext("2d")!;
+  const planks = 7;
+  const pw = size / planks;
+  // Deterministic pseudo-random so the grain is stable between renders.
+  let seed = 7;
+  const rand = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+
+  for (let k = 0; k < planks; k++) {
+    const x0 = k * pw;
+    const tone = 0.85 + rand() * 0.3;
+    const base = `rgb(${Math.round(96 * tone)}, ${Math.round(58 * tone)}, ${Math.round(32 * tone)})`;
+    ctx.fillStyle = base;
+    ctx.fillRect(x0, 0, pw, size);
+    // Grain: long wavy streaks along the plank
+    for (let g = 0; g < 46; g++) {
+      const gx = x0 + rand() * pw;
+      const amp = 2 + rand() * 6;
+      const freq = 0.004 + rand() * 0.01;
+      const phase = rand() * Math.PI * 2;
+      const dark = rand() < 0.6;
+      ctx.strokeStyle = dark
+        ? `rgba(40, 20, 8, ${0.12 + rand() * 0.25})`
+        : `rgba(170, 110, 60, ${0.08 + rand() * 0.15})`;
+      ctx.lineWidth = 0.6 + rand() * 1.8;
+      ctx.beginPath();
+      for (let y = 0; y <= size; y += 8) {
+        const x = gx + Math.sin(y * freq + phase) * amp;
+        if (y === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+    }
+    // A knot now and then
+    if (rand() < 0.5) {
+      const kx = x0 + pw * (0.3 + rand() * 0.4);
+      const ky = rand() * size;
+      for (let ring = 14; ring > 0; ring -= 3) {
+        ctx.strokeStyle = `rgba(35, 18, 6, ${0.25})`;
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        ctx.ellipse(kx, ky, ring * 0.6, ring * 1.6, 0, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+    }
+    // Seam between planks
+    ctx.fillStyle = "rgba(20, 10, 4, 0.7)";
+    ctx.fillRect(x0, 0, 2, size);
+  }
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.anisotropy = 8;
+  textureCache.set("wood", texture);
+  return texture;
 }
 
 // ---------- hooks ----------
@@ -1002,27 +1241,6 @@ function useCollecting(game: GameState) {
     return () => clearTimeout(timer);
   }, [ending, game.trickNo]);
   return collecting;
-}
-
-function useThemeColors() {
-  const [colors, setColors] = useState({ border: "#ebebeb", muted: "#6e6e73" });
-  useEffect(() => {
-    const read = () => {
-      const style = getComputedStyle(document.documentElement);
-      setColors({
-        border: style.getPropertyValue("--border").trim() || "#ebebeb",
-        muted: style.getPropertyValue("--muted").trim() || "#6e6e73",
-      });
-    };
-    read();
-    const observer = new MutationObserver(read);
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class"],
-    });
-    return () => observer.disconnect();
-  }, []);
-  return colors;
 }
 
 function useReducedMotion() {
