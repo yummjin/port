@@ -5,22 +5,10 @@ import { useMemo, useState } from "react";
 
 import { PageHeader } from "@/components/PageHeader";
 import { cn } from "@/lib/cn";
+import { formatPostDate } from "@/lib/date";
 import { getAllPosts, type PostMeta } from "@/lib/posts";
 
 type ViewMode = "grid" | "list";
-
-const dateFormatter = new Intl.DateTimeFormat("ko-KR", {
-  year: "numeric",
-  month: "long",
-  day: "numeric",
-  weekday: "long",
-  timeZone: "UTC",
-});
-
-function formatDate(date: string) {
-  const parsed = new Date(`${date}T00:00:00Z`);
-  return Number.isNaN(parsed.getTime()) ? date : dateFormatter.format(parsed);
-}
 
 export const getStaticProps: GetStaticProps<{
   posts: (PostMeta & { displayDate: string })[];
@@ -29,7 +17,7 @@ export const getStaticProps: GetStaticProps<{
     props: {
       posts: getAllPosts().map((post) => ({
         ...post,
-        displayDate: formatDate(post.date),
+        displayDate: formatPostDate(post.date),
       })),
     },
   };

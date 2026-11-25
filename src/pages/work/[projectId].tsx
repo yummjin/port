@@ -1,11 +1,17 @@
 import type { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import ReactMarkdown from "react-markdown";
-import rehypeHighlight from "rehype-highlight";
-import remarkGfm from "remark-gfm";
+import { type IconType } from "react-icons";
+import {
+  RiAppleFill,
+  RiGithubFill,
+  RiGlobalFill,
+  RiGooglePlayFill,
+  RiStore2Fill,
+} from "react-icons/ri";
 
-import { Card } from "@/components/Card";
+import { DetailHeader, type DetailMetaItem } from "@/components/DetailHeader";
+import { Markdown } from "@/components/Markdown";
 import {
   getAllProjectIds,
   getProjectById,
@@ -34,15 +40,59 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   return { props: { project } };
 };
 
-const LINK_LABELS: Record<string, string> = {
-  github: "GitHub",
-  demo: "Demo",
-  appStore: "App Store",
-  playStore: "Google Play",
-  oneStore: "ONE store",
+const LINK_ICONS: Record<string, { label: string; Icon: IconType }> = {
+  github: { label: "GitHub", Icon: RiGithubFill },
+  demo: { label: "Demo", Icon: RiGlobalFill },
+  appStore: { label: "App Store", Icon: RiAppleFill },
+  playStore: { label: "Google Play", Icon: RiGooglePlayFill },
+  oneStore: { label: "ONE store", Icon: RiStore2Fill },
 };
 
 export default function ProjectDetailPage({ project }: Props) {
+  const links = Object.entries(project.links ?? {}).filter(
+    (entry): entry is [string, string] => Boolean(entry[1]),
+  );
+
+  const metaItems: (DetailMetaItem | false | "" | undefined)[] = [
+    project.period && { label: "기간", content: project.period },
+    project.role && { label: "역할", content: project.role },
+    project.stack &&
+      project.stack.length > 0 && {
+        label: "기술 스택",
+        content: project.stack.join(", "),
+      },
+    links.length > 0 && {
+      label: "링크",
+      bare: true,
+      content: (
+        <div className="divide-foreground flex h-full divide-x">
+          {links.map(([key, href]) => {
+            const { label, Icon } = LINK_ICONS[key] ?? {
+              label: key,
+              Icon: RiGlobalFill,
+            };
+            return (
+              <a
+                key={key}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={label}
+                title={label}
+                className="text-foreground flex h-full w-9 items-center justify-center transition-opacity hover:opacity-70"
+              >
+                <Icon size={18} />
+              </a>
+            );
+          })}
+        </div>
+      ),
+    },
+  ];
+  const meta = metaItems.filter((item): item is DetailMetaItem =>
+    Boolean(item),
+  );
+
   return (
     <>
       <Head>
@@ -51,57 +101,11 @@ export default function ProjectDetailPage({ project }: Props) {
       </Head>
 
       <main className="px-content mx-auto flex max-w-[1000px] flex-col gap-8 pt-12 pb-20">
-        <div>
-          <p className="text-body-small text-muted">{project.description}</p>
-          <h1 className="text-section mt-2">{project.title}</h1>
-        </div>
-
-        <Card className="grid grid-cols-1 gap-6 p-4 sm:grid-cols-2 lg:grid-cols-[1fr_1.4fr_2fr_auto]">
-          {project.period && (
-            <div>
-              <p className="text-caption text-muted mb-1">기간</p>
-              <p className="text-body-small">{project.period}</p>
-            </div>
-          )}
-          {project.role && (
-            <div>
-              <p className="text-caption text-muted mb-1">역할</p>
-              <p className="text-body-small">{project.role}</p>
-            </div>
-          )}
-          {project.stack && project.stack.length > 0 && (
-            <div>
-              <p className="text-caption text-muted mb-2">기술 스택</p>
-              <div className="flex flex-wrap gap-2">
-                {project.stack.map((tech) => (
-                  <span
-                    key={tech}
-                    className="bg-canvas text-caption px-2 py-1"
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-          {project.links && (
-            <div className="flex flex-col gap-2">
-              {Object.entries(project.links).map(([key, href]) =>
-                href ? (
-                  <a
-                    key={key}
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-link text-body-small"
-                  >
-                    {LINK_LABELS[key] ?? key} →
-                  </a>
-                ) : null,
-              )}
-            </div>
-          )}
-        </Card>
+        <DetailHeader
+          title={project.title}
+          description={project.description}
+          meta={meta}
+        />
 
         {project.image[0] && (
           <div className="bg-canvas relative aspect-[2/1] w-full overflow-hidden">
@@ -115,14 +119,7 @@ export default function ProjectDetailPage({ project }: Props) {
           </div>
         )}
 
-        <article className="prose dark:prose-invert max-w-none">
-          <ReactMarkdown
-            remarkPlugins={[remarkGfm]}
-            rehypePlugins={[rehypeHighlight]}
-          >
-            {project.content}
-          </ReactMarkdown>
-        </article>
+        <Markdown>{project.content}</Markdown>
       </main>
     </>
   );

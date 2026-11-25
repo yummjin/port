@@ -4,15 +4,15 @@ import type {
   InferGetStaticPropsType,
 } from "next";
 import Head from "next/head";
-import ReactMarkdown from "react-markdown";
-import rehypeHighlight from "rehype-highlight";
-import remarkGfm from "remark-gfm";
 
+import { DetailHeader } from "@/components/DetailHeader";
+import { Markdown } from "@/components/Markdown";
+import { formatPostDate } from "@/lib/date";
 import { getAllPostSlugs, getPostBySlug, type PostMeta } from "@/lib/posts";
 
 type Props = {
   slug: string;
-  meta: Omit<PostMeta, "slug" | "thumbnail">;
+  meta: Omit<PostMeta, "slug" | "thumbnail"> & { displayDate: string };
   content: string;
 };
 
@@ -25,7 +25,16 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   const post = getPostBySlug(params!.slug as string);
-  return { props: post };
+  return {
+    props: {
+      ...post,
+      meta: {
+        ...post.meta,
+        tags: post.meta.tags ?? [],
+        displayDate: formatPostDate(post.meta.date),
+      },
+    },
+  };
 };
 
 export default function BlogPostPage({
@@ -39,32 +48,19 @@ export default function BlogPostPage({
         <meta name="description" content={meta.description} />
       </Head>
 
-      <main className="px-content mx-auto flex max-w-[1000px] flex-col gap-6 pt-12 pb-20">
-        <p className="text-caption text-muted">{meta.date}</p>
-        <div className="text-section border-muted/50 mb-2 border-b">
-          {meta.title}
-          <h1 className="text-body-small mt-3 mb-6">{meta.description}</h1>
-        </div>
+      <main className="px-content mx-auto flex max-w-[1000px] flex-col gap-8 pt-12 pb-20">
+        <DetailHeader
+          title={meta.title}
+          description={meta.description}
+          meta={[
+            { label: "작성일", content: meta.displayDate },
+            ...(meta.tags.length > 0
+              ? [{ label: "태그", content: meta.tags.join(", ") }]
+              : []),
+          ]}
+        />
 
-        <article className="prose dark:prose-invert max-w-none">
-          <ReactMarkdown
-            remarkPlugins={[remarkGfm]}
-            rehypePlugins={[rehypeHighlight]}
-            components={{
-              img: ({ src, alt }) => (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={String(src)}
-                  alt={alt ?? ""}
-                  loading="lazy"
-                  className="block max-h-[400px] w-auto max-w-full object-contain object-left"
-                />
-              ),
-            }}
-          >
-            {content}
-          </ReactMarkdown>
-        </article>
+        <Markdown>{content}</Markdown>
       </main>
     </>
   );
