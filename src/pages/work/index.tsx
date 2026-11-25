@@ -12,12 +12,15 @@ function ExperienceLink({ experience }: { experience: ExperienceMeta }) {
   return (
     <Link
       href={`/work/experiences/${experience.slug}`}
-      className="group flex flex-col gap-0.5"
+      className="group border-border divide-border bg-canvas flex w-fit max-w-full flex-col divide-y border transition-opacity hover:opacity-80"
     >
-      <span className="text-caption text-muted">{experience.period}</span>
-      <span className="text-body text-foreground group-hover:text-link font-medium break-keep transition-colors">
+      <span className="text-caption text-muted px-3 py-1">
+        {experience.period}
+      </span>
+      <span className="text-body-small text-foreground px-3 py-2 font-medium break-keep">
         {experience.title}
-        <span className="ml-1 inline-block transition-transform group-hover:translate-x-0.5">
+        {"\u00a0"}
+        <span className="inline-block transition-transform group-hover:translate-x-0.5">
           ›
         </span>
       </span>
@@ -75,8 +78,10 @@ export default function WorkPage({
                 <li
                   key={experience.slug}
                   className={cn(
-                    "border-border relative col-span-2 border-l pl-4",
-                    isAbove ? "row-start-1 self-end pb-6" : "row-start-3 pt-6",
+                    "border-border relative col-span-2 border-l pl-3",
+                    isAbove
+                      ? "row-start-1 self-end pb-6"
+                      : "row-start-3 self-start pt-6",
                   )}
                   style={{ gridColumnStart: index + 1 }}
                 >
@@ -99,7 +104,7 @@ export default function WorkPage({
                   <span className="text-tile-heading">{year}</span>
                   <span className="bg-border h-px flex-1" />
                 </div>
-                <ul className="flex flex-col gap-4">
+                <ul className="flex flex-col gap-2">
                   {items.map((experience) => (
                     <li key={experience.slug}>
                       <ExperienceLink experience={experience} />
