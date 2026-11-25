@@ -128,6 +128,23 @@ const PROJECTS: ProjectMeta[] = [
     image: ["/images/ng-thumb.webp", "/images/ng-1.webp"],
     links: { github: "https://github.com/ByteCrew-Uscode/Web" },
   },
+  {
+    id: "10",
+    color: "#0366fd",
+    title: "AZIT",
+    description: "러닝 크루를 위한 운영 및 제휴 서비스",
+    status: "in_progress",
+    icon: "/icons/icon-azit.webp",
+    image: ["/images/azit-thumb.webp"],
+    links: {
+      github: "https://github.com/AZIT-crew/azit-web",
+      demo: "https://azitcrew.com/",
+      appStore:
+        "https://apps.apple.com/kr/app/%EC%95%84%EC%A7%80%ED%8A%B8-azit/id6758881115",
+      playStore:
+        "https://play.google.com/store/apps/details?id=com.azitcrew.app",
+    },
+  },
 ];
 
 type ProjectFrontmatter = {
