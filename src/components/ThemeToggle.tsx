@@ -1,4 +1,4 @@
-import { FiMonitor, FiMoon, FiSun } from "react-icons/fi";
+import { RiComputerFill, RiMoonFill, RiSunFill } from "react-icons/ri";
 
 import { useTheme, type Theme } from "@/lib/theme";
 
@@ -9,9 +9,9 @@ const NEXT: Record<Theme, Theme> = {
 };
 
 const ICON = {
-  light: FiSun,
-  dark: FiMoon,
-  system: FiMonitor,
+  light: RiSunFill,
+  dark: RiMoonFill,
+  system: RiComputerFill,
 };
 
 export function ThemeToggle() {
@@ -23,7 +23,7 @@ export function ThemeToggle() {
       type="button"
       aria-label={`테마: ${theme} (클릭해서 변경)`}
       onClick={() => setTheme(NEXT[theme])}
-      className="text-foreground flex h-9 w-9 items-center justify-center transition-opacity hover:opacity-70"
+      className="text-foreground flex h-9 w-8 items-center justify-center transition-opacity hover:opacity-70"
     >
       <Icon size={18} />
     </button>

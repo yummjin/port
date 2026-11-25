@@ -2,7 +2,6 @@ import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 
-import { LinkButton } from "@/components/Button";
 import { getAllPosts, type PostMeta } from "@/lib/posts";
 import { getAllProjects } from "@/lib/projects";
 
@@ -44,17 +43,9 @@ export default function Home({
           <h1 className="text-body">
             안녕하세요! 프론트엔드 개발자 한유진이에요.
           </h1>
-          <p className="text-body text-secondary mb-10 max-w-[480px]">
+          <p className="text-body text-secondary max-w-[480px]">
             사용자를 먼저 생각하며, 일상에 녹아드는 제품을 만들어요.
           </p>
-          <div className="flex flex-wrap gap-3">
-            <LinkButton href="/work" variant="primary">
-              작업 보기
-            </LinkButton>
-            <LinkButton href="/blog" variant="outline">
-              블로그 보기
-            </LinkButton>
-          </div>
         </div>
       </section>
 

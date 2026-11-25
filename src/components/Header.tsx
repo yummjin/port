@@ -2,27 +2,35 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
+import { RiGithubFill, RiLinkedinBoxFill } from "react-icons/ri";
 
 import { ThemeToggle } from "./ThemeToggle";
 
 import { cn } from "@/lib/cn";
 
 const NAV_LINKS = [
-  { href: "/", label: "Home" },
   { href: "/work", label: "Work" },
   { href: "/blog", label: "Blog" },
+];
+
+const EXTERNAL_LINKS = [
+  { href: "https://github.com/yummjin", label: "GitHub", Icon: RiGithubFill },
+  {
+    href: "https://www.linkedin.com/in/yummjin/",
+    label: "LinkedIn",
+    Icon: RiLinkedinBoxFill,
+  },
 ];
 
 export function Header() {
   const { pathname } = useRouter();
   const [open, setOpen] = useState(false);
 
-  const isLinkActive = (href: string) =>
-    href === "/" ? pathname === "/" : pathname.startsWith(href);
+  const isLinkActive = (href: string) => pathname.startsWith(href);
 
   return (
     <header className="sticky top-0 z-50 bg-transparent">
-      <div className="px-content mx-auto flex h-14 max-w-[1000px] items-center justify-between">
+      <div className="px-content relative mx-auto flex h-14 max-w-[1000px] items-center justify-between">
         <Link
           href="/"
           className="text-body-small bg-foreground text-canvas px-1.5 py-0.5 font-medium dark:bg-white/80"
@@ -31,7 +39,7 @@ export function Header() {
           Yujin Han
         </Link>
 
-        <nav className="hidden items-center gap-6 md:flex">
+        <nav className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-6 md:flex">
           {NAV_LINKS.map(({ href, label }) => (
             <Link
               key={href}
@@ -46,18 +54,15 @@ export function Header() {
               {label}
             </Link>
           ))}
-          <a
-            href="https://github.com/yummjin"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="border-border text-body-small text-foreground border px-3 py-1 transition-opacity hover:opacity-70"
-          >
-            GitHub
-          </a>
-          <ThemeToggle />
         </nav>
 
-        <div className="flex items-center gap-2 md:hidden">
+        <div className="hidden items-center md:flex">
+          <ExternalIconLinks />
+          <ThemeToggle />
+        </div>
+
+        <div className="flex items-center md:hidden">
+          <ExternalIconLinks />
           <ThemeToggle />
           <button
             type="button"
@@ -86,16 +91,23 @@ export function Header() {
               {label}
             </Link>
           ))}
-          <a
-            href="https://github.com/yummjin"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-muted text-body-small py-3"
-          >
-            GitHub
-          </a>
         </nav>
       )}
     </header>
   );
+}
+
+function ExternalIconLinks() {
+  return EXTERNAL_LINKS.map(({ href, label, Icon }) => (
+    <a
+      key={href}
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={label}
+      className="text-foreground flex h-9 w-8 items-center justify-center transition-opacity hover:opacity-70"
+    >
+      <Icon size={18} />
+    </a>
+  ));
 }
