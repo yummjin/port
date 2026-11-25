@@ -347,7 +347,7 @@ export default function ImageEditorPage() {
             </Section>
 
             {selected && (
-              <Section title={`속성 — ${selected.name}`}>
+              <Section title={`속성 - ${selected.name}`}>
                 {(
                   ["x", "y", "width", "height", "rotation", "radius"] as const
                 ).map((key) => (

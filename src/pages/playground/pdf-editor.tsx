@@ -257,7 +257,7 @@ export default function PdfEditorPage() {
 
         {pages.length > 0 && (
           <Section
-            title={`페이지 ${pages.length}쪽 — 끌어서 순서를 바꿀 수 있어요`}
+            title={`페이지 ${pages.length}쪽 - 끌어서 순서를 바꿀 수 있어요`}
           >
             <ol className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-6">
               {pages.map((page, index) => (

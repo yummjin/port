@@ -228,7 +228,7 @@ export function applyBid(
       turn: declarer,
       log: [
         ...log,
-        `주공은 ${PLAYER_NAMES[declarer]} — ${trumpLabel(highestBid.trump)} ${highestBid.points}`,
+        `주공은 ${PLAYER_NAMES[declarer]} - ${trumpLabel(highestBid.trump)} ${highestBid.points}`,
       ],
     };
   }
@@ -351,7 +351,7 @@ export function applyPlay(
       state.trickNo > 0 &&
       !state.jokerPlayed;
     if (card === JOKER) note = ` (${SUIT_SYMBOL[leadSuit!]} 요청)`;
-    if (jokerCalled) note = " — 조커콜";
+    if (jokerCalled) note = " - 조커콜";
   }
 
   const revealsFriend = card === state.friendCard && !state.friendRevealed;
@@ -431,7 +431,7 @@ function finishRound(state: GameState): GameState {
     result: { teamPoints, win, deltas },
     log: [
       ...state.log,
-      `주공 팀 ${teamPoints}점 / 공약 ${state.contract} — ${win ? "주공 승리" : "주공 패배"}`,
+      `주공 팀 ${teamPoints}점 / 공약 ${state.contract} - ${win ? "주공 승리" : "주공 패배"}`,
     ],
   };
 }

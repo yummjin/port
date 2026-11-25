@@ -12,7 +12,7 @@ const EXPERIMENTS = [
   {
     href: "/playground/mighty",
     title: "마이티",
-    description: "5명이 모이면 마이티",
+    description: "5명이 모이면? 마이티~",
     Icon: RiPokerSpadesFill,
   },
   {

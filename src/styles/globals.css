@@ -4,7 +4,7 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  /* fonts — one stack for every role (DESIGN.md §3). kmrWaldenburg has no
+  /* fonts - one stack for every role (DESIGN.md §3). kmrWaldenburg has no
      loader yet, so this currently resolves to Helvetica/Arial. */
   --font-display:
     var(--font-kmr-waldenburg), "kmrWaldenburg", "kmrWaldenburg Fallback",
