@@ -110,7 +110,7 @@ export default function Home({
                   key={project.id}
                   href={`/work/${project.id}`}
                   className="card-rise group flex flex-col gap-2"
-                  style={{ animationDelay: `${index * 40}ms` }}
+                  style={{ animationDelay: `${index * 80}ms` }}
                 >
                   <div className="border-border aspect-square w-full border-[0.5px] p-4 transition-opacity group-hover:opacity-80">
                     <Image src={project.icon} alt="" width={48} height={48} />
@@ -128,7 +128,7 @@ export default function Home({
               <Link
                 href="/work"
                 className="card-rise flex items-center justify-center"
-                style={{ animationDelay: `${projects.length * 40}ms` }}
+                style={{ animationDelay: `${projects.length * 80}ms` }}
               >
                 <div className="border-foreground text-foreground flex aspect-square w-4/5 items-center justify-center rounded-full border text-center transition-opacity hover:opacity-60">
                   <span className="text-body-small leading-snug">전체보기</span>

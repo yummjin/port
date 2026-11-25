@@ -124,7 +124,7 @@ export default function WorkPage({
                 key={project.id}
                 href={`/work/${project.id}`}
                 className="card-rise"
-                style={{ animationDelay: `${Math.min(index, 8) * 40}ms` }}
+                style={{ animationDelay: `${index * 100}ms` }}
               >
                 <Card className="transition-opacity hover:opacity-80">
                   <ProjectThumbnail {...project} />
