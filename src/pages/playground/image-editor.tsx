@@ -223,7 +223,7 @@ export default function ImageEditorPage() {
           <Link href="/playground" className="text-caption text-muted w-fit">
             ‹ Playground
           </Link>
-          <h1 className="text-section text-[22px]">이미지 편집기</h1>
+          <h1 className="text-section text-foreground">이미지 편집기</h1>
           <p className="text-body-small text-secondary">
             HTML 요소로 만든 스테이지를 이미지로 합성해보는 실험 공간이에요.
             내보내기는 <code>src/lib/compose.ts</code>의 어댑터를 거쳐요.
@@ -231,7 +231,7 @@ export default function ImageEditorPage() {
         </div>
 
         <Toolbar>
-          <label className="border-border text-body-small text-foreground hover:border-foreground cursor-pointer border px-3 py-1 transition-colors">
+          <label className="border-border text-body-small text-foreground hover:border-foreground flex min-h-9 cursor-pointer items-center border px-3 py-1 transition-colors">
             이미지 추가
             <input
               type="file"
@@ -460,7 +460,7 @@ export default function ImageEditorPage() {
               </>
             )}
           </div>
-          {error && <p className="text-body-small text-[#d70015]">{error}</p>}
+          {error && <p className="text-body-small text-danger">{error}</p>}
           {result && (
             <div className="border-border bg-canvas overflow-auto border p-4">
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -541,7 +541,7 @@ function LayerView({
       {selected && (
         <div
           data-compose-ignore
-          className="pointer-events-none absolute inset-0 outline-2 -outline-offset-2 outline-[#0071e3]"
+          className="outline-primary pointer-events-none absolute inset-0 outline-2 -outline-offset-2"
         />
       )}
     </div>
@@ -567,7 +567,7 @@ function ToolButton({
       onClick={onClick}
       aria-pressed={selected}
       className={cn(
-        "text-body-small cursor-pointer border px-3 py-1 transition-colors duration-150",
+        "text-body-small min-h-9 cursor-pointer border px-3 py-1 transition-colors duration-150",
         selected
           ? "border-foreground text-foreground"
           : "border-border text-muted hover:text-foreground",

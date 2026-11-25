@@ -87,7 +87,7 @@ export default function WorkPage({
                 >
                   <span
                     className={cn(
-                      "bg-primary absolute -left-[5.5px] h-2.5 w-2.5",
+                      "bg-foreground absolute -left-[5.5px] h-2.5 w-2.5",
                       isAbove ? "-bottom-[5.5px]" : "-top-[5.5px]",
                     )}
                   />
@@ -124,7 +124,7 @@ export default function WorkPage({
                 key={project.id}
                 href={`/work/${project.id}`}
                 className="card-rise"
-                style={{ animationDelay: `${index * 100}ms` }}
+                style={{ animationDelay: `${Math.min(index, 8) * 40}ms` }}
               >
                 <Card className="transition-opacity hover:opacity-80">
                   <ProjectThumbnail {...project} />

@@ -7,21 +7,9 @@ import { RiGithubFill, RiLinkedinBoxFill } from "react-icons/ri";
 import { ThemeToggle } from "./ThemeToggle";
 
 import { cn } from "@/lib/cn";
+import { EXTERNAL_LINKS, NAV_LINKS } from "@/lib/nav";
 
-const NAV_LINKS = [
-  { href: "/work", label: "Work" },
-  { href: "/blog", label: "Blog" },
-  { href: "/playground", label: "Playground" },
-];
-
-const EXTERNAL_LINKS = [
-  { href: "https://github.com/yummjin", label: "GitHub", Icon: RiGithubFill },
-  {
-    href: "https://www.linkedin.com/in/yummjin/",
-    label: "LinkedIn",
-    Icon: RiLinkedinBoxFill,
-  },
-];
+const EXTERNAL_ICONS = { GitHub: RiGithubFill, LinkedIn: RiLinkedinBoxFill };
 
 export function Header() {
   const { pathname } = useRouter();
@@ -30,7 +18,7 @@ export function Header() {
   const isLinkActive = (href: string) => pathname.startsWith(href);
 
   return (
-    <header className="sticky top-0 z-50 bg-transparent">
+    <header className="bg-canvas/85 sticky top-0 z-50 backdrop-blur-md">
       <div className="px-content relative mx-auto flex h-14 max-w-[1000px] items-center justify-between">
         <Link
           href="/"
@@ -99,16 +87,19 @@ export function Header() {
 }
 
 function ExternalIconLinks() {
-  return EXTERNAL_LINKS.map(({ href, label, Icon }) => (
-    <a
-      key={href}
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label={label}
-      className="text-foreground flex h-9 w-8 items-center justify-center transition-opacity hover:opacity-70"
-    >
-      <Icon size={18} />
-    </a>
-  ));
+  return EXTERNAL_LINKS.map(({ href, label }) => {
+    const Icon = EXTERNAL_ICONS[label];
+    return (
+      <a
+        key={href}
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={label}
+        className="text-foreground flex h-9 w-9 items-center justify-center transition-opacity hover:opacity-70"
+      >
+        <Icon size={18} />
+      </a>
+    );
+  });
 }

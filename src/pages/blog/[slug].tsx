@@ -5,6 +5,7 @@ import type {
 } from "next";
 import Head from "next/head";
 
+import { BackLink } from "@/components/BackLink";
 import { DetailHeader } from "@/components/DetailHeader";
 import { Markdown } from "@/components/Markdown";
 import { formatPostDate } from "@/lib/date";
@@ -49,6 +50,7 @@ export default function BlogPostPage({
       </Head>
 
       <main className="px-content mx-auto flex max-w-[1000px] flex-col gap-8 pt-12 pb-20">
+        <BackLink href="/blog" label="Blog" className="-mb-6" />
         <DetailHeader
           title={meta.title}
           description={meta.description}

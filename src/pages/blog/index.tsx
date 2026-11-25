@@ -96,18 +96,19 @@ export default function BlogPage({
                     className="flex gap-6 py-5 transition-opacity duration-200 hover:opacity-70"
                   >
                     <div className="flex min-w-0 flex-1 flex-col gap-2">
-                      <h2 className="text-tile-heading sm:text-section text-foreground">
+                      <h2 className="text-tile-heading text-foreground">
                         {post.title}
                       </h2>
                       <p className="text-body-small sm:text-body text-muted">
                         {post.displayDate}
                       </p>
-                      <p className="text-body-small sm:text-body text-muted mt-auto pt-4">
+                      <p className="text-body-small text-secondary mt-auto pt-4">
                         {post.description}
                       </p>
                     </div>
                     <Thumbnail
                       src={post.thumbnail}
+                      title={post.title}
                       className="size-24 shrink-0 sm:size-40"
                     />
                   </Link>
@@ -124,6 +125,7 @@ export default function BlogPage({
                   >
                     <Thumbnail
                       src={post.thumbnail}
+                      title={post.title}
                       className="aspect-square w-full"
                     />
                     <h2 className="text-tile-heading text-foreground mt-1">
@@ -145,14 +147,22 @@ export default function BlogPage({
 
 function Thumbnail({
   src,
+  title,
   className,
 }: {
   src: string | null;
+  title: string;
   className?: string;
 }) {
   return (
-    <div className={cn("bg-canvas overflow-hidden", className)}>
-      {src && (
+    <div
+      className={cn(
+        "bg-canvas border-border flex items-center justify-center overflow-hidden",
+        !src && "border",
+        className,
+      )}
+    >
+      {src ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img
           src={src}
@@ -160,6 +170,10 @@ function Thumbnail({
           loading="lazy"
           className="size-full object-cover"
         />
+      ) : (
+        <span aria-hidden className="text-section text-muted">
+          {title.trim().charAt(0)}
+        </span>
       )}
     </div>
   );
@@ -180,7 +194,7 @@ function FilterTab({
       onClick={onClick}
       aria-pressed={selected}
       className={cn(
-        "text-body cursor-pointer transition-colors duration-150",
+        "text-body min-h-9 cursor-pointer transition-colors duration-150",
         selected ? "text-foreground" : "text-muted hover:text-foreground",
       )}
     >
@@ -206,7 +220,7 @@ function ViewToggle({
       onClick={onClick}
       aria-pressed={selected}
       className={cn(
-        "text-body cursor-pointer px-1.5 py-[0.5px] transition-colors duration-150",
+        "text-body-small flex cursor-pointer items-center px-2 py-0.5 transition-colors duration-150",
         selected ? "text-foreground" : "text-muted hover:text-foreground",
         className,
       )}

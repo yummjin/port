@@ -8,6 +8,7 @@ import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
 import remarkGfm from "remark-gfm";
 
+import { BackLink } from "@/components/BackLink";
 import { getAllExperiences, getExperienceBySlug } from "@/lib/experiences";
 
 type Props = ReturnType<typeof getExperienceBySlug>;
@@ -35,6 +36,7 @@ export default function ExperiencePage({
       </Head>
 
       <main className="px-content mx-auto flex max-w-[1000px] flex-col gap-6 pt-12 pb-20">
+        <BackLink href="/work" label="Work" className="-mb-4" />
         <p className="text-caption text-muted">{period}</p>
         <h1 className="text-section border-muted/50 mb-2 border-b pb-6">
           {title}

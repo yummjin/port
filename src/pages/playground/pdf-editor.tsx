@@ -175,7 +175,7 @@ export default function PdfEditorPage() {
           <Link href="/playground" className="text-caption text-muted w-fit">
             ‹ Playground
           </Link>
-          <h1 className="text-section text-[22px]">PDF 편집기</h1>
+          <h1 className="text-section text-foreground">PDF 편집기</h1>
           <p className="text-body-small text-secondary">
             여러 PDF를 합치고 페이지 순서를 바꿔요. 파일은 브라우저 안에서만
             처리되고 서버로 전송되지 않아요.
@@ -214,7 +214,7 @@ export default function PdfEditorPage() {
             불러오는 중이에요.
           </p>
         )}
-        {error && <p className="text-body-small text-[#d70015]">{error}</p>}
+        {error && <p className="text-body-small text-danger">{error}</p>}
 
         {files.length > 0 && (
           <Section title={`파일 ${files.length}개`}>
@@ -263,7 +263,7 @@ export default function PdfEditorPage() {
           <Section
             title={`페이지 ${pages.length}쪽 — 끌어서 순서를 바꿀 수 있어요`}
           >
-            <ol className="grid grid-cols-3 gap-3 sm:grid-cols-4 lg:grid-cols-6">
+            <ol className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-6">
               {pages.map((page, index) => (
                 <li
                   key={page.id}
@@ -392,7 +392,7 @@ function IconButton({
       title={label}
       onClick={onClick}
       disabled={disabled}
-      className="border-border text-foreground flex w-7 shrink-0 cursor-pointer items-center justify-center border-l transition-opacity hover:opacity-70 disabled:cursor-default disabled:opacity-30"
+      className="border-border text-foreground flex min-h-9 w-9 shrink-0 cursor-pointer items-center justify-center border-l transition-opacity hover:opacity-70 disabled:cursor-default disabled:opacity-30"
     >
       {children}
     </button>

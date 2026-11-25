@@ -85,7 +85,7 @@ export default function MightyPage() {
           <Link href="/playground" className="text-caption text-muted w-fit">
             ‹ Playground
           </Link>
-          <h1 className="text-section text-[22px]">마이티</h1>
+          <h1 className="text-section text-foreground">마이티</h1>
           <p className="text-body-small text-secondary">
             AI 4명과 함께하는 5인 트릭테이킹 카드 게임이에요. 기루다와 공약을
             걸고 주공 팀과 야당 팀으로 나뉘어 점수 카드 20장을 다퉈요.
@@ -520,7 +520,7 @@ function ChoiceButton({
       onClick={onClick}
       aria-pressed={selected}
       className={cn(
-        "text-body-small min-w-9 cursor-pointer border px-2.5 py-1 transition-colors duration-150",
+        "text-body-small min-h-9 min-w-9 cursor-pointer border px-2.5 py-1 transition-colors duration-150",
         selected
           ? "border-foreground text-foreground"
           : "border-border text-muted hover:text-foreground",
@@ -556,7 +556,7 @@ function PlayingCard({
   );
   const className = cn(
     "bg-surface flex h-16 w-11 shrink-0 flex-col items-center justify-between border p-1.5 sm:h-20 sm:w-14",
-    red ? "text-[#d70015] dark:text-[#ff6961]" : "text-foreground",
+    red ? "text-danger" : "text-foreground",
     selected ? "border-foreground -translate-y-1" : "border-border",
     "transition-transform duration-150 motion-reduce:transition-none",
   );

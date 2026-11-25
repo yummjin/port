@@ -28,9 +28,7 @@ export function ProjectThumbnail({
     <Card.Image className="flex aspect-[4/3] flex-col justify-between p-5">
       <Image src={icon} alt="" width={64} height={64} className="" />
       <div className="flex flex-col gap-1">
-        <h2 className="text-section text-foreground text-[20px] leading-[26px]">
-          {title}
-        </h2>
+        <Card.Title>{title}</Card.Title>
         <Card.Description className="line-clamp-2">
           {description}
         </Card.Description>
