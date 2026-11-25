@@ -3,7 +3,7 @@ import Image from "next/image";
 import { Card } from "@/components/Card";
 import type { ProjectMeta } from "@/lib/projects";
 
-type Props = Pick<ProjectMeta, "title" | "description" | "icon" | "color"> & {
+type Props = Pick<ProjectMeta, "title" | "description" | "icon"> & {
   period?: string;
   role?: string;
 };
@@ -19,7 +19,6 @@ export function ProjectThumbnail({
   title,
   description,
   icon,
-  color,
   period,
   role,
 }: Props) {
@@ -28,19 +27,8 @@ export function ProjectThumbnail({
     .join(" · ");
 
   return (
-    <Card.Image
-      className="flex aspect-[4/3] flex-col justify-between p-5"
-      style={{
-        backgroundImage: `radial-gradient(120% 90% at 100% 0%, ${color}59 0%, ${color}1f 45%, transparent 75%)`,
-      }}
-    >
-      <Image
-        src={icon}
-        alt=""
-        width={64}
-        height={64}
-        className=""
-      />
+    <Card.Image className="flex aspect-[4/3] flex-col justify-between p-5">
+      <Image src={icon} alt="" width={64} height={64} className="" />
       <div className="flex flex-col gap-1">
         <h2 className="text-section text-foreground text-[20px] leading-[26px]">
           {title}

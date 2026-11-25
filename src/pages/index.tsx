@@ -118,12 +118,7 @@ export default function Home({
                 className="card-rise group flex flex-col gap-2"
                 style={{ animationDelay: `${index * 80}ms` }}
               >
-                <div
-                  className="aspect-square w-full border-[0.5px] border-black p-4 transition-opacity group-hover:opacity-80 dark:border-white/60"
-                  style={{
-                    backgroundImage: `radial-gradient(120% 90% at 100% 0%, ${project.color}59 0%, ${project.color}1f 45%, transparent 75%)`,
-                  }}
-                >
+                <div className="aspect-square w-full border-[0.5px] border-black p-4 transition-opacity group-hover:opacity-80 dark:border-white/60">
                   <Image src={project.icon} alt="" width={48} height={48} />
                 </div>
                 <p className="text-body-small text-foreground leading-snug font-medium">
