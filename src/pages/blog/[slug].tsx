@@ -12,7 +12,7 @@ import { getAllPostSlugs, getPostBySlug, type PostMeta } from "@/lib/posts";
 
 type Props = {
   slug: string;
-  meta: Omit<PostMeta, "slug">;
+  meta: Omit<PostMeta, "slug" | "thumbnail">;
   content: string;
 };
 

@@ -11,7 +11,10 @@ export type PostMeta = {
   date: string;
   description: string;
   tags: string[];
+  thumbnail: string | null;
 };
+
+const FIRST_IMAGE = /!\[[^\]]*\]\(([^)\s]+)[^)]*\)/;
 
 function getSlugs() {
   return fs.readdirSync(BLOG_DIR).filter((file) => file.endsWith(".md"));
@@ -21,7 +24,7 @@ export function getAllPosts(): PostMeta[] {
   return getSlugs()
     .map((file) => {
       const slug = file.replace(/\.md$/, "");
-      const { data } = matter(
+      const { data, content } = matter(
         fs.readFileSync(path.join(BLOG_DIR, file), "utf8"),
       );
       return {
@@ -30,6 +33,10 @@ export function getAllPosts(): PostMeta[] {
         date: data.date as string,
         description: data.description as string,
         tags: (data.tags as string[] | undefined) ?? [],
+        thumbnail:
+          (data.thumbnail as string | undefined) ??
+          content.match(FIRST_IMAGE)?.[1] ??
+          null,
       };
     })
     .sort((a, b) => (a.date < b.date ? 1 : -1));
@@ -45,7 +52,7 @@ export function getPostBySlug(slug: string) {
   );
   return {
     slug,
-    meta: data as Omit<PostMeta, "slug">,
+    meta: data as Omit<PostMeta, "slug" | "thumbnail">,
     content,
   };
 }
