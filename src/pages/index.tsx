@@ -63,7 +63,7 @@ export default function Home({
                 <Link
                   key={post.slug}
                   href={`/blog/${post.slug}`}
-                  className="flex aspect-square w-full flex-col gap-2 border-[0.5px] border-black p-4 transition-opacity hover:opacity-70 dark:border-white/60"
+                  className="border-border flex aspect-square w-full flex-col gap-2 border-[0.5px] p-4 transition-opacity hover:opacity-70"
                 >
                   <h3 className="text-tile-heading text-link">
                     {post.title} →
@@ -71,7 +71,7 @@ export default function Home({
                   <p className="text-body-small text-secondary">
                     {post.description}
                   </p>
-                  <p className="text-caption text-muted mt-auto w-fit border-[0.5px] border-black px-1.5 py-0.5 dark:border-white/60">
+                  <p className="text-caption text-muted border-border mt-auto w-fit border-[0.5px] px-1.5 py-0.5">
                     {post.date}
                   </p>
                 </Link>
@@ -80,7 +80,7 @@ export default function Home({
             {posts[3] && (
               <Link
                 href={`/blog/${posts[3].slug}`}
-                className="flex flex-col justify-between gap-2 border-[0.5px] border-black p-5 transition-opacity hover:opacity-70 dark:border-white/60"
+                className="border-border flex flex-col justify-between gap-2 border-[0.5px] p-5 transition-opacity hover:opacity-70"
               >
                 <h3 className="text-tile-heading text-link">
                   {posts[3].title} →
@@ -89,7 +89,7 @@ export default function Home({
                 <p className="text-body-small text-secondary">
                   {posts[3].description}
                 </p>
-                <p className="text-caption text-muted mt-6 w-fit border-[0.5px] border-black px-1.5 py-0.5 dark:border-white/60">
+                <p className="text-caption text-muted border-border mt-6 w-fit border-[0.5px] px-1.5 py-0.5">
                   {posts[3].date}
                 </p>
               </Link>
@@ -109,7 +109,7 @@ export default function Home({
                 className="card-rise group flex flex-col gap-2"
                 style={{ animationDelay: `${index * 80}ms` }}
               >
-                <div className="aspect-square w-full border-[0.5px] border-black p-4 transition-opacity group-hover:opacity-80 dark:border-white/60">
+                <div className="border-border aspect-square w-full border-[0.5px] p-4 transition-opacity group-hover:opacity-80">
                   <Image src={project.icon} alt="" width={48} height={48} />
                 </div>
                 <p className="text-body-small text-foreground leading-snug font-medium">

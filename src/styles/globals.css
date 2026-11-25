@@ -42,7 +42,7 @@
   --muted: #6e6e73;
   --secondary: #515154;
   --link: #0066cc;
-  --border: rgb(0 0 0 / 0.08);
+  --border: #ebebeb;
 }
 
 .dark {
@@ -52,7 +52,7 @@
   --muted: #86868b;
   --secondary: #a1a1a6;
   --link: #2997ff;
-  --border: rgb(255 255 255 / 0.12);
+  --border: #3a3a3c;
 }
 
 @layer base {

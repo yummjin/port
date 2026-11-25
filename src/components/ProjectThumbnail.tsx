@@ -22,9 +22,7 @@ export function ProjectThumbnail({
   period,
   role,
 }: Props) {
-  const meta = [period && formatPeriod(period), role?.split(",")[0]]
-    .filter(Boolean)
-    .join(" · ");
+  const primaryRole = role?.split(",")[0].replace("프론트엔드 개발", "FE");
 
   return (
     <Card.Image className="flex aspect-[4/3] flex-col justify-between p-5">
@@ -36,8 +34,15 @@ export function ProjectThumbnail({
         <Card.Description className="line-clamp-2">
           {description}
         </Card.Description>
-        {meta && (
-          <p className="text-caption text-muted mt-2 self-end">{meta}</p>
+        {(period || primaryRole) && (
+          <div className="border-border text-caption text-foreground divide-border mt-2 flex divide-x self-end border">
+            {primaryRole && (
+              <span className="px-1.5 py-0.5">{primaryRole}</span>
+            )}
+            {period && (
+              <span className="px-1.5 py-0.5">{formatPeriod(period)}</span>
+            )}
+          </div>
         )}
       </div>
     </Card.Image>
