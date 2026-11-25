@@ -10,7 +10,6 @@ import {
   RiStore2Fill,
 } from "react-icons/ri";
 
-import { BackLink } from "@/components/BackLink";
 import { DetailHeader, type DetailMetaItem } from "@/components/DetailHeader";
 import { Markdown } from "@/components/Markdown";
 import {
@@ -102,7 +101,6 @@ export default function ProjectDetailPage({ project }: Props) {
       </Head>
 
       <main className="px-content mx-auto flex max-w-[1000px] flex-col gap-8 pt-12 pb-20">
-        <BackLink href="/work" label="Work" className="-mb-6" />
         <DetailHeader
           title={project.title}
           description={project.description}

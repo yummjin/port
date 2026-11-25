@@ -1,5 +1,4 @@
 import Head from "next/head";
-import Link from "next/link";
 import {
   useEffect,
   useRef,
@@ -172,9 +171,6 @@ export default function PdfEditorPage() {
 
       <main className="px-content mx-auto flex max-w-[1000px] flex-col gap-6 pt-12 pb-20">
         <div className="flex flex-col gap-2">
-          <Link href="/playground" className="text-caption text-muted w-fit">
-            ‹ Playground
-          </Link>
           <h1 className="text-section text-foreground">PDF 편집기</h1>
           <p className="text-body-small text-secondary">
             여러 PDF를 합치고 페이지 순서를 바꿔요. 파일은 브라우저 안에서만

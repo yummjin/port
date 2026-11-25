@@ -1,5 +1,4 @@
 import Head from "next/head";
-import Link from "next/link";
 import {
   useEffect,
   useRef,
@@ -220,9 +219,6 @@ export default function ImageEditorPage() {
 
       <main className="px-content mx-auto flex max-w-[1000px] flex-col gap-6 pt-12 pb-20">
         <div className="flex flex-col gap-2">
-          <Link href="/playground" className="text-caption text-muted w-fit">
-            ‹ Playground
-          </Link>
           <h1 className="text-section text-foreground">이미지 편집기</h1>
           <p className="text-body-small text-secondary">
             HTML 요소로 만든 스테이지를 이미지로 합성해보는 실험 공간이에요.
