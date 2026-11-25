@@ -128,10 +128,11 @@ function handPose(
 }
 
 function trickPose(p: number, order: number, card: CardId): Pose {
-  const [x, , z] = seatPoint(p, 0.46, 0.02 + order * 0.004);
+  // My own slot sits further in so the fanned hand never covers it.
+  const [x, , z] = seatPoint(p, p === ME ? 0.3 : 0.46);
   const jitter = ((card.charCodeAt(1) || 0) % 7) * 0.04 - 0.12;
   return {
-    pos: [x, 0.02 + order * 0.004, z],
+    pos: [x, 0.03 + order * 0.006, z],
     rot: [FACE_UP, seatYaw(p) + jitter, 0],
   };
 }
@@ -251,7 +252,7 @@ function Lights() {
       <hemisphereLight args={["#ffcf99", "#1a0f08", 0.25]} />
       <spotLight
         ref={spot}
-        position={[0, 9, 1.5]}
+        position={[-1.6, 9, 3]}
         angle={0.62}
         penumbra={0.75}
         decay={1.4}

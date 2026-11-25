@@ -243,6 +243,7 @@ function Table({
             </InfoBox>
           </div>
 
+          {/* Bid, exchange, joker and result panels sit under the info row */}
           <div className="pointer-events-auto mx-auto flex w-full max-w-[460px] flex-col gap-3">
             {game.phase === "bidding" && myTurn && (
               <BidPanel
@@ -436,7 +437,7 @@ function ExchangePanel({
   );
 
   return (
-    <Panel title={`카드 교환 — 테이블에서 버릴 카드 ${discards.length} / 3`}>
+    <Panel title={`카드 교환 - 테이블에서 버릴 카드 ${discards.length} / 3`}>
       <ChoiceRow label="프렌드">
         {options.map((card) => (
           <ChoiceButton
