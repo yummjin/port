@@ -9,12 +9,6 @@ import { getAllPosts, type PostMeta } from "@/lib/posts";
 
 type ViewMode = "grid" | "list";
 
-export const getStaticProps: GetStaticProps<{
-  posts: PostMeta[];
-}> = async () => {
-  return { props: { posts: getAllPosts() } };
-};
-
 const dateFormatter = new Intl.DateTimeFormat("ko-KR", {
   year: "numeric",
   month: "long",
@@ -27,6 +21,19 @@ function formatDate(date: string) {
   const parsed = new Date(`${date}T00:00:00Z`);
   return Number.isNaN(parsed.getTime()) ? date : dateFormatter.format(parsed);
 }
+
+export const getStaticProps: GetStaticProps<{
+  posts: (PostMeta & { displayDate: string })[];
+}> = async () => {
+  return {
+    props: {
+      posts: getAllPosts().map((post) => ({
+        ...post,
+        displayDate: formatDate(post.date),
+      })),
+    },
+  };
+};
 
 export default function BlogPage({
   posts,
@@ -105,7 +112,7 @@ export default function BlogPage({
                         {post.title}
                       </h2>
                       <p className="text-body-small sm:text-body text-muted">
-                        {formatDate(post.date)}
+                        {post.displayDate}
                       </p>
                       <p className="text-body-small sm:text-body text-muted mt-auto pt-4">
                         {post.description}
@@ -135,7 +142,7 @@ export default function BlogPage({
                       {post.title}
                     </h2>
                     <p className="text-caption text-muted">
-                      {formatDate(post.date)}
+                      {post.displayDate}
                     </p>
                   </Link>
                 </li>
