@@ -1,6 +1,7 @@
+import dynamic from "next/dynamic";
 import Head from "next/head";
-import Link from "next/link";
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { FiMaximize, FiMinimize } from "react-icons/fi";
 
 import { Button } from "@/components/Button";
 import { cn } from "@/lib/cn";
@@ -24,15 +25,21 @@ import {
   legalCards,
   minimumBid,
   newRound,
-  rankLabel,
   sortHand,
-  suitOf,
   trumpLabel,
   type CardId,
   type GameState,
-  type Suit,
   type Trump,
 } from "@/lib/mighty";
+
+const Table3D = dynamic(() => import("@/components/mighty/Table3D"), {
+  ssr: false,
+  loading: () => (
+    <div className="text-caption text-muted flex size-full items-center justify-center">
+      테이블을 불러오는 중이에요.
+    </div>
+  ),
+});
 
 const ME = 0;
 const BOT_DELAY = 550;
@@ -40,6 +47,10 @@ const TRICK_PAUSE = 1000;
 
 export default function MightyPage() {
   const [game, setGame] = useState<GameState | null>(null);
+
+  // Deal on the client only: the shuffle is random, so a server-rendered deal
+  // would not match the hydrated one.
+  useEffect(() => setGame(newRound()), []);
 
   // Bots act on their own turn; finished tricks pause briefly before collecting.
   useEffect(() => {
@@ -82,9 +93,6 @@ export default function MightyPage() {
 
       <main className="px-content mx-auto flex max-w-[1000px] flex-col gap-6 pt-12 pb-20">
         <div className="flex flex-col gap-2">
-          <Link href="/playground" className="text-caption text-muted w-fit">
-            ‹ Playground
-          </Link>
           <h1 className="text-section text-foreground">마이티</h1>
           <p className="text-body-small text-secondary">
             AI 4명과 함께하는 5인 트릭테이킹 카드 게임이에요. 기루다와 공약을
@@ -95,12 +103,7 @@ export default function MightyPage() {
         {game ? (
           <Table game={game} setGame={setGame} />
         ) : (
-          <div className="border-border flex flex-col items-start gap-4 border p-5">
-            <Rules />
-            <Button variant="compact" onClick={() => setGame(newRound())}>
-              게임 시작
-            </Button>
-          </div>
+          <div className="border-border bg-canvas h-[460px] border sm:h-[600px]" />
         )}
       </main>
     </>
@@ -115,61 +118,219 @@ function Table({
   setGame: (update: (g: GameState | null) => GameState | null) => void;
 }) {
   const myTurn = game.turn === ME;
+  const exchanging = game.phase === "exchange" && game.declarer === ME;
+  const canPlay = game.phase === "playing" && myTurn;
+
+  const [pending, setPending] = useState<CardId | null>(null);
+  const [discards, setDiscards] = useState<CardId[]>([]);
+  const stage = useRef<HTMLDivElement>(null);
+  const fullscreen = useFullscreen(stage);
+
+  const legal = useMemo(
+    () => (canPlay ? legalCards(game, ME) : []),
+    [canPlay, game],
+  );
+  const hand = sortHand(game.hands[ME], game.trump);
+  const clickable = exchanging ? hand : canPlay ? legal : [];
+  const dimmed = canPlay ? hand.filter((card) => !legal.includes(card)) : [];
+  const raised = exchanging ? discards : pending ? [pending] : [];
+
+  const play = (card: CardId, options = {}) => {
+    setPending(null);
+    setGame((g) => g && applyPlay(g, ME, card, options));
+  };
+
+  const onCardClick = (card: CardId) => {
+    if (exchanging) {
+      setDiscards((current) =>
+        current.includes(card)
+          ? current.filter((c) => c !== card)
+          : current.length < 3
+            ? [...current, card]
+            : current,
+      );
+      return;
+    }
+    if (!legal.includes(card)) return;
+    const leading = game.trick.length === 0;
+    const canCall =
+      leading &&
+      card === jokerCallOf(game.trump) &&
+      game.trickNo > 0 &&
+      !game.jokerPlayed;
+    if (leading && (card === JOKER || canCall)) {
+      setPending((current) => (current === card ? null : card));
+      return;
+    }
+    play(card);
+  };
+
+  const me =
+    game.declarer === ME ? "주공" : game.friend === ME ? "프렌드" : null;
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex flex-wrap gap-2">
-        <InfoBox label="주공">
-          {game.declarer === null ? "–" : PLAYER_NAMES[game.declarer]}
-        </InfoBox>
-        <InfoBox label="기루다">
-          {game.trump ? trumpLabel(game.trump) : "–"}
-        </InfoBox>
-        <InfoBox label="공약">
-          {game.highestBid ? game.highestBid.points : "–"}
-        </InfoBox>
-        <InfoBox label="프렌드">
-          {game.phase === "bidding" || game.phase === "exchange"
-            ? "–"
-            : game.friendCard
-              ? `${cardLabel(game.friendCard)}${game.friendRevealed && game.friend !== null ? ` · ${PLAYER_NAMES[game.friend]}` : " · 미공개"}`
-              : "없음"}
-        </InfoBox>
-        <InfoBox label="트릭">{Math.min(game.trickNo + 1, 10)} / 10</InfoBox>
+      <div
+        ref={stage}
+        className={cn(
+          "border-border bg-canvas relative overflow-hidden",
+          fullscreen.active
+            ? "h-screen w-screen"
+            : "h-[460px] border sm:h-[600px]",
+        )}
+      >
+        {fullscreen.supported && (
+          <button
+            type="button"
+            onClick={fullscreen.toggle}
+            aria-label={fullscreen.active ? "전체 화면 종료" : "전체 화면"}
+            title={fullscreen.active ? "전체 화면 종료" : "전체 화면"}
+            className="bg-surface border-border text-foreground absolute top-3 right-3 z-40 flex size-9 cursor-pointer items-center justify-center border transition-opacity hover:opacity-70"
+          >
+            {fullscreen.active ? (
+              <FiMinimize size={16} />
+            ) : (
+              <FiMaximize size={16} />
+            )}
+          </button>
+        )}
+
+        <Table3D
+          game={game}
+          clickable={clickable}
+          dimmed={dimmed}
+          raised={raised}
+          onCardClick={onCardClick}
+        />
+
+        <div
+          className={cn(
+            "bg-surface text-caption pointer-events-none absolute bottom-3 left-3 z-30 flex flex-col border px-2 py-1",
+            myTurn && game.phase !== "result" && game.phase !== "trickEnd"
+              ? "border-foreground"
+              : "border-border",
+          )}
+        >
+          <span className="text-foreground font-medium">
+            {PLAYER_NAMES[ME]}
+            {me && <span className="text-muted font-normal"> · {me}</span>}
+          </span>
+        </div>
+
+        <p
+          aria-live="polite"
+          className="bg-surface border-border text-caption text-foreground pointer-events-none absolute right-3 bottom-3 z-30 max-w-[60%] border px-2 py-1"
+        >
+          {statusText(game)}
+        </p>
+
+        <div className="pointer-events-none absolute inset-x-3 top-3 z-30 flex flex-col gap-3">
+          <div className="flex flex-wrap gap-2 pr-12">
+            <InfoBox label="주공">
+              {game.declarer === null ? "–" : PLAYER_NAMES[game.declarer]}
+            </InfoBox>
+            <InfoBox label="기루다">
+              {game.trump ? trumpLabel(game.trump) : "–"}
+            </InfoBox>
+            <InfoBox label="공약">
+              {game.highestBid ? game.highestBid.points : "–"}
+            </InfoBox>
+            <InfoBox label="프렌드">
+              {game.phase === "bidding" || game.phase === "exchange"
+                ? "–"
+                : game.friendCard
+                  ? `${cardLabel(game.friendCard)}${game.friendRevealed && game.friend !== null ? ` · ${PLAYER_NAMES[game.friend]}` : " · 미공개"}`
+                  : "없음"}
+            </InfoBox>
+            <InfoBox label="트릭">
+              {Math.min(game.trickNo + 1, 10)} / 10
+            </InfoBox>
+          </div>
+
+          <div className="pointer-events-auto mx-auto flex w-full max-w-[460px] flex-col gap-3">
+            {game.phase === "bidding" && myTurn && (
+              <BidPanel
+                game={game}
+                onBid={(bid) => setGame((g) => g && applyBid(g, ME, bid))}
+              />
+            )}
+
+            {exchanging && (
+              <ExchangePanel
+                game={game}
+                discards={discards}
+                onConfirm={(friendCard) => {
+                  setGame((g) => g && applyExchange(g, discards, friendCard));
+                  setDiscards([]);
+                }}
+              />
+            )}
+
+            {game.phase === "result" && game.result && (
+              <ResultPanel
+                game={game}
+                onNext={() =>
+                  setGame(
+                    (g) => g && newRound(g.scores, (g.starter + 1) % PLAYERS),
+                  )
+                }
+              />
+            )}
+
+            {pending === JOKER && (
+              <Panel title="조커로 요청할 무늬">
+                <div className="flex flex-wrap gap-1.5">
+                  {SUITS.map((suit) => (
+                    <ChoiceButton
+                      key={suit}
+                      onClick={() => play(JOKER, { jokerSuit: suit })}
+                    >
+                      {SUIT_SYMBOL[suit]}
+                    </ChoiceButton>
+                  ))}
+                  <ChoiceButton onClick={() => setPending(null)}>
+                    취소
+                  </ChoiceButton>
+                </div>
+              </Panel>
+            )}
+
+            {pending && pending !== JOKER && (
+              <Panel title={`${cardLabel(pending)}로 조커콜 할까요?`}>
+                <div className="flex flex-wrap gap-1.5">
+                  <ChoiceButton
+                    onClick={() => play(pending, { jokerCall: true })}
+                  >
+                    조커콜
+                  </ChoiceButton>
+                  <ChoiceButton onClick={() => play(pending)}>
+                    그냥 내기
+                  </ChoiceButton>
+                  <ChoiceButton onClick={() => setPending(null)}>
+                    취소
+                  </ChoiceButton>
+                </div>
+              </Panel>
+            )}
+          </div>
+        </div>
       </div>
 
-      <Seats game={game} />
-
-      {game.phase === "bidding" && myTurn && (
-        <BidPanel
-          game={game}
-          onBid={(bid) => setGame((g) => g && applyBid(g, ME, bid))}
-        />
-      )}
-
-      {game.phase === "exchange" && game.declarer === ME && (
-        <ExchangePanel
-          game={game}
-          onConfirm={(discards, friendCard) =>
-            setGame((g) => g && applyExchange(g, discards, friendCard))
-          }
-        />
-      )}
-
-      {game.phase === "result" && game.result && (
-        <ResultPanel
-          game={game}
-          onNext={() =>
-            setGame((g) => g && newRound(g.scores, (g.starter + 1) % PLAYERS))
-          }
-        />
-      )}
-
-      {game.phase !== "exchange" || game.declarer !== ME ? (
-        <Hand game={game} setGame={setGame} />
-      ) : null}
-
-      <Log lines={game.log} status={statusText(game)} />
+      {/* Keyboard and screen-reader access to the hand drawn in the 3D scene */}
+      <div className="sr-only">
+        <span>내 패</span>
+        {hand.map((card) => (
+          <button
+            key={card}
+            type="button"
+            disabled={!clickable.includes(card)}
+            aria-pressed={raised.includes(card)}
+            onClick={() => onCardClick(card)}
+          >
+            {cardLabel(card)}
+          </button>
+        ))}
+      </div>
     </div>
   );
 }
@@ -196,135 +357,11 @@ function statusText(game: GameState) {
 
 function InfoBox({ label, children }: { label: string; children: ReactNode }) {
   return (
-    <div className="border-border text-body-small flex border">
+    <div className="border-border bg-surface text-body-small flex border">
       <span className="border-border text-muted border-r px-3 py-1">
         {label}
       </span>
       <span className="text-foreground px-3 py-1">{children}</span>
-    </div>
-  );
-}
-
-function Seats({ game }: { game: GameState }) {
-  const revealAll = game.phase === "result";
-  return (
-    <div className="grid grid-cols-5 gap-2">
-      {Array.from({ length: PLAYERS }, (_, p) => {
-        const play = game.trick.find((t) => t.player === p);
-        const isDeclarer = game.declarer === p;
-        const isFriend =
-          game.friend === p && (game.friendRevealed || revealAll || p === ME);
-        const active =
-          game.turn === p &&
-          game.phase !== "result" &&
-          game.phase !== "trickEnd";
-        const won = game.phase === "trickEnd" && game.trickWinner === p;
-        return (
-          <div
-            key={p}
-            className={cn(
-              "border-border flex min-w-0 flex-col items-center gap-2 border px-1 py-3 transition-colors duration-200",
-              (active || won) && "border-foreground",
-            )}
-          >
-            <div className="flex flex-col items-center gap-0.5">
-              <span className="text-body-small text-foreground font-medium">
-                {PLAYER_NAMES[p]}
-              </span>
-              <span className="text-caption text-muted h-4">
-                {isDeclarer ? "주공" : isFriend ? "프렌드" : ""}
-              </span>
-            </div>
-            <div className="flex h-16 items-center sm:h-20">
-              {play ? (
-                <PlayingCard card={play.card} />
-              ) : (
-                <div className="border-border h-16 w-11 border border-dashed sm:h-20 sm:w-14" />
-              )}
-            </div>
-            <span className="text-caption text-muted text-center">
-              점수 {game.taken[p].length} · 패 {game.hands[p].length}
-            </span>
-            <span className="text-caption text-foreground">
-              {game.scores[p] > 0 ? `+${game.scores[p]}` : game.scores[p]}
-            </span>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
-
-function Hand({
-  game,
-  setGame,
-}: {
-  game: GameState;
-  setGame: (update: (g: GameState | null) => GameState | null) => void;
-}) {
-  const [pending, setPending] = useState<CardId | null>(null);
-  const canPlay = game.phase === "playing" && game.turn === ME;
-  const legal = useMemo(
-    () => (canPlay ? legalCards(game, ME) : []),
-    [canPlay, game],
-  );
-  const leading = game.trick.length === 0;
-  const callCard = jokerCallOf(game.trump);
-
-  const play = (card: CardId, options = {}) => {
-    setPending(null);
-    setGame((g) => g && applyPlay(g, ME, card, options));
-  };
-
-  const onCard = (card: CardId) => {
-    if (!legal.includes(card)) return;
-    const canCall =
-      leading && card === callCard && game.trickNo > 0 && !game.jokerPlayed;
-    if (leading && (card === JOKER || canCall)) {
-      setPending(card);
-      return;
-    }
-    play(card);
-  };
-
-  return (
-    <div className="flex flex-col gap-3">
-      <span className="text-caption text-muted">내 패</span>
-      <div className="flex flex-wrap gap-1.5">
-        {game.hands[ME].map((card) => (
-          <PlayingCard
-            key={card}
-            card={card}
-            onClick={canPlay ? () => onCard(card) : undefined}
-            disabled={canPlay && !legal.includes(card)}
-            selected={pending === card}
-          />
-        ))}
-      </div>
-
-      {pending === JOKER && (
-        <ChoiceRow label="조커로 요청할 무늬">
-          {SUITS.map((suit) => (
-            <ChoiceButton
-              key={suit}
-              onClick={() => play(JOKER, { jokerSuit: suit })}
-            >
-              {SUIT_SYMBOL[suit]}
-            </ChoiceButton>
-          ))}
-          <ChoiceButton onClick={() => setPending(null)}>취소</ChoiceButton>
-        </ChoiceRow>
-      )}
-
-      {pending && pending !== JOKER && (
-        <ChoiceRow label={`${cardLabel(pending)}로 조커콜 할까요?`}>
-          <ChoiceButton onClick={() => play(pending, { jokerCall: true })}>
-            조커콜
-          </ChoiceButton>
-          <ChoiceButton onClick={() => play(pending)}>그냥 내기</ChoiceButton>
-          <ChoiceButton onClick={() => setPending(null)}>취소</ChoiceButton>
-        </ChoiceRow>
-      )}
     </div>
   );
 }
@@ -390,39 +427,20 @@ function BidPanel({
 
 function ExchangePanel({
   game,
+  discards,
   onConfirm,
 }: {
   game: GameState;
-  onConfirm: (discards: CardId[], friendCard: CardId | null) => void;
+  discards: CardId[];
+  onConfirm: (friendCard: CardId | null) => void;
 }) {
-  const [discards, setDiscards] = useState<CardId[]>([]);
   const options = friendOptions(game);
   const [friendCard, setFriendCard] = useState<CardId | null>(
     options[0] ?? null,
   );
-  const hand = sortHand(game.hands[ME], game.trump);
-
-  const toggle = (card: CardId) =>
-    setDiscards((current) =>
-      current.includes(card)
-        ? current.filter((c) => c !== card)
-        : current.length < 3
-          ? [...current, card]
-          : current,
-    );
 
   return (
-    <Panel title={`카드 교환 — 버릴 카드 ${discards.length} / 3`}>
-      <div className="flex flex-wrap gap-1.5">
-        {hand.map((card) => (
-          <PlayingCard
-            key={card}
-            card={card}
-            onClick={() => toggle(card)}
-            selected={discards.includes(card)}
-          />
-        ))}
-      </div>
+    <Panel title={`카드 교환 — 테이블에서 버릴 카드 ${discards.length} / 3`}>
       <ChoiceRow label="프렌드">
         {options.map((card) => (
           <ChoiceButton
@@ -444,7 +462,7 @@ function ExchangePanel({
         <Button
           variant="compact"
           disabled={discards.length !== 3}
-          onClick={() => onConfirm(discards, friendCard)}
+          onClick={() => onConfirm(friendCard)}
         >
           확정
         </Button>
@@ -463,7 +481,7 @@ function ResultPanel({
   const result = game.result!;
   return (
     <Panel
-      title={`${result.win ? "주공 승리" : "주공 패배"} — 주공 팀 ${result.teamPoints}점 / 공약 ${game.contract}`}
+      title={`${result.win ? "주공 승리" : "주공 패배"} - 주공 팀 ${result.teamPoints}점 / 공약 ${game.contract}`}
     >
       <div className="flex flex-wrap gap-2">
         {result.deltas.map((delta, p) => (
@@ -483,7 +501,7 @@ function ResultPanel({
 
 function Panel({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <section className="border-border flex flex-col gap-4 border p-4">
+    <section className="border-border bg-surface flex flex-col gap-4 border p-4">
       <h2 className="text-body-small text-foreground font-medium">{title}</h2>
       {children}
     </section>
@@ -531,95 +549,26 @@ function ChoiceButton({
   );
 }
 
-function PlayingCard({
-  card,
-  onClick,
-  disabled,
-  selected,
-}: {
-  card: CardId;
-  onClick?: () => void;
-  disabled?: boolean;
-  selected?: boolean;
-}) {
-  const suit = suitOf(card) as Suit | null;
-  const red = suit === "D" || suit === "H";
-  const content = (
-    <>
-      <span className="text-caption self-start leading-none font-medium">
-        {rankLabel(card)}
-      </span>
-      <span className="text-body leading-none">
-        {suit ? SUIT_SYMBOL[suit] : "★"}
-      </span>
-    </>
-  );
-  const className = cn(
-    "bg-surface flex h-16 w-11 shrink-0 flex-col items-center justify-between border p-1.5 sm:h-20 sm:w-14",
-    red ? "text-danger" : "text-foreground",
-    selected ? "border-foreground -translate-y-1" : "border-border",
-    "transition-transform duration-150 motion-reduce:transition-none",
-  );
+/** Fullscreen for one element, tracking exits made with Esc or the browser UI. */
+function useFullscreen(ref: React.RefObject<HTMLElement | null>) {
+  const [active, setActive] = useState(false);
+  const [supported, setSupported] = useState(false);
 
-  if (!onClick) {
-    return (
-      <div className={className} aria-label={cardLabel(card)}>
-        {content}
-      </div>
-    );
-  }
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      disabled={disabled}
-      aria-label={cardLabel(card)}
-      aria-pressed={selected}
-      className={cn(
-        className,
-        "cursor-pointer hover:-translate-y-1 disabled:cursor-not-allowed disabled:opacity-35 disabled:hover:translate-y-0",
-      )}
-    >
-      {content}
-    </button>
-  );
-}
+  useEffect(() => {
+    setSupported(document.fullscreenEnabled);
+    const onChange = () =>
+      setActive(document.fullscreenElement === ref.current);
+    document.addEventListener("fullscreenchange", onChange);
+    return () => document.removeEventListener("fullscreenchange", onChange);
+  }, [ref]);
 
-function Log({ lines, status }: { lines: string[]; status: string }) {
-  return (
-    <div className="border-border flex flex-col gap-2 border p-4">
-      <p className="text-body-small text-foreground" aria-live="polite">
-        {status}
-      </p>
-      <ol className="text-caption text-muted flex flex-col gap-0.5">
-        {lines.slice(-8).map((line, i) => (
-          <li key={`${lines.length}-${i}`}>{line}</li>
-        ))}
-      </ol>
-    </div>
-  );
-}
+  const toggle = () => {
+    if (document.fullscreenElement) {
+      void document.exitFullscreen();
+    } else {
+      void ref.current?.requestFullscreen();
+    }
+  };
 
-function Rules() {
-  return (
-    <div className="text-body-small text-secondary flex flex-col gap-1.5">
-      <p className="text-foreground font-medium">규칙 요약</p>
-      <p>· 53장(조커 포함)을 10장씩 나누고 3장은 바닥에 둬요.</p>
-      <p>
-        · 13~20 사이로 공약과 기루다(트럼프 무늬)를 걸고, 가장 높은 사람이
-        주공이 돼요.
-      </p>
-      <p>
-        · 주공은 바닥 3장을 가져와 3장을 버리고, 카드 한 장으로 프렌드를 불러요.
-      </p>
-      <p>
-        · 10·J·Q·K·A가 점수 카드예요. 주공 팀이 공약 이상을 가져오면 승리해요.
-      </p>
-      <p>
-        · 마이티(♠A, 기루다가 ♠면 ♦A)가 가장 강하고, 조커가 그다음이에요. 조커는
-        첫·마지막 트릭에서 힘이 없고, ♣3(기루다가 ♣면 ♠3) 조커콜에 불려 나와요.
-      </p>
-      <p>· 첫 트릭에는 기루다를 먼저 낼 수 없어요.</p>
-    </div>
-  );
+  return { active, supported, toggle };
 }
