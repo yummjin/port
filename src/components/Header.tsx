@@ -11,6 +11,7 @@ import { cn } from "@/lib/cn";
 const NAV_LINKS = [
   { href: "/work", label: "Work" },
   { href: "/blog", label: "Blog" },
+  { href: "/playground", label: "Playground" },
 ];
 
 const EXTERNAL_LINKS = [
